@@ -1,0 +1,31 @@
+
+
+.form-wrapper {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centre horizontalement */
+}
+
+.form-container {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  width: 100%; /* Prend toute la largeur du conteneur */
+  max-width: 400px; /* Largeur maximale des champs */
+  margin-left: auto;
+  margin-right: auto; /* Centre les groupes de formulaire */
+  padding: 1.2rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Conservez le reste de vos styles existants... */

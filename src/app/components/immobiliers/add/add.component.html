@@ -1,0 +1,166 @@
+<div class="background-container"
+     style="background: url('assets/images/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;">   
+
+<div class="form-container">
+  <form (ngSubmit)="onSubmit()" #immobilierForm="ngForm" class="needs-validation" novalidate>
+    
+    <!-- Type -->
+    <div class="form-group mb-3">
+      <label class="form-label">Type*</label>
+      <select class="form-control" [(ngModel)]="newImmobilier.type" name="type" required>
+        <option *ngFor="let type of typeImmobilierOptions" [value]="type">
+          {{ type }}
+        </option>
+      </select>
+      <small class="text-info">
+        Types disponibles: {{ typeImmobilierOptions.join(', ') }}
+      </small>
+    </div>
+
+    <!-- Prix avec estimation -->
+    <div class="form-group mb-3">
+      <label class="form-label">Prix (€)*</label>
+      <div class="input-group">
+        <input type="number" class="form-control" [(ngModel)]="newImmobilier.prix" name="prix" required min="1000">
+        <button type="button" class="btn btn-outline-secondary" 
+                (click)="estimatePrice()"
+                [disabled]="estimationLoading || !newImmobilier.superficie || !newImmobilier.latitude || !newImmobilier.longitude">
+          <span *ngIf="!estimationLoading">Estimer</span>
+          <span *ngIf="estimationLoading">
+            <span class="spinner-border spinner-border-sm" role="status"></span>
+          </span>
+        </button>
+      </div>
+      <small *ngIf="predictedPrice" class="text-success">
+        Estimation: {{ predictedPrice | currency:'EUR':'symbol':'1.0-0' }}
+      </small>
+      <small *ngIf="estimationError" class="text-danger">
+        {{ estimationError }}
+      </small>
+    </div>
+
+    <!-- Superficie -->
+    <div class="form-group mb-3">
+      <label class="form-label">Superficie (m²)*</label>
+      <input type="number" class="form-control" [(ngModel)]="newImmobilier.superficie" name="superficie" required min="1">
+    </div>
+
+    <!-- Ville -->
+    <div class="form-group mb-3">
+      <label class="form-label">Ville*</label>
+      <input class="form-control" [(ngModel)]="newImmobilier.ville" name="ville" required>
+    </div>
+
+    <!-- Coordonnées GPS -->
+    <div class="card mb-3">
+      <div class="card-header">Coordonnées GPS</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Latitude*</label>
+              <input type="number" step="0.000001" class="form-control" 
+                    [(ngModel)]="newImmobilier.latitude" name="latitude"
+                    required min="-90" max="90">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Longitude*</label>
+              <input type="number" step="0.000001" class="form-control"
+                    [(ngModel)]="newImmobilier.longitude" name="longitude"
+                    required min="-180" max="180">
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-primary mt-2" 
+                (click)="getCurrentLocation()" [disabled]="isLocating">
+          <span *ngIf="!isLocating">Utiliser ma position actuelle</span>
+          <span *ngIf="isLocating">
+            <span class="spinner-border spinner-border-sm" role="status"></span>
+            Localisation en cours...
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Nombre de pièces -->
+    <div class="form-group mb-3">
+      <label class="form-label">Nombre de pièces</label>
+      <input type="number" class="form-control" [(ngModel)]="newImmobilier.nombre_pieces" name="nombre_pieces" min="1">
+    </div>
+
+    <!-- Distance centre ville -->
+    <div class="form-group mb-3">
+      <label class="form-label">Distance du centre-ville (km)</label>
+      <input type="number" step="0.1" class="form-control" [(ngModel)]="newImmobilier.distance_centre" name="distance_centre">
+    </div>
+
+    <!-- Distance écoles -->
+    <div class="form-group mb-3">
+      <label class="form-label">Distance des écoles (km)</label>
+      <input type="number" step="0.1" class="form-control" [(ngModel)]="newImmobilier.distance_ecoles" name="distance_ecoles">
+    </div>
+
+    <!-- Section Images -->
+    <div class="form-group mb-3">
+      <label class="form-label">Images du bien</label>
+      <div class="image-upload-container">
+        <div class="image-preview-grid" *ngIf="previewUrls.length > 0">
+          <div class="image-preview-item" *ngFor="let url of previewUrls; let i = index">
+            <img [src]="url" alt="Prévisualisation">
+            <button type="button" class="remove-image-btn" (click)="removeImage(i)">×</button>
+          </div>
+        </div>
+        <div class="file-input-container">
+          <input type="file" 
+                 id="imageUpload" 
+                 (change)="onFileSelected($event)" 
+                 multiple 
+                 accept="image/*"
+                 class="file-input">
+          <label for="imageUpload" class="file-input-label">
+            <span class="upload-icon">📷</span>
+            <span class="upload-text">Cliquez ici pour ajouter des photos</span>
+          </label>
+        </div>
+        <div class="text-center mt-2">
+          <small class="form-text text-muted">
+            Vous pouvez sélectionner plusieurs images. Formats acceptés : JPG, PNG, GIF
+          </small>
+          <div class="alert alert-info mt-2 text-start">
+            <strong>Information :</strong> Les images seront uploadées sur le serveur et associées à ce bien immobilier.
+            Assurez-vous que le dossier <code>/uploads</code> existe sur le serveur.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Boutons de soumission -->
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-secondary" (click)="cancel()">
+        Annuler
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="!immobilierForm.valid || isSubmitting">
+        <span *ngIf="!isSubmitting">Ajouter</span>
+        <span *ngIf="isSubmitting">
+          <span class="spinner-border spinner-border-sm" role="status"></span>
+          En cours...
+        </span>
+      </button>
+    </div>
+  </form>
+
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    <strong>Erreur :</strong> {{ errorMessage }}
+    <div *ngIf="errorMessage.includes('endpoint') || errorMessage.includes('serveur')" class="mt-2">
+      <small>
+        <strong>Note pour le développeur :</strong><br>
+        Vérifiez que votre backend dispose d'un endpoint <code>POST /api/immobilier/upload-images</code> qui accepte des fichiers 
+        via un FormData avec le champ 'images'.
+      </small>
+    </div>
+  </div>
+</div>

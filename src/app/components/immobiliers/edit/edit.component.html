@@ -1,0 +1,45 @@
+<div class="background-container"
+     style="background: url('assets/images/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;">   
+
+<form (ngSubmit)="onSubmit()">
+    <!-- Champ Ville -->
+    <div class="form-group">
+      <label>Ville</label>
+      <input type="text" [(ngModel)]="property.ville" name="ville" required>
+    </div>
+  
+    <!-- Champ Prix -->
+    <div class="form-group">
+      <label>Prix (€)</label>
+      <input type="number" [(ngModel)]="property.prix" name="prix" required>
+    </div>
+  
+    <!-- Champ Superficie -->
+    <div class="form-group">
+      <label>Superficie (m²)</label>
+      <input type="number" [(ngModel)]="property.superficie" name="superficie" required>
+    </div>
+  
+    <!-- Champ Type -->
+    <div class="form-group">
+      <label>Type</label>
+      <select [(ngModel)]="property.type" name="type" required>
+        <option *ngFor="let type of typeImmobilierOptions" [value]="type">
+          {{ type }}
+        </option>
+      </select>
+    </div>
+  
+    <!-- Ajoutez tous les autres champs nécessaires -->
+    <div class="form-group">
+      <label>Année de construction</label>
+      <input type="number" [(ngModel)]="property.annee_construction" name="annee_construction">
+    </div>
+  
+    <div class="button-group">
+      <button type="submit" class="save-button">Enregistrer</button>
+      <button type="button" class="cancel-button" (click)="cancel()">Annuler</button>
+    </div>
+  </form>
