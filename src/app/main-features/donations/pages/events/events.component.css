@@ -1,0 +1,12 @@
+:host ::ng-deep .carousel-inner {
+    max-height: 400px;
+    overflow: hidden;
+  }
+  
+  :host ::ng-deep .carousel-item img {
+    height: 400px;
+    object-fit: cover;
+  }
+  #eventsCarousel {
+    max-height: 400px !important;
+  }  

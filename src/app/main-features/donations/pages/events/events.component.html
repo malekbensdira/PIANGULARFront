@@ -1,0 +1,26 @@
+<div>
+    <h1 class="fw-bold m-4">List of events</h1>
+    
+    <div id="eventsCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div
+          class="carousel-item"
+          *ngFor="let event of events; let i = index"
+          [class.active]="i === 0"
+        >
+          <img [src]="event.picture" class="d-block w-100" alt="{{ event.name }}" style="max-height: 400px; object-fit: cover;">
+          <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+            <h5 class="text-white fw-bold">{{ event.name }}</h5>
+            <p class="text-light">{{ event.description }}</p>
+          </div>
+        </div>
+      </div>
+  
+      <button class="carousel-control-prev" type="button" data-bs-target="#eventsCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#eventsCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
