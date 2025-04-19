@@ -1,0 +1,33 @@
+<div class="logo-container">
+    <img src="assets/img/LOGOAMENA.png" alt="Logo">
+</div>
+
+<div class="reset-email-container">
+    <h2>Password Reset</h2>
+
+    <img src="assets/img/IconeEmail.png" alt="Reset Icon" class="reset-icon">
+
+    <p class="typing-text">Please enter your email to reset your password:</p>
+
+    <input type="email" id="email" placeholder="Enter your email" [(ngModel)]="email" name="email" required email #emailField="ngModel" />
+
+    <div *ngIf="emailField.invalid && emailField.touched" class="error-message">
+        <p *ngIf="emailField.errors?.required" class="error-text">Email is required!</p>
+        <p *ngIf="emailField.errors?.email" class="error-text">Please enter a valid email address!</p>
+    </div>
+
+    <div class="back-links">
+        <a routerLink="/forgot-password" class="back-to-forgot-password-btn">Back to Forgot Password</a>
+        <a routerLink="/auth" class="back-to-login-btn">Back to login</a>
+    </div>
+
+    <button class="reset-btn" (click)="sendResetCode()" [disabled]="emailField.invalid">Send Reset Code</button>
+
+    <!-- Message de confirmation -->
+    <p *ngIf="message" class="success-message">{{ message }}</p>
+
+    <!-- Bouton de redirection vers Reset Password -->
+    <button *ngIf="codeSent" class="go-to-reset-btn" (click)="goToResetPassword()">
+        Go to Reset Password
+    </button>
+    </div>

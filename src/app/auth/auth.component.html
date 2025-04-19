@@ -1,0 +1,27 @@
+<div class="logo-container">
+  <img src="assets/img/LOGOAMENA.png" alt="Logo">
+</div>
+
+<div class="auth-container">
+  <img src="assets/img/default-profile.png" class="avatar">
+
+  <form (submit)="login(); $event.preventDefault()">
+      <label for="email"></label>
+      <input type="email" id="email" placeholder="Enter your email address" [(ngModel)]="email" name="email" required>
+
+      <label for="password"></label>
+      <input type="password" id="password" placeholder="Enter your password" [(ngModel)]="password" name="password" required>
+
+      <!-- Lien "Mot de passe oublié ?" aligné avec le même design -->
+      <p class="signup-link">Forgot your password? <a routerLink="/forgot-password">Get a new one!</a></p>
+
+      <button type="submit">
+          <span>Sign in</span>
+      </button>
+
+      <p class="signup-link">No account? <a routerLink="/add-user">Time to signup!</a></p>
+
+      <!-- Message d'erreur -->
+      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  </form>
+</div>

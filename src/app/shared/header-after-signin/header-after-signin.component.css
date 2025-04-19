@@ -1,0 +1,221 @@
+/* ------------------ HEADER MODERNE ------------------ */
+header {
+  background: linear-gradient(to right, rgba(34, 68, 147, 0.619), rgba(34, 68, 147, 0.619));
+  backdrop-filter: blur(6px);
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 150px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 100;
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+}
+
+/* Logo dans le header */
+.logo-header-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-header-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Navigation */
+nav {
+  flex: 1;
+  margin-left: 100px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 12px; /* Réduit l'espacement horizontal */
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 20px; /* Réduit la taille du texte pour que tout s'affiche bien */
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  transition: 0.3s ease;
+  padding: 8px 12px; /* Réduit le padding pour moins d'espace autour du texte */
+  border-radius: 8px;
+}
+
+nav ul li a i {
+  margin-right: 8px;
+  font-size: 30px; /* Réduit la taille de l'icône */
+}
+
+nav ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #f1dd5f;
+}
+
+/* Section profile settings */
+.profile-settings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-name {
+  min-height: 20px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  white-space: normal; /* Permet le retour à la ligne */
+  overflow: visible; /* Pour afficher tout le texte */
+  margin-top: 5px;
+  font-size: 14px; /* Ajuste la taille du texte */
+  line-height: 1.2; /* Ajuste l'interligne pour éviter la coupure */
+}
+
+/* Auth buttons */
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-left: auto;
+}
+
+.btn-auth {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.3s;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border: none;
+}
+
+/* Bouton Sign In */
+.btn-auth.btn-outline {
+  background-color: transparent;
+  border: 2px solid #f1dd5f;
+  color: #f1dd5f;
+}
+
+.btn-auth.btn-outline:hover {
+  background-color: #f1dd5f;
+  color: rgb(0, 0, 0);
+}
+
+/* Bouton Sign Up personnalisé */
+.btn-auth.btn-signup {
+  background-color: white;
+  border: 2px solid white;
+  color: #224393 !important;
+}
+
+.btn-auth.btn-signup:hover {
+  background-color: #224393;
+  color: white !important;
+}
+
+/* Appliquer border-radius uniquement à l’image par défaut */
+.default-img {
+  border-radius: 50%;
+  border: 2px solid #ccc; /* Optionnel pour un cadre stylé */
+}
+
+.profile-img {
+  width: 120px; /* Largeur de l'image */
+  height: 120px; /* Hauteur de l'image */
+  border-radius: 50%; /* Cercle parfait */
+  object-fit: cover; /* Pour que l'image ne soit pas déformée */
+  border: 2px solid #fff; /* Optionnel : une bordure blanche */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optionnel : ombre douce */
+  cursor: pointer;
+}
+
+.header-after nav ul {
+  display: flex;
+  flex-wrap: wrap; /* ou 'nowrap' si tu veux que ça ne passe jamais à la ligne */
+  justify-content: space-around;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.profile-settings {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.user-dropdown {
+  position: relative;
+}
+
+.user-name-btn {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.user-name-btn i {
+  font-size: 14px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background-color: white;
+  color: #224393;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+}
+
+.dropdown-item {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 10px;
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+  color: #224393;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+
+

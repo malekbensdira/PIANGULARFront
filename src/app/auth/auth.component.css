@@ -1,0 +1,112 @@
+/* Centrer le conteneur */
+.auth-container {
+    background: rgba(255, 255, 255, 0.65); /* Fond semi-transparent */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 350px; /* Largeur fixe */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centrer le conteneur */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrer horizontalement */
+    justify-content: center; /* Centrer verticalement */
+  }
+  
+  /* Centrer les champs et le bouton, décalage vers la droite */
+  .auth-container input,
+  .auth-container button {
+    width: 100%; /* Utiliser la largeur maximale */
+    max-width: 300px; /* Réduire la largeur maximale des champs */
+    padding: 10px; /* Ajouter du padding pour rendre les champs plus grands */
+    margin: 0 auto 15px auto; /* Centrer horizontalement */
+    display: block; /* Forcer le centrage */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center; /* Centrer le texte dans les champs */
+    padding-left: 20px; /* Ajouter du padding à gauche pour le texte dans les champs */
+    transform: translateX(-5%); /* Déplacement léger vers la droite */
+  }
+  
+  /* Ajuster le bouton */
+  .auth-container button {
+    background-color: rgb(241, 221, 95);
+    color: #224393;
+    border: none;
+    cursor: pointer;
+    font-size: 17px;
+    width: 50%; /* Garde la même largeur que les champs */
+    max-width: 300px; /* Réduire la largeur maximale du bouton */
+    margin: 20px auto; /* Centrer horizontalement */
+    text-align: center; /* Centrer le texte */
+    display: flex; /* Utilisation du flex pour centrer le texte */
+    justify-content: center; /* Centrer le texte horizontalement */
+    align-items: center; /* Centrer le texte verticalement */
+  }
+  
+  .auth-container button:hover {
+    background-color: rgb(218, 188, 61);
+  }
+  
+  /* Avatar centré au-dessus des champs */
+  .avatar {
+    width: 300px;
+    height: 250px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 20px auto; /* Centre l'image et ajoute une marge en bas */
+  }
+  
+  /* Position du logo */
+  .logo-container {
+    position: absolute;
+    top: -70px; /* Déplace encore plus en haut */
+    left: -70px; /* Déplace encore plus à gauche */
+    z-index: 999; /* S'assurer que le logo soit au-dessus des autres éléments */
+  }
+  
+  .logo-container img {
+    width: 300px; /* Garde la taille du logo */
+    height: 300px; /* Garde les proportions */
+  }
+  
+  /* Body - Fond d'écran et positionnement */
+  body {
+    background-image: url("/assets/img/fond.png") !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  
+  /* Style pour le lien d'inscription */
+  .signup-link {
+    font-size: 17px; /* Utiliser la même taille que pour le bouton et les champs */
+    color: #152857; /* Couleur du texte pour garder l'harmonie */
+    text-align: center; /* Centrer le texte */
+    margin-top: 10px; /* Espacement au-dessus */
+    font-weight: 600; /* Appliquer le même poids que pour le bouton */
+    font-family: 'Arial', sans-serif; /* Appliquer la même police */
+  }
+  
+  .signup-link a {
+    text-decoration: none; /* Enlever le soulignement */
+    color: rgb(34, 67, 147); /* Couleur de survol */
+    font-weight: 600; /* Même poids que le texte */
+    transition: color 0.3s ease-in-out; /* Transition fluide lors du survol */
+  }
+  
+  .signup-link a:hover {
+    color: rgba(81, 12, 154, 0.61); /* Couleur au survol */
+    text-decoration: underline; /* Ajouter un soulignement au survol */
+  }
+  
+  

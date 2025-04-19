@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  background-image: url("/assets/img/fond.png") !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  height: 100vh;
+  margin: 0;
+}
+/* styles.css */
+
+.swal2-popup {
+  font-family: 'Poppins', sans-serif;
+}

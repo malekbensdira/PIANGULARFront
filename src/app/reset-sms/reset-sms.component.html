@@ -1,0 +1,32 @@
+<div class="logo-container">
+  <img src="assets/img/LOGOAMENA.png" alt="Logo">
+</div>
+
+<div class="reset-sms-container">
+  <h2>Password Reset via SMS</h2>
+
+  <img src="assets/img/IconeSMS (3).png" alt="SMS Reset Icon" class="reset-icon">
+
+  <p class="typing-text">Please enter your phone number to reset your password:</p>
+
+  <input type="text" placeholder="Enter your phone number" [(ngModel)]="smsCode" name="smsCode" required #smsCodeField="ngModel" />
+
+  <div *ngIf="smsCodeField.invalid && smsCodeField.touched" class="error-message">
+    <p *ngIf="smsCodeField.errors?.required" class="error-text">Phone number is required!</p>
+  </div>
+
+  <div class="back-links">
+    <a routerLink="/forgot-password" class="back-to-forgot-password-btn">Back to Forgot Password</a>
+    <a routerLink="/auth" class="back-to-login-btn">Back to login</a>
+  </div>
+
+  <button class="reset-btn" (click)="sendCode()" [disabled]="smsCodeField.invalid">Send Reset Code</button>
+
+  <!-- Message de confirmation -->
+  <p *ngIf="message" class="success-message">{{ message }}</p>
+
+  <!-- Bouton de redirection vers Reset Password -->
+  <button *ngIf="codeSent" class="go-to-reset-btn" (click)="goToResetPassword()">
+    Go to Reset Password
+  </button>
+</div>

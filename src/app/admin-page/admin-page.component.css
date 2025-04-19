@@ -1,0 +1,23 @@
+.user-list {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .user-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .user-info {
+    margin-right: 15px;
+  }
+  
+  .user-image img {
+    border-radius: 50%;
+  }
+  

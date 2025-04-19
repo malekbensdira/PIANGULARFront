@@ -1,0 +1,180 @@
+/* Auth Container: Aligner le contenu en haut à gauche et centrer le formulaire */
+.auth-container {
+  display: flex;
+  flex-direction: column; /* Organiser les éléments de manière verticale */
+  justify-content: center; /* Centrer verticalement */
+  align-items: center; /* Centrer horizontalement */
+  padding: 20px;
+  min-height: 100vh;
+  position: relative; /* Permet à l'élément enfant de se positionner relativement */
+}
+
+/* Logo: Positionner en haut à gauche sans espace */
+.logo-container {
+  position: absolute;
+  top: -70px;
+  left: -70px;
+  z-index: 999;
+}
+
+.logo-container img {
+  width: 300px; /* Ajuster la taille du logo selon vos préférences */
+  height: 300px;
+}
+
+/* Auth Box: Centrer le formulaire et ajuster sa largeur */
+.auth-box {
+  background-color: rgba(255, 255, 255, 0.436);
+  border-radius: 20px; /* Pour arrondir les bords du conteneur */
+  border: 2px solid #224393;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(11, 3, 82, 0.1);
+  width: 100%;
+  max-width: 500px; /* Largeur maximale du formulaire */
+  margin-top: 30px; /* Espace au-dessus du formulaire */
+  margin-bottom: 30px; /* Espace en dessous du formulaire */
+}
+
+/* Form Grid: Ajouter de l'espace entre les champs du formulaire */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* Titre du formulaire */
+.input-placeholder {
+  font-size: 24px;
+  color: #224393;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Appliquer la même police au label que le titre */
+label {
+  font-size: 16px;  /* La même taille de police que le titre */
+  color: #153fa0;   /* La même couleur que le titre */
+  text-align: left; /* Assurez-vous que les labels sont alignés à gauche */
+}
+
+/* Champ de formulaire: Ajouter de l'espace autour des champs */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Message d'erreur */
+.text-danger {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Conteneur pour la ligne du bouton de soumission */
+.signup-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Bouton de soumission */
+button[type="submit"] {
+  width: 50%;
+  padding: 12px;
+  background-color: #224393;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-align: center;
+  display: block;
+  margin: 0 auto; /* Cela va centrer le bouton */
+}
+
+button[type="submit"]:hover {
+  background-color: #dabc3d;
+}
+
+/* Lien de redirection vers la connexion */
+.signup-link {
+  font-size: 17px;
+  color: #152857;
+  text-align: center;
+  margin-top: 10px;
+  font-weight: 600;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Champs de saisie */
+.form-control {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Bouton de soumission secondaire (style générique) */
+.btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+/* Désactivation du bouton quand le formulaire est invalide */
+/* .btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+} */
+
+/* Arrondir les bords des champs de saisie et du bouton */
+input.form-control, select.form-control {
+  border-radius: 10px; /* Ajuster cette valeur selon le degré d'arrondi souhaité */
+  padding: 10px; /* Pour améliorer l'espacement interne */
+  border: 1px solid #02011a; /* Vous pouvez ajuster la couleur du bord si nécessaire */
+}
+
+/* Arrondir le bouton */
+button[type="submit"] {
+  border-radius: 10px; /* Arrondi du bouton */
+  padding: 10px 20px; /* Espacement interne du bouton */
+  border: 1px solid #ccc; /* Couleur du bord du bouton */
+  cursor: pointer; /* Pour indiquer que c'est un bouton cliquable */
+  transition: background-color 0.3s ease; /* Transition douce pour le changement de couleur */
+}
+
+button[type="submit"]:hover {
+  background-color: #dfd92d; /* Couleur de fond lors du survol */
+  border-color: #dfd92d ; /* Changer la couleur du bord au survol */
+}
+
+/* Optionnel : vous pouvez aussi arrondir le conteneur du formulaire si nécessaire */
+.auth-box {
+  border-radius: 20px; /* Pour arrondir les bords du conteneur */
+  padding: 20px;
+  background-color: #f9f9f98c;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Pour ajouter un léger effet d'ombre */
+}
+/* Style pour la notification de succès */
+.success-notification {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 20px;
+  text-align: center;
+  display: none; /* Masqué par défaut */
+}
+
+.success-notification.show {
+  display: block;
+}

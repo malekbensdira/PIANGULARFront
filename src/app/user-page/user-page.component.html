@@ -1,0 +1,142 @@
+<div class="background-container">
+  <!-- Logo initial centré -->
+  <img src="assets/img/LOGOAMENA.png" alt="Logo" id="logo">
+
+  <!-- Affichage du bouton Messenger uniquement si l'utilisateur est authentifié -->
+
+
+
+
+
+</div>
+
+
+  
+  <!-- Header -->
+  <ng-container *ngIf="isLoggedIn; else beforeLogin">
+    <app-header-after-signin></app-header-after-signin>
+  </ng-container>
+  
+  <ng-template #beforeLogin>
+    <app-header-before-signin></app-header-before-signin>
+  </ng-template>
+  <app-messenger [userName]="userName" [isLoggedIn]="isLoggedIn"></app-messenger>
+
+
+  
+  <!-- Contenu principal masqué au départ -->
+  <div id="content">
+    <h1 class="welcome-text">{{ welcomeMessage }}</h1> 
+    <p class="slogan">
+        Where <i class="fas fa-handshake"></i> Trust Turns Into <i class="fas fa-money-bill-wave"></i> Money!
+    </p>
+    
+    <!-- === Nouvelle section "Why Choose Amena?" / "What We Offer" === -->
+    <div class="extra-sections">
+      <!-- Première section avec carrousel -->
+      <!-- SECTION PC 3D avec vidéo -->
+      <div class="pc-and-info-wrapper">
+        <div class="info-side testimonial-card">
+          <div class="testimonial-content">
+            <p class="testimonial-text">
+              Découvrez nos outils en ligne, visualisez vos finances et prenez les bonnes décisions en quelques clics.
+            </p>
+            <ul class="service-list">
+              <li>🔍 Recherche intelligente de documents</li>
+              <li>📊 Dashboards dynamiques</li>
+              <li>💬 Assistance client intégrée</li>
+              <li>🔐 Sécurité & Confidentialité garanties</li>
+            </ul>
+            <div class="testimonial-author">
+              <img src="https://i.pravatar.cc/60?img=10" alt="Agent virtuel Amena">
+              <span>Agent virtuel Amena</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- PC container (déjà existant) -->
+      <div class="pc-container">
+        <div class="pc-frame">
+          <div class="pc-screen">
+            <video autoplay muted loop>
+              <source src="assets/videos/videoacceuil.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="pc-base"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nouvelle section style "testimonial" -->
+    <!-- SECTION ADDITIONNELLE : Services détaillés -->
+    <section class="testimonials-section">
+      <h2 class="section-title">Testimonial section</h2>
+      <div class="testimonials-wrapper">
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            <p class="testimonial-text">
+              “Une plateforme magnifique avec des visualisations superbes. J’ai pu mieux gérer mes finances !”
+            </p>
+            <div class="testimonial-author">
+              <img src="https://i.pravatar.cc/60?img=1" alt="Sarah B." />
+              <span>Sarah B.</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            <p class="testimonial-text">
+              “Un outil indispensable. L’expérience utilisateur est fluide et intuitive.”
+            </p>
+            <div class="testimonial-author">
+              <img src="https://i.pravatar.cc/60?img=2" alt="Marc D." />
+              <span>Marc D.</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            <p class="testimonial-text">
+              “Je recommande vivement cette application à toute personne sérieuse sur ses finances.”
+            </p>
+            <div class="testimonial-author">
+              <img src="https://i.pravatar.cc/60?img=3" alt="Lina K." />
+              <span>Lina K.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <p><i class="fas fa-envelope"></i> contact.com</p>
+          <p><i class="fas fa-phone-alt"></i> +216 70 000 000</p>
+          <p><i class="fas fa-map-marker-alt"></i> Avenue de la Liberté, Tunis</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#">Insurance</a></li>
+            <li><a href="#">Credit</a></li>
+            <li><a href="#">Real Estate</a></li>
+            <li><a href="#">Donations</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Follow Us</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook fa-2x"></i></a>
+            <a href="#"><i class="fab fa-instagram fa-2x"></i></a>
+            <a href="#"><i class="fab fa-twitter fa-2x"></i></a>
+            <a href="#"><i class="fab fa-linkedin fa-2x"></i></a>
+          </div>
+        </div>
+      </div>
+      <p class="footer-bottom">© 2025 Amena Bank. All rights reserved.</p>
+    </footer>
+</div>

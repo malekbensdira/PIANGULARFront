@@ -1,0 +1,157 @@
+<div class="auth-container">
+  <div class="logo-container">
+    <img src="assets/img/LOGOAMENA.png" alt="Logo">
+  </div>
+  <div class="auth-box">
+    <div class="input-group">
+      <h2 class="input-placeholder">Registration Form</h2>
+    </div>
+    <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <!-- Première ligne : CIN et Nom -->
+        <div class="form-group">
+          <label for="cin">CIN</label>
+          <div class="input-group">
+            <input type="text" id="cin" formControlName="cin" class="form-control" placeholder="Enter the CIN" maxlength="8"/>
+          </div>
+          <small class="text-danger" *ngIf="addUserForm.get('cin')?.touched && addUserForm.get('cin')?.invalid">
+            CIN must be a number with 8 digits.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="nom">Last Name</label>
+          <div class="input-group">
+            <input type="text" id="nom" formControlName="nom" class="form-control" placeholder="Enter the last name"/>
+          </div>
+          <small class="text-danger" *ngIf="addUserForm.get('nom')?.touched && addUserForm.get('nom')?.invalid">
+            Please enter a last name.
+          </small>
+        </div>
+
+        <!-- Deuxième ligne : Prénom et Email -->
+        <div class="form-group">
+          <label for="prenom">First Name</label>
+          <div class="input-group">
+            <input type="text" id="prenom" formControlName="prenom" class="form-control" placeholder="Enter the first name"/>
+          </div>
+          <small class="text-danger" *ngIf="addUserForm.get('prenom')?.touched && addUserForm.get('prenom')?.invalid">
+            Please enter a first name.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <div class="input-group">
+            <input type="email" id="email" formControlName="email" class="form-control" placeholder="Enter the email"/>
+          </div>
+          <small class="text-danger" *ngIf="addUserForm.get('email')?.touched && addUserForm.get('email')?.invalid">
+            Please enter a valid email.
+          </small>
+        </div>
+
+        <!-- Troisième ligne : Mot de passe et Sexe -->
+        <div class="form-group">
+          <label for="mdp">Password</label>
+          <div class="input-group">
+            <input type="password" id="mdp" formControlName="mdp" class="form-control" placeholder="Enter the password"/>
+          </div>
+          <small class="text-danger" *ngIf="addUserForm.get('mdp')?.touched && addUserForm.get('mdp')?.invalid">
+            Password is required and must meet criteria.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Gender</label><br>
+          <div class="input-group">
+            <input type="radio" id="man" formControlName="sexe" value="man"/>
+            <label for="man">Male</label>
+
+            <input type="radio" id="woman" formControlName="sexe" value="woman" style="margin-left: 20px;"/>
+            <label for="woman">Female</label>
+          </div>
+          <small class="text-danger" *ngIf="addUserForm.get('sexe')?.touched && addUserForm.get('sexe')?.invalid">
+            Please choose a gender.
+          </small>
+        </div>
+
+        <!-- Quatrième ligne : Téléphone et Adresse -->
+        <div class="form-group">
+          <label for="tel">Phone</label>
+          <div class="input-group">
+            <input type="text" id="tel" formControlName="tel" class="form-control" placeholder="Enter the phone number" maxlength="8"/>
+          </div>
+          <small class="text-danger" *ngIf="addUserForm.get('tel')?.touched && addUserForm.get('tel')?.invalid">
+            Phone number must be 8 digits long.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="adresse">Address</label>
+          <div class="input-group">
+            <input type="text" id="adresse" formControlName="adresse" class="form-control" placeholder="Enter the address"/>
+          </div>
+          <small class="text-danger" *ngIf="addUserForm.get('adresse')?.touched && addUserForm.get('adresse')?.invalid">
+            Please enter an address.
+          </small>
+        </div>
+
+        <!-- Cinquième ligne : Age et Role -->
+        <div class="form-group">
+          <label for="age">Age</label>
+          <div class="input-group">
+            <input type="number" id="age" formControlName="age" class="form-control" placeholder="Enter the age"/>
+          </div>
+          <small class="text-danger" *ngIf="addUserForm.get('age')?.touched && addUserForm.get('age')?.invalid">
+            Age must be a valid number.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="role">Role</label>
+          <div class="input-group">
+            <select formControlName="role">
+              <option *ngFor="let r of roles" [value]="r.nomRole">{{ r.nomRole }}</option>
+            </select>
+            
+          </div>
+          <small class="text-danger" *ngIf="addUserForm.get('role')?.touched && addUserForm.get('role')?.invalid">
+            Please select a role.
+          </small>
+        </div>
+        
+
+
+        <!-- Sixième ligne : RIB et Image -->
+        <div class="form-group">
+          <label for="rib">RIB</label>
+          <div class="input-group">
+            <input type="text" id="rib" formControlName="rib" class="form-control" placeholder="Enter the RIB" maxlength="20"/>
+          </div>
+          <small class="text-danger" *ngIf="addUserForm.get('rib')?.touched && addUserForm.get('rib')?.invalid">
+            RIB is required.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="image">Upload Image</label>
+          <input type="file" id="image" (change)="onImageSelected($event)" accept="image/*" />
+        </div>
+        
+
+        <!-- Septième ligne : Solde courant -->
+        <div class="form-group">
+          <label for="soldeCourant">Current Balance</label>
+          <div class="input-group">
+            <input type="number" id="soldeCourant" formControlName="soldeCourant" class="form-control" placeholder="Enter the current balance (optional)"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group text-center">
+        <button type="submit" class="btn btn-primary" [disabled]="addUserForm.invalid">Signup</button>
+      </div>
+      <p class="signup-link">Already have one? <a routerLink="/auth">Time to sign in!</a></p>
+    </form>
+  </div>
+</div>

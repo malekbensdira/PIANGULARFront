@@ -1,0 +1,90 @@
+<header class="header-after">
+  <div class="logo-container">
+    <img src="assets/img/LOGOAMENA.png" alt="Logo">
+  </div>
+  <nav>
+    <!-- Menu si besoin -->
+  </nav>
+
+  <!-- Image de profil à gauche -->
+  <div class="profile-settings" tabindex="0">
+    <img
+      class="profile-img"
+      [ngClass]="{ 'animate-move': animate }"
+      [src]="userImageUrl"
+      alt="User Profile"
+      (animationend)="onAnimationEnd()" 
+    />
+  </div>
+
+  <!-- Message centré dans le header -->
+  <div class="profile-message" [ngClass]="{ 'show': showMessage }">
+    My profile details
+  </div>
+</header>
+
+<!-- Contenu de la page à afficher uniquement après l'animation -->
+<div *ngIf="showMessage" class="page-content">
+
+  <!-- Zoom effet sur le titre -->
+  <h2 class="zoom-in-title">Welcome to your personal dashboard</h2>
+
+  <!-- Typing effet sur le sous-texte -->
+  <div class="slogan">
+    You can now manage your profile and have access to your settings :
+  </div>
+
+  <!-- Message de confidentialité -->
+  <p class="privacy-message">
+    These personal details are private and will not be visible to other users. They are only used to provide you with customer support.
+  </p>
+
+  <div *ngIf="user" class="profile-container">
+    <p class="privacy-message">Details section:</p>
+
+    <!-- Table des informations utilisateur -->
+    <table class="profile-table">
+      <tr><th>Name</th><td><span *ngIf="!isEditing">{{ user.nom }}</span><input *ngIf="isEditing" [(ngModel)]="user.nom" /></td></tr>
+      <tr><th>Surname</th><td><span *ngIf="!isEditing">{{ user.prenom }}</span><input *ngIf="isEditing" [(ngModel)]="user.prenom" /></td></tr>
+      <tr><th>Email</th><td><span *ngIf="!isEditing">{{ user.email }}</span><input *ngIf="isEditing" [(ngModel)]="user.email" /></td></tr>
+      <tr><th>Phone</th><td><span *ngIf="!isEditing">{{ user.tel }}</span><input *ngIf="isEditing" [(ngModel)]="user.tel" /></td></tr>
+      <tr><th>Address</th><td><span *ngIf="!isEditing">{{ user.adresse }}</span><input *ngIf="isEditing" [(ngModel)]="user.adresse" /></td></tr>
+      <tr><th>Gender</th><td><span *ngIf="!isEditing">{{ user.sexe }}</span><input *ngIf="isEditing" [(ngModel)]="user.sexe" /></td></tr>
+      <tr><th>RIB</th><td><span *ngIf="!isEditing">{{ user.rib }}</span><input *ngIf="isEditing" [(ngModel)]="user.rib" /></td></tr>
+      <tr><th>Role</th><td><span *ngIf="!isEditing">{{ user.role?.nomRole }}</span><input *ngIf="isEditing" [(ngModel)]="user.role.nomRole" /></td></tr>
+      <tr><th>Balance</th><td><span *ngIf="!isEditing">{{ user.soldeCourant }} DT</span><input *ngIf="isEditing" [(ngModel)]="user.soldeCourant" /></td></tr>
+      <tr><th>Age</th><td><span *ngIf="!isEditing">{{ user.age }}</span><input *ngIf="isEditing" [(ngModel)]="user.age" /></td></tr>
+      <tr><th>CIN</th><td><span *ngIf="!isEditing">{{ user.cin }}</span><input *ngIf="isEditing" [(ngModel)]="user.cin" /></td></tr>
+    </table>
+
+    <div class="profile-buttons">
+      <!-- Bouton pour basculer en mode édition -->
+      <button *ngIf="!isEditing" class="btn edit-btn" (click)="toggleEdit()">
+        <i class="fas fa-user-edit"></i>
+        Edit personal details
+      </button>
+
+      <!-- Bouton pour sauvegarder les modifications -->
+      <button *ngIf="isEditing" class="btn save-btn" (click)="saveChanges()">
+        <i class="fas fa-save"></i>
+        Save changes
+      </button>
+
+      <!-- Bouton pour annuler les modifications -->
+      <button *ngIf="isEditing" class="btn cancel-btn" (click)="cancelEdit()">
+        <i class="fas fa-times"></i>
+        Cancel
+      </button>
+
+      <button class="btn delete-btn" (click)="deleteAccount()">
+        <i class="fas fa-user-times"></i>
+        Delete account
+      </button>
+
+      <button class="btn logout-btn" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        Logout
+      </button>
+    </div>
+  </div>
+</div>

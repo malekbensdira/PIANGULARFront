@@ -1,0 +1,119 @@
+ /* ------------------ HEADER MODERNE ------------------ */
+ header {
+    background: linear-gradient(to right, rgba(34, 68, 147, 0.619), rgba(34, 68, 147, 0.619));
+    backdrop-filter: blur(6px);
+    color: white;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 150px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 100;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+  }
+  
+  /* Logo dans le header */
+  .logo-header-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .logo-header-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+   
+  /* Navigation */
+  nav {
+    flex: 1;
+    margin-left: 40px;
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 28px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    transition: 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 8px;
+  }
+  
+  nav ul li a i {
+    margin-right: 10px;
+    font-size: 22px;
+  }
+  
+  nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    color: #f1dd5f;
+  }
+  
+  /* Profil à droite */
+  .profile-settings {
+    margin-left: auto;
+  }
+
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-left: auto;
+  }
+  
+  .btn-auth {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border: none;
+  }
+  
+  /* Bouton Sign In */
+  .btn-auth.btn-outline {
+    background-color: transparent;
+    border: 2px solid #f1dd5f;
+    color: #f1dd5f;
+  }
+  
+  .btn-auth.btn-outline:hover {
+    background-color: #f1dd5f;
+    color: rgb(0, 0, 0);
+  }
+  
+  /* Bouton Sign Up personnalisé */
+  .btn-auth.btn-signup {
+    background-color: white;
+    border: 2px solid white;
+    color: #224393 !important;
+  }
+  
+  .btn-auth.btn-signup:hover {
+    background-color: #224393;
+    color: white !important;
+  }
+
