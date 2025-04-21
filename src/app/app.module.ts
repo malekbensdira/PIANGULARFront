@@ -9,6 +9,8 @@ import { UserPageComponent } from './shared/user-page/user-page.component';
 import { HeaderBeforeSigninComponent } from './shared/header-before-signin/header-before-signin.component';
 import { HeaderAfterSigninComponent } from './shared/header-after-signin/header-after-signin.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { TransactionComponent } from './transaction/transaction.component';
+import { AddTransactionComponent } from './transaction/add-transaction/add-transaction.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { FooterComponent } from './shared/footer/footer.component';
     UserPageComponent,
     HeaderBeforeSigninComponent,
     HeaderAfterSigninComponent,
-    FooterComponent
+    FooterComponent,
+    TransactionComponent,
+    AddTransactionComponent
   ],
   imports: [
     BrowserModule,

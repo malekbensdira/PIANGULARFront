@@ -22,8 +22,8 @@ export class HeaderAfterSigninComponent implements OnInit {
     if (email) {
       this.userService.getUserByEmail(email).subscribe({
         next: (user: User) => {
-          this.userName = user.nom + ' ' + user.prenom;
-          this.userImageUrl = user.image;  // ici on récupère bien l'URL complète
+          this.userName = user.nom + ' '; //+ user.prenom;
+         // this.userImageUrl = user.image;  // ici on récupère bien l'URL complète
           console.log("Image URL:", this.userImageUrl); // debug
         },
         error: err => {

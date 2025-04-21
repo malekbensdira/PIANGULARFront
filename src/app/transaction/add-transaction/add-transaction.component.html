@@ -1,0 +1,28 @@
+<app-header-after-signin></app-header-after-signin>
+
+<div class="auth-container">
+  <div class="auth-box">
+    <h2>Add Transaction</h2>
+
+    <form [formGroup]="transactionForm" (ngSubmit)="submitTransaction()">
+      <label>Amount</label>
+      <input type="number" formControlName="amount" class="form-control" placeholder="Amount USD">
+
+      <label>Transaction Type</label>
+      <select formControlName="typeTransaction" class="form-control">
+        <option value="DONATION">Donation</option>
+        <option value="CREDIT">Credit</option>
+        <option value="INSURANCE">Insurance</option>
+      </select>
+
+      <label>Card Details</label>
+      <div id="card-element" class="form-control"></div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="transactionForm.invalid">Submit</button>
+
+      <div *ngIf="errorMessage" class="alert alert-danger mt-2">{{ errorMessage }}</div>
+    </form>
+  </div>
+</div>
+
+<app-footer></app-footer>

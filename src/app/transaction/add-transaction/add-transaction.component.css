@@ -1,0 +1,114 @@
+.add-transaction-page {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .add-transaction-container {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .header h2 {
+    margin: 0;
+    color: #333;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .form-control:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+  }
+  
+  .error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 30px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+  }
+  
+  /* ✅ Nouveau bouton personnalisé avec ta couleur */
+  .btn-custom {
+    background-color: #f1dd5f;
+    color: black;
+    border: none;
+  }
+  
+  .btn-custom:hover {
+    background-color: #e6cf4f;
+  }
+  
+  .btn-custom:disabled {
+    background-color: #ddd18a;
+    cursor: not-allowed;
+    color: #555;
+  }
+  
+  /* ✅ Bouton secondaire pour retour ou annulation */
+  .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+  
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  
+  .alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    border: 1px solid #f5c6cb;
+  }
+  

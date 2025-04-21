@@ -1,0 +1,55 @@
+<app-header-after-signin></app-header-after-signin>
+
+<div class="transaction-container">
+  <div class="transaction-header">
+    <h2>Transaction Management</h2>
+    <button class="add-transaction-btn" (click)="openAddTransactionModal()">
+      <i class="fas fa-plus"></i> Add Transaction
+    </button>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading transactions...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="transaction-list">
+    <div *ngIf="transactions.length === 0" class="no-transactions">
+      <p>No transactions found. Create your first transaction!</p>
+    </div>
+
+    <table *ngIf="transactions.length > 0" class="table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of transactions">
+            <td>{{ transaction.dateTransaction | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ getTypeTransactionLabel(transaction.typeTransaction) }}</td>
+            <td>{{ transaction.amount | currency:'EUR':'symbol':'1.2-2' }}</td>
+            <td>
+                <span [ngClass]="{
+                  'status-pending': transaction.statusTransaction === statusTransaction.PENDING,
+                  'status-completed': transaction.statusTransaction === statusTransaction.COMPLETED,
+                  'status-failed': transaction.statusTransaction === statusTransaction.FAILED,
+                }">
+                  {{ getStatusTransactionLabel(transaction.statusTransaction) }}
+                </span>
+              </td>
+             
+          </tr>
+        </tbody>
+      </table>
+  </div>
+</div>
+
+<app-footer></app-footer>

@@ -7,7 +7,7 @@ import { User } from 'src/app/models/user.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8081/api/users/login';
+  private apiUrl = 'http://localhost:8084/api/users/login';
   private authenticatedUser: any = null;
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasLocalUser());

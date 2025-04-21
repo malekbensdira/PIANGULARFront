@@ -1,9 +1,10 @@
 export interface User {
     id: number;
     nom: string;
-    prenom: string;
-    cin: number;
     email: string;
+    telephone?: number;
+  /*  prenom: string;
+    cin: number;
     mdp: string;
     sexe: string;
     tel: number;
@@ -13,6 +14,6 @@ export interface User {
     soldeCourant: number;
     rib: string;
     age: number;
-    resetCode: string;
+    resetCode: string;*/
   }
   
