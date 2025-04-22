@@ -1,24 +1,46 @@
 export enum TypeImmobilier {
-    APPARTEMENT = 'APPARTEMENT',
-    MAISON = 'MAISON',
-    VILLA = 'VILLA',
-    TERRAIN = 'TERRAIN'
-  }
-  
-  export interface Immobilier {
-    id?: number;
-    type: TypeImmobilier;
-    prix: number;
-    superficie: number;
-    latitude: number;
-    longitude: number;
-    ville: string;
-    annee_construction: number;  // Avec underscore
-    distance_centre: number;     // Avec underscore
-    distance_ecoles: number;     // Avec underscore
-    etat: string;
-    nombre_pieces: number;       // Avec underscore
-    etage: number;
-    images?: string[]; // URLs des images
-    photoPath?: string; // Chemin de la photo principale
-  }
+  APPARTEMENT = 'Appartement',
+  MAISON = 'MAISON', 
+  TERRAIN = 'TERRAIN'
+}
+
+export interface Immobilier {
+  id: number;
+  type: TypeImmobilier;
+  prix: number;
+  superficie: number;
+  latitude: number;
+  longitude: number;
+  ville: string;
+  adresse?: string;
+  anneeConstruction?: number;
+  distanceCentre?: number;
+  distanceEcoles?: number;
+  etat?: string;
+  nombrePieces?: number;
+  etage?: number;
+  photoPath?: string;
+  images?: string[];
+  main_photo_path?: string;
+  photoUrl?: string;
+  photoDisplayUrl?: string;
+}
+
+export interface ApiImmobilierResponse {
+  id: number;
+  type: TypeImmobilier;
+  prix: number;
+  superficie: number;
+  latitude: number;
+  longitude: number;
+  ville: string;
+  adresse?: string;
+  anneeConstruction?: number;
+  distanceCentre?: number;
+  distanceEcoles?: number;
+  etat?: string;
+  nombrePieces?: number;
+  etage?: number;
+  mainPhotoPath?: string;
+  photoPaths?: string[];
+}

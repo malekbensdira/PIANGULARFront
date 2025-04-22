@@ -11,6 +11,10 @@ import { EditComponent } from './components/immobiliers/edit/edit.component';
 import { DetailComponent } from './components/immobiliers/detail/detail.component';
 import { ListComponent } from './components/immobiliers/list/list.component';
 import { ImmobilierService } from './services/immobilier.service'; 
+import { EstimateComponent } from './components/immobiliers/estimate/estimate.component';
+import { PaymentComponent } from './components/immobiliers/payment/payment.component';
+import { FooterComponent } from "./components/immobiliers/footer/footer.component";
+import { HeaderComponent } from './components/immobiliers/header/header-after-signin.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,11 @@ import { ImmobilierService } from './services/immobilier.service';
     AddComponent,
     EditComponent,
     DetailComponent,
-    ListComponent
+    EstimateComponent,
+    ListComponent,
+    PaymentComponent,
+    FooterComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +35,8 @@ import { ImmobilierService } from './services/immobilier.service';
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule
-  ],
+    
+],
   providers: [ImmobilierService],
   bootstrap: [AppComponent]
 })

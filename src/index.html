@@ -1,14 +1,35 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="utf-8">
-  <title>MonProjetImmobilier</title>
+  <title>Amena</title>
   <base href="/">
+  
+  <!-- Polices -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Favicon optimisé -->
+  <link rel="icon" href="assets/img/image.png" type="image/png" sizes="512*512">
+  
+  <!-- Préchargement pour meilleure performance -->
+  <link rel="preload" href="assets/img/fond.png" as="image">
+  
+  <!-- Configuration minimale pour toutes les plateformes -->
+  <link rel="apple-touch-icon" href="assets/img/fond.png">
+  <meta name="msapplication-TileImage" content="assets/img/fond.png">
+  <meta name="theme-color" content="#224393">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
   <app-root></app-root>
+  <script>
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        const content = document.getElementById("content");
+        if(content) content.classList.add("visible");
+      }, 3000);
+    });
+  </script>
 </body>
 </html>

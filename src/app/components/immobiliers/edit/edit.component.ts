@@ -18,17 +18,18 @@ export class EditComponent implements OnInit {
     latitude: 0,
     longitude: 0,
     ville: '',
-    annee_construction: 0,
-    distance_centre: 0,
-    distance_ecoles: 0,
+    anneeConstruction: 0,
+    distanceCentre: 0,
+    distanceEcoles: 0,
     etat: '',
-    nombre_pieces: 0,
+    nombrePieces: 0,
     etage: 0
   };
 
   typeImmobilierOptions = Object.values(TypeImmobilier);
   isLoading = false;
   errorMessage: string | null = null;
+isEditMode: any;
 
   constructor(
     private route: ActivatedRoute,

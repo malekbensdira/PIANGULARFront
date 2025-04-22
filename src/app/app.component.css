@@ -31,5 +31,17 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
   }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding-bottom: 600px; /* Espace avant le footer */
+  }
   
   /* ... autres styles existants ... */

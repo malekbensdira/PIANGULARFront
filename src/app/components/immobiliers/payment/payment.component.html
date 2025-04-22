@@ -1,0 +1,43 @@
+<div class="payment-container">
+    <div class="payment-header">
+      <button class="back-button" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Retour
+      </button>
+      <h1>Paiement</h1>
+    </div>
+  
+    <div *ngIf="property" class="payment-content">
+      <div class="property-summary">
+        <h2>{{ property.title }}</h2>
+        <p>{{ property.type }} à {{ property.ville }}</p>
+        <div class="price-section">
+          <span class="price">{{ property.price | currency:'EUR':'symbol':'1.0-0' }}</span>
+        </div>
+      </div>
+  
+      <div class="payment-form">
+        <h3>Informations de paiement</h3>
+        <!-- Formulaire de paiement -->
+        <div class="form-group">
+          <label for="cardNumber">Numéro de carte</label>
+          <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
+        </div>
+  
+        <div class="form-row">
+          <div class="form-group">
+            <label for="expiryDate">Date d'expiration</label>
+            <input type="text" id="expiryDate" placeholder="MM/AA">
+          </div>
+  
+          <div class="form-group">
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" placeholder="123">
+          </div>
+        </div>
+  
+        <button class="btn-pay" (click)="processPayment()">
+          <i class="fas fa-lock"></i> Payer maintenant
+        </button>
+      </div>
+    </div>
+  </div>

@@ -4,8 +4,14 @@ import { ListComponent } from './components/immobiliers/list/list.component';
 import { AddComponent } from './components/immobiliers/add/add.component';
 import { EditComponent } from './components/immobiliers/edit/edit.component';
 import { DetailComponent } from './components/immobiliers/detail/detail.component';
+import { EstimateComponent } from './components/immobiliers/estimate/estimate.component';
 
 const routes: Routes = [
+  {
+  path:'estimer',
+component:EstimateComponent,
+    data :{title: 'estimer'}
+  },
   { 
     path: '', 
     component: ListComponent,
@@ -26,6 +32,7 @@ const routes: Routes = [
     component: DetailComponent,
     data: { title: 'Détails du bien' } 
   },
+  { path: 'estimate', component: EstimateComponent },
   { 
     path: '**', 
     redirectTo: '' 

@@ -1,1 +1,116 @@
-<p>detail works!</p>
+<div class="page-container">
+  <!-- Header intégré -->
+  <app-header></app-header>
+
+  <div class="property-detail-container">
+    <!-- En-tête avec bouton retour -->
+    
+
+    <!-- Contenu principal -->
+    <div *ngIf="property" class="property-content">
+      <!-- Galerie d'images -->
+      <div class="property-gallery">
+        <div class="main-image">
+          <img [src]="getImageUrl(property.photoPath)" 
+               [alt]="property.type + ' à ' + property.ville"
+               class="property-image">
+        </div>
+      </div>
+
+      <!-- Détails du bien -->
+      <div class="property-info">
+        <div class="price-section">
+          <span class="price">{{property.prix | currency:'EUR':'symbol':'1.0-0'}}</span>
+          <span class="price-label">Prix</span>
+        </div>
+
+        <div class="details-grid">
+          <div class="detail-item">
+            <i class="fas fa-ruler-combined"></i>
+            <div>
+              <span class="detail-label">Surface</span>
+              <span class="detail-value">{{property.superficie}} m²</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <i class="fas fa-calendar-alt"></i>
+            <div>
+              <span class="detail-label">Année</span>
+              <span class="detail-value">{{property.anneeConstruction || 'N/A'}}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <i class="fas fa-layer-group"></i>
+            <div>
+              <span class="detail-label">Étage</span>
+              <span class="detail-value">{{property.etage || 'N/A'}}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <i class="fas fa-home"></i>
+            <div>
+              <span class="detail-label">Type</span>
+              <span class="detail-value">{{property.type}}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <span class="detail-label">Localisation</span>
+              <span class="detail-value">{{property.ville}}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <i class="fas fa-info-circle"></i>
+            <div>
+              <span class="detail-label">État</span>
+              <span class="detail-value">{{property.etat || 'Non spécifié'}}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ✅ Recommandations -->
+        <div *ngIf="recommendedProperties.length > 0" class="recommendations-section">
+          <h3>Biens similaires recommandés</h3>
+          <div class="recommendations-grid">
+            <div *ngFor="let prop of recommendedProperties" class="recommendation-card" (click)="viewDetails(prop.id)">
+              <div class="property-image">
+                <img [src]="getImageUrl(prop.photoPath)" alt="{{prop.type}} à {{prop.ville}}">
+              </div>
+              <div class="property-info">
+                <h4>{{prop.type}} à {{prop.ville}}</h4>
+                <p>{{prop.superficie}} m² - {{prop.prix | currency:'EUR':'symbol':'1.0-0'}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="action-buttons">
+          <button class="back-button" routerLink="/list" aria-label="Retour à la liste">
+            <svg class="back-icon" viewBox="0 0 24 24">
+              <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+            </svg>
+            <span class="back-text">Retour à la liste</span>
+          </button>
+          <button class="btn-buy" (click)="buyProperty()">
+            <i class="fas fa-shopping-cart"></i> Acheter le bien
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chargement -->
+    <div *ngIf="isLoading" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Erreur -->
+    
+  </div>
+</div>

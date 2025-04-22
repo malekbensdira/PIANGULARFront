@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ImmobilierService } from '../../../services/immobilier.service';
 import { Immobilier } from '../../../models/immobilier.model';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { EstimationService } from '../../../services/estimation.service';
 
 interface FlyingKey {
   left: number;
@@ -40,9 +41,12 @@ export class ListComponent implements OnInit {
   notificationTimeout: any;
   propertyToDelete: number | null = null;
 
+   
+
   constructor(
     private service: ImmobilierService,
-    private router: Router
+    private router: Router,
+    private estimationService: EstimationService
   ) {}
 
   ngOnInit(): void {
@@ -69,6 +73,28 @@ export class ListComponent implements OnInit {
       },
       error: (err) => console.error('Erreur:', err)
     });
+  }
+  viewDetails(id: number): void {
+    this.router.navigate(['/detail', id]);
+  }
+  
+
+  estimateProperty(item: Immobilier): void {
+    this.router.navigate(['/estimate'], {
+      state: {
+        propertyData: {
+          typeImmobilier: item.type,
+          superficie: item.superficie,
+          latitude: item.latitude,
+          longitude: item.longitude,
+          nombrePieces: item.nombrePieces || 0 // Valeur par défaut si non défini
+        }
+      }
+    });
+  }
+
+  goToEstimate(): void {
+    this.router.navigate(['/estimate']);
   }
 
   // Méthode pour normaliser les chemins d'images
@@ -204,9 +230,5 @@ export class ListComponent implements OnInit {
       'min-height': '100vh',
       'padding': '20px'
     };
-  }
-
-  handleImageError(event: any): void {
-    event.target.src = 'assets/images/default-property.jpg';
   }
 }

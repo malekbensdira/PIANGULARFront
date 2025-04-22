@@ -1,0 +1,125 @@
+<div class="page-container">
+  <!-- Header intégré -->
+  <app-header></app-header>
+
+  <div class="background-container"
+       style="background: url('assets/images/background.jpg') no-repeat center center fixed;
+              background-size: cover;
+              min-height: calc(100vh - 80px);">
+
+    <div class="form-container">
+      <h2 class="form-title">Estimer un bien immobilier</h2>
+      
+      <form (ngSubmit)="onSubmit()" #estimateForm="ngForm" class="needs-validation" novalidate>
+        <!-- Type -->
+        <div class="form-group">
+          <label class="form-label">Type*</label>
+          <select class="form-control" [(ngModel)]="estimationData.type" name="type" required>
+            <option value="" disabled selected>Sélectionnez un type</option>
+            <option *ngFor="let type of typeImmobilierOptions" [value]="type">
+              {{ type }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Superficie -->
+        <div class="form-group">
+          <label class="form-label">Superficie (m²)*</label>
+          <input type="number" class="form-control" 
+                 [(ngModel)]="estimationData.superficie" 
+                 name="superficie" 
+                 required 
+                 min="1">
+          <small class="form-text text-muted">Champ obligatoire</small>
+        </div>
+
+        <!-- Localisation -->
+        <div class="form-group">
+          <label class="form-label">Localisation*</label>
+          <div class="location-inputs">
+            <input type="number" class="form-control" 
+                   [(ngModel)]="estimationData.latitude" 
+                   name="latitude" 
+                   placeholder="Latitude" 
+                   step="0.000001" 
+                   required>
+            <input type="number" class="form-control" 
+                   [(ngModel)]="estimationData.longitude" 
+                   name="longitude" 
+                   placeholder="Longitude" 
+                   step="0.000001" 
+                   required>
+            <button type="button" class="btn btn-locate" 
+                    (click)="getCurrentLocation()" 
+                    [disabled]="isLocating">
+              <i class="fas fa-map-marker-alt"></i>
+              <span *ngIf="!isLocating">Localiser</span>
+              <span *ngIf="isLocating">
+                <span class="spinner-border spinner-border-sm" role="status"></span>
+              </span>
+            </button>
+          </div>
+          <small class="form-text text-muted">Champs obligatoires</small>
+        </div>
+
+        <!-- Nombre de pièces -->
+        <div class="form-group">
+          <label class="form-label">Nombre de pièces</label>
+          <input type="number" class="form-control" 
+                 [(ngModel)]="estimationData.nombrePieces" 
+                 name="nombrePieces" 
+                 min="1">
+        </div>
+
+        <!-- Distances -->
+        <div class="distance-section">
+          <div class="form-group">
+            <label class="form-label">Distance du centre-ville (km)</label>
+            <input type="number" step="0.1" class="form-control" 
+                   [(ngModel)]="estimationData.distanceCentre" 
+                   name="distanceCentre">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Distance des écoles (km)</label>
+            <input type="number" step="0.1" class="form-control" 
+                   [(ngModel)]="estimationData.distanceEcoles" 
+                   name="distanceEcoles">
+          </div>
+        </div>
+
+        <!-- Résultat -->
+        <div *ngIf="estimatedPrice" class="estimation-result">
+          <h3>Résultat de l'estimation</h3>
+          <div class="price-display">
+            {{ estimatedPrice | currency:'EUR':'symbol':'1.0-0' }}
+          </div>
+          <p class="estimation-details">
+            Estimation basée sur les caractéristiques du bien et les données du marché
+          </p>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-cancel" (click)="cancel()">
+            <i class="fas fa-arrow-left"></i> Retour
+          </button>
+          <button type="submit" class="btn btn-estimate" 
+                  [disabled]="!estimateForm.valid || isSubmitting">
+            <i class="fas fa-calculator"></i>
+            <span *ngIf="!isSubmitting">Estimer</span>
+            <span *ngIf="isSubmitting">
+              <span class="spinner-border spinner-border-sm" role="status"></span>
+              Calcul...
+            </span>
+          </button>
+        </div>
+      </form>
+
+      <div *ngIf="errorMessage" class="error-message">
+        <i class="fas fa-exclamation-triangle"></i>
+        {{ errorMessage }}
+      </div>
+    </div>
+  </div>
+</div>

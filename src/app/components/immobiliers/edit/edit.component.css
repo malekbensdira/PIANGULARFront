@@ -1,31 +1,332 @@
+/* Font Awesome */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
 
+/* Variables */
+:root {
+  --primary-color: #4a6fa5;
+  --secondary-color: #166088;
+  --accent-color: #4fc3f7;
+  --text-color: #333;
+  --light-gray: #f5f5f5;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
-.form-wrapper {
+/* Base Styles */
+.property-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: var(--text-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header */
+.property-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.back-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+.property-title {
+  margin: 0 auto;
+  color: var(--secondary-color);
+  font-size: 2rem;
+  text-align: center;
+}
+
+/* Content Layout */
+.property-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+/* Gallery */
+.property-gallery {
+  position: relative;
+}
+
+.main-image {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+}
+
+.property-image {
   width: 100%;
-  max-width: 600px;
+  height: auto;
+  max-height: 500px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.property-image:hover {
+  transform: scale(1.02);
+}
+
+/* Property Info */
+.property-info {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centre horizontalement */
+  gap: 2rem;
 }
 
-.form-container {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 2.5rem;
-  border-radius: 15px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+.price-section {
+  background-color: var(--light-gray);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  text-align: center;
+  box-shadow: var(--box-shadow);
 }
 
-.form-group {
-  margin-bottom: 1.5rem;
-  width: 100%; /* Prend toute la largeur du conteneur */
-  max-width: 400px; /* Largeur maximale des champs */
-  margin-left: auto;
-  margin-right: auto; /* Centre les groupes de formulaire */
-  padding: 1.2rem;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+.price {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--secondary-color);
+  display: block;
+  line-height: 1;
 }
 
-/* Conservez le reste de vos styles existants... */
+.price-label {
+  font-size: 1rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Details Grid */
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.detail-item {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.detail-item:hover {
+  transform: translateY(-5px);
+}
+
+.detail-item i {
+  font-size: 1.5rem;
+  color: var(--accent-color);
+  width: 40px;
+  text-align: center;
+}
+
+.detail-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.3rem;
+}
+
+.detail-value {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+/* Description */
+.description-section {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.description-section h3 {
+  color: var(--secondary-color);
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.description-text {
+  line-height: 1.6;
+  color: #555;
+}
+
+/* Loading and Error States */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.spinner {
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 5px solid var(--primary-color);
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  text-align: center;
+  margin-top: 2rem;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .property-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .property-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .property-detail-container {
+    padding: 1rem;
+  }
+}
+/* Bouton Retour */
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  color: #495057;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 24px;
+}
+
+.back-button:hover {
+  background-color: #e9ecef;
+  border-color: #ced4da;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.back-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.back-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.back-text {
+  line-height: 1;
+}
+
+/* Version mobile */
+@media (max-width: 768px) {
+  .back-button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .back-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-estimate, .btn-buy {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-estimate {
+  background-color: #4a6bdf;
+  color: white;
+}
+
+.btn-estimate:hover {
+  background-color: #3a56c0;
+}
+
+.btn-buy {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn-buy:hover {
+  background-color: #3d8b40;
+}
+
+.btn-buy i, .btn-estimate i {
+  font-size: 18px;
+}
