@@ -10,7 +10,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 })
 export class ServiceService {
 
-  private apiUrl = 'http://localhost:8082/api/insurance'; // URL de l'API
+  private apiUrl = 'http://localhost:8082/amena/api/insurance'; // URL de l'API
 
   constructor(private http: HttpClient) {}
 

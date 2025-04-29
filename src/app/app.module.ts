@@ -12,6 +12,8 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { InsuranceManagerComponent } from './insurance-manager/insurance-manager.component';
 import { ClaimPredictorComponent } from './claim-predictor/claim-predictor.component';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +31,8 @@ import { ClaimPredictorComponent } from './claim-predictor/claim-predictor.compo
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule, 
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

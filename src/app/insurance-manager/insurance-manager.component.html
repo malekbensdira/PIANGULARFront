@@ -1,10 +1,7 @@
 <div class="container mt-5">
-  <h2>Insurance Manager</h2>
-
   <header>
     <div class="logo-header-container">
-      <img src="assets/img/LOGOAMENA.png" alt="Logo" id="logo">
-      <!-- On laisse vide ou tu peux y insérer une version réduite du logo -->
+      <img src="assets/img/LOGOAMENA.png" alt="Logo" id="logo" />
     </div>
     <nav>
       <ul>
@@ -13,12 +10,127 @@
         <li><a href="#"><i class="fas fa-hand-holding-heart"></i> Donations</a></li>
         <li><a href="#"><i class="fas fa-building"></i> Real Estate</a></li>
         <li><a href="#"><i class="fas fa-envelope"></i> Contact Us</a></li>
-       
       </ul>
     </nav>
   </header>
 
-  <div class="scrollable-table-container">
+  <h2>Insurance Manager</h2>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Add/Edit Insurance Form -->
+  <div class="card mb-4 form-section">
+    <div class="card-header">
+      <h4>{{ isEditing ? 'Edit Insurance Policy' : 'Add New Insurance Policy' }}</h4>
+    </div>
+    <div class="card-body">
+      <form #insuranceForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">User ID</label>
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="newInsurance.userId"
+              name="userId"
+              required
+              [disabled]="isEditing"
+              placeholder="Enter User ID"
+            />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Policy Type</label>
+            <select
+              class="form-select"
+              [(ngModel)]="newInsurance.policyType"
+              name="policyType"
+              required
+              title="Select Policy Type"
+            >
+              <option *ngFor="let type of policyTypes | keyvalue" [value]="type.key">
+                {{ type.value | titlecase }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Premium Amount</label>
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="newInsurance.premium"
+              name="premium"
+              required
+              min="0"
+              title="Enter the premium amount"
+              placeholder="Enter premium amount"
+            />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Coverage Amount</label>
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="newInsurance.coverageAmount"
+              name="coverageAmount"
+              required
+              min="0"
+              title="Enter the coverage amount"
+              placeholder="Enter coverage amount"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Start Date</label>
+            <input
+              type="date"
+              class="form-control"
+              [(ngModel)]="newInsurance.startDate"
+              name="startDate"
+              required
+              title="Select the start date of the insurance policy"
+              placeholder="YYYY-MM-DD"
+            />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">End Date</label>
+            <input
+              type="date"
+              class="form-control"
+              [(ngModel)]="newInsurance.endDate"
+              name="endDate"
+              required
+              title="Select the end date of the insurance policy"
+              placeholder="YYYY-MM-DD"
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-success me-2"
+          [disabled]="insuranceForm.invalid"
+        >
+          <i class="fas fa-save"></i> {{ isEditing ? 'Update Policy' : 'Create Policy' }}
+        </button>
+        <button
+          *ngIf="isEditing"
+          type="button"
+          class="btn btn-secondary"
+          (click)="cancelEdit()"
+        >
+          <i class="fas fa-times"></i> Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Insurance Policies Table -->
+  <div class="scrollable-table-container list-section">
     <table class="table table-bordered mt-3">
       <thead>
         <tr>
@@ -29,6 +141,7 @@
           <th>Start Date</th>
           <th>End Date</th>
           <th>Claim Status</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -37,11 +150,81 @@
           <td>{{ formatPolicyType(insurance.policyType) }}</td>
           <td>{{ insurance.coverageAmount | currency }}</td>
           <td>{{ insurance.premium | currency }}</td>
-          <td>{{ insurance.startDate }}</td>
-          <td>{{ insurance.endDate }}</td>
-          <td>{{ insurance.claimStatus }}</td>
+          <td>{{ insurance.startDate | date }}</td>
+          <td>{{ insurance.endDate | date }}</td>
+          <td>
+            <span [ngClass]="getStatusClass(insurance.claimStatus)">
+              {{ insurance.claimStatus | lowercase }}
+            </span>
+          </td>
+          <!-- Inside the table's tbody tr *ngFor loop -->
+<td>
+  <button
+    *ngIf="insurance.id"
+    (click)="viewInsurance(insurance.id)"
+    class="btn btn-info btn-sm me-1"
+    title="View"
+  >
+    <i class="fas fa-eye"></i>
+  </button>
+  <button
+    (click)="editInsurance(insurance)"
+    class="btn btn-primary btn-sm me-1"
+    title="Edit"
+  >
+    <i class="fas fa-edit"></i>
+  </button>
+  <button
+    *ngIf="insurance.id"
+    (click)="deleteInsurance(insurance.id)"
+    class="btn btn-danger btn-sm"
+    title="Delete"
+  >
+    <i class="fas fa-trash"></i>
+  </button>
+</td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- Claim Submission Section -->
+  <div class="card mt-4 claim-section" *ngIf="selectedInsuranceId">
+    <div class="card-header">
+      <h4>Submit Claim for Policy #{{ selectedInsuranceId }}</h4>
+    </div>
+    <div class="card-body">
+      <div class="mb-3">
+        <label class="form-label">Claim Amount</label>
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="claimAmount"
+          required
+          min="0"
+          title="Enter the claim amount"
+          placeholder="Enter claim amount"
+        />
+      </div>
+      <button (click)="submitClaim()" class="btn btn-warning">
+        <i class="fas fa-file-claim"></i> Submit Claim
+      </button>
+    </div>
+  </div>
+
+  <!-- KPIs Section -->
+  <div class="card mt-4 kpi-section">
+    <div class="card-header">
+      <h4>Key Performance Indicators</h4>
+    </div>
+    <div class="card-body">
+      <p>Rejection Ratio: {{ kpis.rejectionRatio | percent }}</p>
+      <p>Loss Ratio: {{ kpis.lossRatio | percent }}</p>
+      <p>Solvency Ratio: {{ kpis.solvencyRatio | percent }}</p>
+      <p>Claim Settlement Speed: {{ kpis.claimSettlementSpeed }} days</p>
+      <button (click)="downloadReport()" class="btn btn-primary">
+        <i class="fas fa-download"></i> Download KPI Report
+      </button>
+    </div>
   </div>
 </div>
