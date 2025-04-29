@@ -1,16 +1,16 @@
  /* ------------------ HEADER MODERNE ------------------ */
  header {
     background: linear-gradient(to right, rgba(34, 68, 147, 0.619), rgba(34, 68, 147, 0.619));
-    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(4px);
     color: white;
     padding: 20px 40px;
-    display: flex;
     align-items: center;
     justify-content: space-between;
     height: 150px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     position: relative;
-    z-index: 100;
+    z-index: 140;
     font-family: 'Poppins', sans-serif;
     font-size: 20px;
   }
@@ -34,8 +34,11 @@
    
   /* Navigation */
   nav {
-    flex: 1;
-    margin-left: 40px;
+    flex: 2;
+    margin-left: 80px;
+    display: flex;
+    align-items: center;
+    height: 40%;
   }
   
   nav ul {
@@ -56,7 +59,7 @@
     display: flex;
     align-items: center;
     transition: 0.3s ease;
-    padding: 10px 15px;
+    padding: 0px 15px;
     border-radius: 8px;
   }
   

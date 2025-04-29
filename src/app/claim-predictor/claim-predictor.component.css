@@ -1,0 +1,13 @@
+/* src/app/components/claim-predictor/claim-predictor.component.css */
+.container {
+    padding: 20px;
+  }
+  
+  input, button {
+    margin: 10px 0;
+    padding: 8px;
+  }
+  
+  .error {
+    color: red;
+  }

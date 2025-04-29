@@ -87,12 +87,16 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/app/insurance-manager/insurance-manager.component.css"
             ],
             "scripts": []
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "1458c3ce-e2fb-4fec-a6eb-ca4891aeef1e"
   }
 }

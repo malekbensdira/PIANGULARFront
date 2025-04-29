@@ -1,0 +1,47 @@
+<div class="container mt-5">
+  <h2>Insurance Manager</h2>
+
+  <header>
+    <div class="logo-header-container">
+      <img src="assets/img/LOGOAMENA.png" alt="Logo" id="logo">
+      <!-- On laisse vide ou tu peux y insérer une version réduite du logo -->
+    </div>
+    <nav>
+      <ul>
+        <li><a [routerLink]="['/user']"><i class="fas fa-user"></i> User</a></li>
+        <li><a href="#"><i class="fas fa-credit-card"></i> Credit</a></li>
+        <li><a href="#"><i class="fas fa-hand-holding-heart"></i> Donations</a></li>
+        <li><a href="#"><i class="fas fa-building"></i> Real Estate</a></li>
+        <li><a href="#"><i class="fas fa-envelope"></i> Contact Us</a></li>
+       
+      </ul>
+    </nav>
+  </header>
+
+  <div class="scrollable-table-container">
+    <table class="table table-bordered mt-3">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Policy Type</th>
+          <th>Insured Amount</th>
+          <th>Premium Amount</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Claim Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let insurance of insurances">
+          <td>{{ insurance.id }}</td>
+          <td>{{ formatPolicyType(insurance.policyType) }}</td>
+          <td>{{ insurance.coverageAmount | currency }}</td>
+          <td>{{ insurance.premium | currency }}</td>
+          <td>{{ insurance.startDate }}</td>
+          <td>{{ insurance.endDate }}</td>
+          <td>{{ insurance.claimStatus }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

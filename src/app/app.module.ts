@@ -9,6 +9,8 @@ import { UserPageComponent } from './shared/user-page/user-page.component';
 import { HeaderBeforeSigninComponent } from './shared/header-before-signin/header-before-signin.component';
 import { HeaderAfterSigninComponent } from './shared/header-after-signin/header-after-signin.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { InsuranceManagerComponent } from './insurance-manager/insurance-manager.component';
+import { ClaimPredictorComponent } from './claim-predictor/claim-predictor.component';
 
 @NgModule({
   declarations: [
@@ -18,14 +20,16 @@ import { FooterComponent } from './shared/footer/footer.component';
     UserPageComponent,
     HeaderBeforeSigninComponent,
     HeaderAfterSigninComponent,
-    FooterComponent
+    FooterComponent,
+    InsuranceManagerComponent,
+    ClaimPredictorComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,  
+    AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule,  // Ajouté ici pour ngModel
-    HttpClientModule  
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
