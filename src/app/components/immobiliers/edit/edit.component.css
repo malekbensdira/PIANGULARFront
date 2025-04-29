@@ -330,3 +330,98 @@
 .btn-buy i, .btn-estimate i {
   font-size: 18px;
 }
+.form-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  animation: fadeIn 1s ease-out;  /* Animation de fade-in */
+}
+
+/* Animation Fade In */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Centrées les colonnes dans le formulaire */
+.property-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.form-section {
+  display: flex;
+  gap: 3rem;
+}
+
+.form-column {
+  flex: 1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-input, .form-select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  margin-top: 0.5rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Boutons */
+.cancel-button, .save-button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancel-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+}
+
+.cancel-button:hover {
+  background-color: #d32f2f;
+}
+
+.save-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+.save-button:hover {
+  background-color: #388e3c;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .property-form {
+    gap: 1.5rem;
+  }
+
+  .form-section {
+    flex-direction: column;
+  }
+}

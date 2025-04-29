@@ -19,6 +19,11 @@ export class ImmobilierService {
     );
   }
 
+  
+  getGoogleMapsLink(id: number): Observable<string> {
+  return this.http.get<string>(`${this.apiUrl}/maps/${id}`, { responseType: 'text' as 'json' });
+  }
+
   createWithImages(formData: FormData): Observable<Immobilier> {
     return this.http.post<ApiImmobilierResponse>(this.apiUrl, formData).pipe(
       map(response => this.transformResponse(response)),

@@ -1,0 +1,347 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .background-container {
+    flex: 1;
+    padding: 2rem;
+  }
+  
+  .content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  
+    h2 {
+      color: #ffffff;
+      font-size: 1.8rem;
+      margin: 0;
+    }
+  }
+  
+  .header-actions {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .add-button, .estimate-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+  }
+  
+  
+  
+  .add-button {
+    background-color: #224393;
+    color: white;
+  
+    &:hover {
+      background-color: darken(#224393, 10%);
+    }
+  }
+  
+  .estimate-button {
+    background-color: #f1dd5f;
+    color: #224393;
+  
+    &:hover {
+      background-color: darken(#f1dd5f, 10%);
+    }
+  }
+  
+  .property-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+  
+  .property-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+  }
+  
+  .property-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+  
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+  
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+  
+  .property-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgba(34, 67, 147, 0.9);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  .property-info {
+    padding: 1.5rem;
+  }
+  
+  .property-title {
+    color: #224393;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.3rem;
+  }
+  
+  .property-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #224393;
+    margin-bottom: 1rem;
+  }
+  
+  .property-details {
+    display: flex;
+    gap: 1rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  
+    i {
+      margin-right: 0.3rem;
+      color: #224393;
+    }
+  }
+  
+  .property-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+  
+  .action-button {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  
+    i {
+      font-size: 1rem;
+    }
+  }
+  
+  .detail-button {
+    background-color: #e9f0ff;
+    color: #224393;
+  
+    &:hover {
+      background-color: darken(#e9f0ff, 5%);
+    }
+  }
+  
+  .edit-button {
+    background-color: #fff8e1;
+    color: #ff9800;
+  
+    &:hover {
+      background-color: darken(#fff8e1, 5%);
+    }
+  }
+  
+  .delete-button {
+    background-color: #ffebee;
+    color: #f44336;
+  
+    &:hover {
+      background-color: darken(#ffebee, 5%);
+    }
+  }
+  
+  /* Dialog styles */
+  .confirmation-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .confirmation-dialog {
+    background: white;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 450px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .dialog-header {
+    background-color: #224393;
+    color: white;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  .dialog-content {
+    padding: 1.5rem;
+  
+    .warning-text {
+      color: #f44336;
+      font-weight: 500;
+      margin-top: 0.5rem;
+    }
+  }
+  
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #eee;
+  }
+  
+  .cancel-button, .confirm-button {
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .cancel-button {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    color: #333;
+  
+    &:hover {
+      background-color: #e9e9e9;
+    }
+  }
+  
+  .confirm-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+  
+    &:hover {
+      background-color: darken(#f44336, 10%);
+    }
+  }
+  
+  /* Notification styles */
+  .delete-notification {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: #4caf50;
+    color: white;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    z-index: 1000;
+  }
+  
+  .notification-content {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+  }
+  
+  .notification-icon {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .notification-close {
+    background: none;
+    border: none;
+    color: white;
+    margin-left: 1rem;
+    cursor: pointer;
+    padding: 0 0.25rem;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .property-list {
+      grid-template-columns: 1fr;
+    }
+  
+    .list-header {
+      
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .header-actions {
+      width: 100%;
+      flex-direction: column;
+    }
+  
+    .add-button, .estimate-button {
+      width: 100%;
+      justify-content: center;
+    }
+  
+    .property-actions {
+      flex-direction: column;
+    }
+  }

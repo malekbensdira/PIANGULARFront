@@ -5,6 +5,7 @@ import { AddComponent } from './components/immobiliers/add/add.component';
 import { EditComponent } from './components/immobiliers/edit/edit.component';
 import { DetailComponent } from './components/immobiliers/detail/detail.component';
 import { EstimateComponent } from './components/immobiliers/estimate/estimate.component';
+import { AdminListComponent } from './components/immobiliers/admin-list/admin-list.component';
 
 const routes: Routes = [
   {
@@ -32,11 +33,16 @@ component:EstimateComponent,
     component: DetailComponent,
     data: { title: 'Détails du bien' } 
   },
+  {
+    path: 'admin/list',
+    component: AdminListComponent
+  },
   { path: 'estimate', component: EstimateComponent },
   { 
     path: '**', 
     redirectTo: '' 
-  }
+  },
+  
 ];
 
 @NgModule({

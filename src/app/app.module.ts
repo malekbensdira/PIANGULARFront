@@ -15,6 +15,8 @@ import { EstimateComponent } from './components/immobiliers/estimate/estimate.co
 import { PaymentComponent } from './components/immobiliers/payment/payment.component';
 import { FooterComponent } from "./components/immobiliers/footer/footer.component";
 import { HeaderComponent } from './components/immobiliers/header/header-after-signin.component';
+import { SafeUrlPipe } from "../shared/pipes/safe-url.pipe";
+import { AdminListComponent } from './components/immobiliers/admin-list/admin-list.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { HeaderComponent } from './components/immobiliers/header/header-after-si
     ListComponent,
     PaymentComponent,
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    AdminListComponent
   ],
   imports: [
     BrowserModule,
@@ -34,8 +37,8 @@ import { HeaderComponent } from './components/immobiliers/header/header-after-si
     HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    BrowserAnimationsModule
-    
+    BrowserAnimationsModule,
+    SafeUrlPipe
 ],
   providers: [ImmobilierService],
   bootstrap: [AppComponent]

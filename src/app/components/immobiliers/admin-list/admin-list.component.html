@@ -1,0 +1,83 @@
+<div class="page-container">
+    <!-- Header intégré -->
+    <app-header></app-header>
+  
+    <div class="background-container"
+         style="background: url('assets/images/background.jpg') no-repeat center center fixed;
+                background-size: cover;
+                min-height: calc(100vh - 80px);">
+  
+      <!-- Boîte de dialogue de confirmation -->
+      <div *ngIf="showConfirmationDialog" class="confirmation-dialog-overlay">
+        <div class="confirmation-dialog" [@dialogAnimation]>
+          <div class="dialog-header">
+            <h3>Confirmer la suppression</h3>
+            <button class="close-button" (click)="cancelDelete()">×</button>
+          </div>
+          <div class="dialog-content">
+            <p>Êtes-vous sûr de vouloir supprimer ce bien immobilier ?</p>
+            <p class="warning-text">Cette action est irréversible.</p>
+          </div>
+          <div class="dialog-actions">
+            <button class="cancel-button" (click)="cancelDelete()">Annuler</button>
+            <button class="confirm-button" (click)="confirmDelete()">Supprimer</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Notification de suppression -->
+      <div *ngIf="showDeleteNotification" class="delete-notification" [@fadeInOut]>
+        <div class="notification-content">
+          <div class="notification-icon success-icon">✓</div>
+          <div class="notification-text">Le bien immobilier a été supprimé avec succès</div>
+          <button class="notification-close" (click)="hideNotification()">×</button>
+        </div>
+      </div>
+  
+      <div class="content-container">
+        <!-- En-tête avec bouton d'ajout -->
+        <div class="list-header">
+          <h2>Liste des biens immobiliers</h2>
+          <div class="header-actions">
+            <button class="add-button" routerLink="/add">
+              <i class="fas fa-plus"></i> Ajouter un bien
+            </button>
+            <button class="estimate-button" routerLink="/estimate">
+              <i class="fas fa-calculator"></i> Estimation
+            </button>
+          </div>
+        </div>
+  
+        <!-- Liste des biens -->
+        <div class="property-list">
+          <div *ngFor="let item of immobiliers" class="property-card">
+            <!-- Image de la propriété -->
+            <div class="property-image">
+              <img [src]="getImageUrl(item.photoPath, item.id)" 
+                   [alt]="item.type + ' à ' + item.ville">
+              <div class="property-badge">{{ item.type }}</div>
+            </div>
+            
+            <div class="property-info">
+              <h3 class="property-title">{{ item.ville }}</h3>
+              <div class="property-price">{{ item.prix | currency:'EUR':'symbol':'1.0-0' }}</div>
+              <div class="property-details">
+                <span><i class="fas fa-ruler-combined"></i> {{ item.superficie }} m²</span>
+                <span *ngIf="item.nombrePieces"><i class="fas fa-door-open"></i> {{ item.nombrePieces }} pièces</span>
+              </div>
+              
+              <div class="property-actions">
+                <button class="action-button detail-button" (click)="viewDetails(item.id)">
+                  <i class="fas fa-eye"></i> Détail
+                </button>
+               
+                <button class="action-button delete-button" (click)="deleteProperty(item.id)">
+                  <i class="fas fa-trash"></i> Supprimer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

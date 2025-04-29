@@ -4,6 +4,9 @@ import { ImmobilierService } from '../../../services/immobilier.service';
 import { Immobilier } from '../../../models/immobilier.model';
 import { Router } from '@angular/router';
 import { PdfService } from '../../../services/generate-pdf.service';
+import { HttpClient } from '@angular/common/http';
+
+
 
 
 
@@ -14,12 +17,16 @@ import { PdfService } from '../../../services/generate-pdf.service';
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent implements OnInit {
+  
+  mapsLink: string = '';
 viewDetails(arg0: any) {
 throw new Error('Method not implemented.');
 }
   property: Immobilier | null = null;
   isLoading = true;
   errorMessage: string | null = null;
+  googleMapsLink: string | null = null;
+  showMapModal = false;
   
 item: any;
 recommendedProperties: any;
@@ -29,6 +36,7 @@ recommendedProperties: any;
     private immobilierService: ImmobilierService,
     private router: Router,
     private pdfService: PdfService,
+    private http: HttpClient 
     
   ) {}
 
@@ -101,6 +109,25 @@ recommendedProperties: any;
         this.isLoading = false;
       }
     });
+  }
+   
+  getMapsLink(id: number) {
+    this.http.get('http://localhost:8081/api/immobilier/maps/' + id, { responseType: 'text' })
+      .subscribe(
+        (link: string) => {
+          this.mapsLink = link;
+          // Optionnel: ouvrir directement après récupération
+          window.open(this.mapsLink, '_blank');
+        },
+        (error: any) => {
+          console.error('Erreur lors de la récupération du lien Google Maps', error);
+        }
+      );
+  }
+
+  closeMapModal(): void {
+    this.showMapModal = false;
+    this.googleMapsLink = null;
   }
 
   normalizePhotoPath(photoPath: string | undefined): string | undefined {

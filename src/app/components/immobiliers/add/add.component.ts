@@ -3,6 +3,8 @@ import { ImmobilierService } from '../../../services/immobilier.service';
 import { Router } from '@angular/router';
 import { TypeImmobilier } from '../../../models/immobilier.model';
 import { catchError, lastValueFrom, take, throwError } from 'rxjs';
+import * as L from 'leaflet';
+
 
 @Component({
   selector: 'app-add-immobilier',
@@ -38,10 +40,14 @@ export class AddComponent implements OnInit {
   estimationLoading = false;
   predictedPrice: number | null = null;
   estimationError: string | null = null;
+      private map!: L.Map;
+      private marker!: L.Marker;
+
 
   constructor(
     private immobilierService: ImmobilierService,
-    private router: Router
+    private router: Router,
+    
   ) {}
 
   ngOnInit(): void {
@@ -148,25 +154,68 @@ export class AddComponent implements OnInit {
   getCurrentLocation(): void {
     this.isLocating = true;
     this.errorMessage = '';
-
+  
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           this.newImmobilier.latitude = parseFloat(position.coords.latitude.toFixed(6));
           this.newImmobilier.longitude = parseFloat(position.coords.longitude.toFixed(6));
           this.isLocating = false;
+          this.initMap(); // <-- AJOUTER ICI
         },
         (error) => {
           this.errorMessage = 'Impossible d\'obtenir votre position. Veuillez saisir manuellement.';
           this.isLocating = false;
+          this.initMap(); // <-- AJOUTER ICI AUSSI sinon la carte ne s'affiche pas
         },
         { enableHighAccuracy: true, timeout: 10000 }
       );
     } else {
       this.errorMessage = 'Géolocalisation non supportée par votre navigateur';
       this.isLocating = false;
+      this.initMap(); // <-- AJOUTER ICI aussi
     }
   }
+
+  private initMap(): void {
+    const defaultLat = this.newImmobilier.latitude || 36.8065; // centre Tunis
+    const defaultLng = this.newImmobilier.longitude || 10.1815;
+  
+    this.map = L.map('map').setView([defaultLat, defaultLng], 13);
+  
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(this.map);
+  
+    // Icône personnalisée avec building.png
+    const customIcon = L.icon({
+      iconUrl: 'assets/img/building.png',
+      iconSize: [40, 40],      // taille du marker (ajuste selon ton image)
+      iconAnchor: [20, 40],    // point de l'icône qui correspond à la position
+      popupAnchor: [0, -40]    // optionnel pour popup
+    });
+  
+    this.marker = L.marker([defaultLat, defaultLng], {
+      icon: customIcon,
+      draggable: true
+    }).addTo(this.map);
+  
+    this.map.on('click', (e: any) => {
+      const { lat, lng } = e.latlng;
+      this.newImmobilier.latitude = parseFloat(lat.toFixed(6));
+      this.newImmobilier.longitude = parseFloat(lng.toFixed(6));
+      this.marker.setLatLng([lat, lng]);
+    });
+  
+    this.marker.on('dragend', (e: any) => {
+      const { lat, lng } = e.target.getLatLng();
+      this.newImmobilier.latitude = parseFloat(lat.toFixed(6));
+      this.newImmobilier.longitude = parseFloat(lng.toFixed(6));
+    });
+  }
+  
+  
+  
 
   cancel(): void {
     this.router.navigate(['/list']);

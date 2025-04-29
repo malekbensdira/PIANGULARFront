@@ -34,7 +34,7 @@
             <button type="button" class="btn btn-outline-secondary" 
                     (click)="estimatePrice()"
                     [disabled]="estimationLoading || !newImmobilier.superficie || !newImmobilier.latitude || !newImmobilier.longitude">
-              <span *ngIf="!estimationLoading">Estimer</span>
+              <span *ngIf="!estimationLoading"></span>
               <span *ngIf="estimationLoading">
                 <span class="spinner-border spinner-border-sm" role="status"></span>
               </span>
@@ -79,6 +79,8 @@
                   <input type="number" step="0.000001" class="form-control"
                         [(ngModel)]="newImmobilier.longitude" name="longitude"
                         required min="-180" max="180">
+                        <div id="map" style="height: 400px; margin-bottom: 20px;"></div>
+
                 </div>
               </div>
             </div>

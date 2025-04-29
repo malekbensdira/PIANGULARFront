@@ -3,9 +3,6 @@
   <app-header></app-header>
 
   <div class="property-detail-container">
-    <!-- En-tête avec bouton retour -->
-    
-
     <!-- Contenu principal -->
     <div *ngIf="property" class="property-content">
       <!-- Galerie d'images -->
@@ -74,8 +71,9 @@
           </div>
         </div>
 
-        <!-- ✅ Recommandations -->
-        <div *ngIf="recommendedProperties.length > 0" class="recommendations-section">
+        <!-- Recommandations -->
+        <div *ngIf="recommendedProperties?.length > 0" class="recommendations-section">
+
           <h3>Biens similaires recommandés</h3>
           <div class="recommendations-grid">
             <div *ngFor="let prop of recommendedProperties" class="recommendation-card" (click)="viewDetails(prop.id)">
@@ -90,7 +88,7 @@
           </div>
         </div>
 
-        <!-- Boutons d'action -->
+        <!-- Boutons d'action - MODIFIÉ avec ajout du bouton Maps -->
         <div class="action-buttons">
           <button class="back-button" routerLink="/list" aria-label="Retour à la liste">
             <svg class="back-icon" viewBox="0 0 24 24">
@@ -101,7 +99,11 @@
           <button class="btn-buy" (click)="buyProperty()">
             <i class="fas fa-shopping-cart"></i> Acheter le bien
           </button>
-        </div>
+          <!-- Nouveau bouton pour la carte -->
+          <button (click)="getMapsLink(property.id)">Charger localisation</button>
+
+
+
       </div>
     </div>
 
@@ -110,7 +112,15 @@
       <div class="spinner"></div>
     </div>
 
-    <!-- Erreur -->
-    
+    <!-- Nouvelle modal pour Google Maps -->
+    <div *ngIf="showMapModal" class="map-modal-overlay">
+      <div class="map-modal-container">
+        <button class="close-map-modal" (click)="closeMapModal()">
+          <i class="fas fa-times"></i>
+        </button>
+        <a href="https://www.google.com" target="_blank">Aller sur Google</a>
+
+      </div>
+    </div>
   </div>
 </div>
