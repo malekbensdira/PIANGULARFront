@@ -1,8 +1,15 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ServiceService } from '../Service/service.service';
+import { Insurance } from '../models/insurance.model';
 import { PolicyType } from '../models/policy-type.enum';
 import { ClaimStatus } from '../models/claim-status.enum';
-import { Insurance } from '../models/insurance.model';
+import { ChartOptions, ChartType, ChartData } from 'chart.js';
+
+// Extend the Insurance interface to include animation flags
+interface AnimatedInsurance extends Insurance {
+  isNew?: boolean;
+  isDeleting?: boolean;
+}
 
 @Component({
   selector: 'app-insurance-manager',
@@ -10,43 +17,212 @@ import { Insurance } from '../models/insurance.model';
   styleUrls: ['./insurance-manager.component.css']
 })
 export class InsuranceManagerComponent implements OnInit {
-  policyTypes = PolicyType; // Enum for policy types
-  insurances: Insurance[] = [];
-  newInsurance: Insurance = {
-    userId: 0,
-    policyType: PolicyType.AUTO_INSURANCE,
-    premium: 0,
-    coverageAmount: 0,
-    startDate: '',
-    endDate: '',
-    claimStatus: ClaimStatus.PENDING
-  };
-  claimAmount: number = 0;
+  insurances: AnimatedInsurance[] = [];
+  newInsurance: AnimatedInsurance = this.resetNewInsurance();
+  isEditing: boolean = false;
   selectedInsuranceId: number | null = null;
-  isEditing = false; // Track edit mode
-  kpis = {
-    rejectionRatio: 0,
-    lossRatio: 0,
-    solvencyRatio: 0,
-    claimSettlementSpeed: 0
-  };
+  claimAmount: number = 0;
   errorMessage: string | null = null;
+  policyTypes = PolicyType;
+  isLoadingKpis: boolean = false;
+  isDarkMode: boolean = false;
+
+  // Chart properties
+  barChartData: ChartData<'bar'> = { labels: [], datasets: [] };
+  barChartOptions: ChartOptions = { responsive: true };
+  barChartType: ChartType = 'bar';
+
+  pieChartData: ChartData<'pie'> = { labels: [], datasets: [] };
+  pieChartOptions: ChartOptions = { responsive: true };
+  pieChartType: ChartType = 'pie';
 
   constructor(private insuranceService: ServiceService) {}
 
   ngOnInit(): void {
     this.loadInsurances();
     this.loadKpis();
+    this.loadDarkMode();
   }
 
-  // Format policy type for display
-  formatPolicyType(type: string): string {
-    return type.replace(/_/g, ' ').toLowerCase();
+  loadInsurances(): void {
+    this.insuranceService.getAllInsurance().subscribe({
+      next: (insurances: AnimatedInsurance[]) => {
+        this.insurances = insurances.map(insurance => ({ ...insurance, isNew: false, isDeleting: false }));
+      },
+      error: (err: Error) => {
+        this.errorMessage = err.message || 'Failed to load insurances.';
+      }
+    });
   }
 
-  // Get CSS class for claim status
-  getStatusClass(status: ClaimStatus): string {
-    switch (status) {
+  loadKpis(): void {
+    this.isLoadingKpis = true;
+    Promise.all([
+      this.insuranceService.getClaimsRejectionRatio().toPromise(),
+      this.insuranceService.getLossRatio().toPromise(),
+      this.insuranceService.getSolvencyRatio().toPromise(),
+      this.insuranceService.getClaimSettlementSpeed().toPromise()
+    ]).then(([claimsRejectionRatio, lossRatio, solvencyRatio, claimSettlementSpeed]) => {
+      this.barChartData = {
+        labels: ['Claims Rejection Ratio', 'Loss Ratio', 'Solvency Ratio'],
+        datasets: [
+          {
+            label: 'Financial Ratios (%)',
+            data: [
+              claimsRejectionRatio || 0,
+              lossRatio || 0,
+              solvencyRatio || 0
+            ],
+            backgroundColor: ['#4f46e5', '#10b981', '#f59e0b'],
+            borderColor: ['#4f46e5', '#10b981', '#f59e0b'],
+            borderWidth: 1
+          }
+        ]
+      };
+
+      const speed = claimSettlementSpeed || 0;
+      this.pieChartData = {
+        labels: ['Claim Settlement Speed', 'Remaining'],
+        datasets: [
+          {
+            data: [speed, 60 - speed],
+            backgroundColor: ['#4f46e5', '#e5e7eb'],
+            borderColor: ['#4f46e5', '#e5e7eb'],
+            borderWidth: 1
+          }
+        ]
+      };
+
+      this.isLoadingKpis = false;
+    }).catch(err => {
+      this.errorMessage = err.message || 'Failed to load KPIs.';
+      this.isLoadingKpis = false;
+    });
+  }
+
+  resetNewInsurance(): AnimatedInsurance {
+    return {
+      userId: 0,
+      policyType: PolicyType.AUTO_INSURANCE,
+      coverageAmount: 0,
+      premium: 0,
+      startDate: '',
+      endDate: '',
+      claimStatus: ClaimStatus.PENDING,
+      isNew: false,
+      isDeleting: false
+    };
+  }
+
+  onSubmit(): void {
+    if (this.isEditing) {
+      this.updateInsurance();
+    } else {
+      this.createInsurance();
+    }
+  }
+
+  createInsurance(): void {
+    this.insuranceService.createInsurance(this.newInsurance).subscribe({
+      next: (insurance: AnimatedInsurance) => {
+        // Mark the new insurance as "new" for animation
+        insurance.isNew = true;
+        insurance.isDeleting = false;
+        this.insurances.push(insurance);
+        this.resetNewInsurance();
+      },
+      error: (err: Error) => {
+        this.errorMessage = err.message || 'Failed to create insurance.';
+      }
+    });
+  }
+
+  updateInsurance(): void {
+    if (this.newInsurance.id) {
+      this.insuranceService.updateInsurance(this.newInsurance.id, this.newInsurance).subscribe({
+        next: (insurance: AnimatedInsurance) => {
+          const index = this.insurances.findIndex(i => i.id === insurance.id);
+          if (index !== -1) {
+            insurance.isNew = false; // Ensure updated rows don't animate as new
+            insurance.isDeleting = false;
+            this.insurances[index] = insurance;
+          }
+          this.isEditing = false;
+          this.resetNewInsurance();
+        },
+        error: (err: Error) => {
+          this.errorMessage = err.message || 'Failed to update insurance.';
+        }
+      });
+    }
+  }
+
+  editInsurance(insurance: AnimatedInsurance): void {
+    this.newInsurance = { ...insurance };
+    this.isEditing = true;
+  }
+
+  cancelEdit(): void {
+    this.isEditing = false;
+    this.resetNewInsurance();
+  }
+
+  deleteInsurance(id: number): void {
+    if (confirm('Are you sure you want to delete this insurance policy?')) {
+      const index = this.insurances.findIndex(i => i.id === id);
+      if (index !== -1) {
+        // Mark the row as "deleting" to trigger the exit animation
+        this.insurances[index].isDeleting = true;
+        // Wait for the animation to complete (500ms) before removing the row
+        setTimeout(() => {
+          this.insuranceService.deleteInsurance(id).subscribe({
+            next: () => {
+              this.insurances = this.insurances.filter(i => i.id !== id);
+            },
+            error: (err: Error) => {
+              this.errorMessage = err.message || 'Failed to delete insurance.';
+              // Reset the deleting flag if the request fails
+              if (index !== -1) {
+                this.insurances[index].isDeleting = false;
+              }
+            }
+          });
+        }, 500);
+      }
+    }
+  }
+
+  viewInsurance(id: number): void {
+    this.selectedInsuranceId = id;
+  }
+
+  submitClaim(): void {
+    if (this.selectedInsuranceId && this.claimAmount > 0) {
+      this.insuranceService.claimInsurance(this.selectedInsuranceId, this.claimAmount).subscribe({
+        next: (insurance: AnimatedInsurance) => {
+          const index = this.insurances.findIndex(i => i.id === insurance.id);
+          if (index !== -1) {
+            insurance.isNew = false;
+            insurance.isDeleting = false;
+            this.insurances[index] = insurance;
+          }
+          this.selectedInsuranceId = null;
+          this.claimAmount = 0;
+        },
+        error: (err: Error) => {
+          this.errorMessage = err.message || 'Failed to submit claim.';
+        }
+      });
+    }
+  }
+
+  formatPolicyType(policyType: string): string {
+    return policyType.toLowerCase().replace('_', ' ').replace(/\b\w/g, char => char.toUpperCase());
+  }
+
+  getStatusClass(status: string | undefined): string {
+    if (!status) return 'status-null';
+    switch (status.toUpperCase()) {
       case ClaimStatus.PENDING:
         return 'status-pending';
       case ClaimStatus.APPROVED:
@@ -58,177 +234,44 @@ export class InsuranceManagerComponent implements OnInit {
     }
   }
 
-  // Load all insurance policies
-  loadInsurances(): void {
-    this.insuranceService.getAllInsurance().subscribe({
-      next: (data: Insurance[]) => (this.insurances = data),
-      error: (err: Error) => (this.errorMessage = err.message)
-    });
-  }
-
-  // Load KPIs
-  loadKpis(): void {
-    this.insuranceService.getClaimsRejectionRatio().subscribe({
-      next: (data: number) => (this.kpis.rejectionRatio = data),
-      error: (err: Error) => console.error(err)
-    });
-    this.insuranceService.getLossRatio().subscribe({
-      next: (data: number) => (this.kpis.lossRatio = data),
-      error: (err: Error) => console.error(err)
-    });
-    this.insuranceService.getSolvencyRatio().subscribe({
-      next: (data: number) => (this.kpis.solvencyRatio = data),
-      error: (err: Error) => console.error(err)
-    });
-    this.insuranceService.getClaimSettlementSpeed().subscribe({
-      next: (data: number) => (this.kpis.claimSettlementSpeed = data),
-      error: (err: Error) => console.error(err)
-    });
-  }
-
-  // Handle form submission (create or update)
-  onSubmit(): void {
-    if (this.isEditing) {
-      this.updateInsurance();
-    } else {
-      this.createInsurance();
-    }
-  }
-
-  // Create a new insurance policy
-  createInsurance(): void {
-    this.insuranceService.createInsurance(this.newInsurance).subscribe({
-      next: (insurance: Insurance) => {
-        this.insurances.push(insurance);
-        this.resetNewInsurance();
-      },
-      error: (err: Error) => (this.errorMessage = err.message)
-    });
-  }
-
-  // View insurance details
-  viewInsurance(id: number): void {
-    this.insuranceService.getInsuranceById(id).subscribe({
-      next: (insurance: Insurance) => {
-        this.selectedInsuranceId = insurance.id || null;
-        alert(
-          `Policy Details:\nID: ${insurance.id}\nType: ${this.formatPolicyType(
-            insurance.policyType
-          )}\nCoverage: ${insurance.coverageAmount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}\nPremium: ${
-            insurance.premium.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-          }\nStart Date: ${insurance.startDate}\nEnd Date: ${
-            insurance.endDate
-          }\nClaim Status: ${insurance.claimStatus}`
-        );
-      },
-      error: (err: Error) => (this.errorMessage = err.message)
-    });
-  }
-
-  // Edit an insurance policy
-  editInsurance(insurance: Insurance): void {
-    this.newInsurance = { ...insurance };
-    this.isEditing = true;
-  }
-
-  // Update an insurance policy
-  updateInsurance(): void {
-    if (this.newInsurance.id) {
-      this.insuranceService.updateInsurance(this.newInsurance.id, this.newInsurance).subscribe({
-        next: (updatedInsurance: Insurance) => {
-          const index = this.insurances.findIndex(i => i.id === updatedInsurance.id);
-          if (index !== -1) {
-            this.insurances[index] = updatedInsurance;
-          }
-          this.resetNewInsurance();
-        },
-        error: (err: Error) => (this.errorMessage = err.message)
-      });
-    }
-  }
-
-  // Delete an insurance policy
-  deleteInsurance(id: number): void {
-    if (confirm('Are you sure you want to delete this insurance policy?')) {
-      this.insuranceService.deleteInsurance(id).subscribe({
-        next: () => {
-          this.insurances = this.insurances.filter(i => i.id !== id);
-        },
-        error: (err: Error) => (this.errorMessage = err.message)
-      });
-    }
-  }
-
-  // Submit a claim
-  submitClaim(): void {
-    if (this.selectedInsuranceId && this.claimAmount > 0) {
-      this.insuranceService.claimInsurance(this.selectedInsuranceId, this.claimAmount).subscribe({
-        next: (updatedInsurance: Insurance) => {
-          const index = this.insurances.findIndex(i => i.id === updatedInsurance.id);
-          if (index !== -1) {
-            this.insurances[index] = updatedInsurance;
-          }
-          this.claimAmount = 0;
-          this.selectedInsuranceId = null;
-          alert('Claim submitted successfully');
-        },
-        error: (err: Error) => (this.errorMessage = err.message)
-      });
-    } else {
-      this.errorMessage = 'Please enter a valid claim amount';
-    }
-  }
-
-  // Download KPI report
   downloadReport(): void {
     this.insuranceService.exportInsurancePdf().subscribe({
       next: (blob: Blob) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'insurance_kpi_report.pdf';
+        a.download = 'insurance-report.pdf';
         a.click();
         window.URL.revokeObjectURL(url);
       },
-      error: (err: Error) => (this.errorMessage = err.message)
+      error: (err: Error) => {
+        this.errorMessage = err.message || 'Failed to download report.';
+      }
     });
   }
 
-  // Send KPI report via email
-  sendReport(email: string): void {
-    this.insuranceService.sendInsuranceReport(email).subscribe({
-      next: (message: string) => alert(message),
-      error: (err: Error) => (this.errorMessage = err.message)
-    });
+  // Load dark mode preference from localStorage
+  loadDarkMode(): void {
+    const darkModePref = localStorage.getItem('darkMode');
+    this.isDarkMode = darkModePref === 'true';
+    if (this.isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }
 
-  // Reset the form
-  resetNewInsurance(): void {
-    this.newInsurance = {
-      userId: 0,
-      policyType: PolicyType.AUTO_INSURANCE,
-      premium: 0,
-      coverageAmount: 0,
-      startDate: '',
-      endDate: '',
-      claimStatus: ClaimStatus.PENDING
-    };
-    this.isEditing = false;
+  // Toggle dark mode and save preference to localStorage
+  toggleDarkMode(): void {
+    this.isDarkMode = !this.isDarkMode;
+    if (this.isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('darkMode', 'true');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('darkMode', 'false');
+    }
+    console.log('Dark mode toggled to:', this.isDarkMode);
+    console.log('HTML classes:', document.documentElement.classList.toString());
   }
-
-  // Cancel editing
-  cancelEdit(): void {
-    this.resetNewInsurance();
-  }
-
-  // Getter for premiumAmount (maps to premium)
-  get premiumAmount(): number {
-    return this.newInsurance.premium;
-  }
-
-  // Getter for insuredAmount (maps to coverageAmount)
-  get insuredAmount(): number {
-    return this.newInsurance.coverageAmount;
-  }
-
-};
+}

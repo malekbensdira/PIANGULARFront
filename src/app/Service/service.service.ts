@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Insurance } from '../models/insurance.model';
 import { ClaimStatus } from '../models/claim-status.enum';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -147,7 +147,14 @@ export class ServiceService {
   uploadFileForClassification(file: File): Observable<string> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<string>(`${this.apiUrl}/classify`, formData).pipe(
+    return this.http.post<{ label: string }>(`${this.apiUrl}/classify`, formData).pipe(
+      map(response => {
+        console.log('Raw API Response:', response); // Debug log
+        if (response && response.label) {
+          return response.label; // Extract the 'label' field
+        }
+        throw new Error('Label field not found in response');
+      }),
       catchError(this.handleError)
     );
   }

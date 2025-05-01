@@ -1,11 +1,80 @@
-/* Insurance Manager - Main Styles */
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+/* Row Enter Animation */
+@keyframes rowEnter {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+    background-color: #e0f7fa;
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    background-color: inherit;
+  }
+}
+
+.animate-row-enter {
+  animation: rowEnter 0.5s ease-out forwards;
+}
+
+/* Row Exit Animation */
+@keyframes rowExit {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+    background-color: inherit;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(30px);
+    background-color: #ffebee;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+}
+
+.animate-row-exit {
+  animation: rowExit 0.5s ease-out forwards;
+}
 
 /* Header */
 header {
   background: linear-gradient(to right, rgba(34, 68, 147, 0.619), rgba(34, 68, 147, 0.619));
   color: white;
   padding: 10px 40px;
-  display: FLEX;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   height: 150px;
@@ -19,8 +88,8 @@ header {
 /* Logo */
 .logo-header-container {
   position: relative;
-  width: 130px;
-  height: 150px;
+  width: 180px;
+  height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,7 +111,7 @@ nav ul {
   list-style: none;
   display: flex;
   gap: 20px;
-  margin: 20;
+  margin: 20px 0;
   padding: 0;
   align-items: center;
   flex-wrap: wrap;
@@ -61,23 +130,34 @@ nav ul li a {
 }
 
 nav ul li a i {
-  margin-right: 0px;
+  margin-right: 8px;
   font-size: 15px;
 }
 
 nav ul li a:hover {
   background-color: rgba(255, 255, 255, 0.25);
   color: #f1dd5f;
+  transform: scale(1.05);
 }
+
+/* Header Title */
 h2 {
-  color: white; /* Changed to white */
+  color: rgba(34, 68, 147, 0.619);
   margin-bottom: 15px;
-  background: linear-gradient(to right, rgba(34, 68, 147, 0.619), rgba(34, 68, 147, 0.619)); /* Match header background */
-  padding: 10px 20px; /* Add padding for better appearance */
-  border-radius: 8px; /* Rounded corners */
-  display: inline-block; /* Prevent background from stretching full width */
-  margin-left: 300px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-left: 440px;
+  font-size: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
+
+h2:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 /* Profile and Auth Buttons */
 .profile-settings {
   margin-left: auto;
@@ -109,7 +189,8 @@ h2 {
 
 .btn-auth.btn-outline:hover {
   background-color: #f1dd5f;
-  color: rgb(0, 0, 0);
+  color: #000;
+  transform: scale(1.05);
 }
 
 .btn-auth.btn-signup {
@@ -121,6 +202,7 @@ h2 {
 .btn-auth.btn-signup:hover {
   background-color: #224393;
   color: white !important;
+  transform: scale(1.05);
 }
 
 /* Container */
@@ -137,22 +219,6 @@ h2 {
 .kpi-section,
 .report-section {
   margin-bottom: 20px;
-}
-
-.form-section .card,
-.claim-section .card,
-.kpi-section .card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.form-section .card-header,
-.claim-section .card-header,
-.kpi-section .card-header {
-  background-color: #f2f2f2;
-  color: #333;
-  font-weight: bold;
 }
 
 /* Form */
@@ -216,28 +282,32 @@ th {
   background-color: #fff3cd;
   color: #856404;
   padding: 3px 8px;
-  border-radius: 3px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .status-approved {
   background-color: #d4edda;
   color: #155724;
   padding: 3px 8px;
-  border-radius: 3px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .status-rejected {
   background-color: #f8d7da;
   color: #721c24;
   padding: 3px 8px;
-  border-radius: 3px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .status-null {
   background-color: #e2e3e5;
   color: #383d41;
   padding: 3px 8px;
-  border-radius: 3px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Buttons */
@@ -256,6 +326,71 @@ button {
 /* Error */
 .error {
   color: red;
+}
+
+/* Footer */
+.footer {
+  width: 91vw;
+  padding: 40px 20px;
+  background-color: #224393;
+  color: white;
+  box-sizing: border-box;
+  margin-top: 40px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.footer-section h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.footer-section p,
+.footer-section ul li {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li a {
+  text-decoration: none;
+  color: #f1dd5f;
+}
+
+.footer-section ul li a:hover {
+  text-decoration: underline;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.social-icons a {
+  color: white;
+  margin-right: 15px;
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #f1dd5f;
+  transform: scale(1.2);
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 14px;
+  opacity: 0.7;
 }
 
 /* Responsive Adjustments */
@@ -284,5 +419,30 @@ button {
     width: auto;
     margin-right: 3px;
     margin-bottom: 0;
+  }
+
+  h2 {
+    margin-left: 20px;
+    font-size: 24px;
+  }
+
+  header {
+    flex-direction: column;
+    height: auto;
+    padding: 20px;
+  }
+
+  .logo-header-container {
+    margin-bottom: 20px;
+  }
+
+  nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .auth-buttons {
+    margin-top: 20px;
+    margin-left: 0;
   }
 }

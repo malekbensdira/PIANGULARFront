@@ -1,0 +1,99 @@
+<div class="min-h-screen bg-gradient-to-br from-indigo-100 via-gray-50 to-indigo-100 flex items-center justify-center py-10">
+    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-lg w-full transform transition-all duration-500 hover:shadow-2xl">
+      <!-- Header with Icon -->
+      <div class="flex items-center justify-center mb-6">
+        <svg class="w-8 h-8 text-indigo-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4-4m0 0l4 4m-4-4v12m8-12h-4m4 0h-4m4 0v12"></path>
+        </svg>
+        <!-- In header -->
+
+        <h2 class="text-3xl font-bold text-gray-800">Image Classification</h2>
+      </div>
+  
+      <!-- File Upload with Custom Styling -->
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
+        <div class="relative">
+          <input
+            type="file"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            title="Upload an image file"
+            placeholder="Choose an image"
+            class="block w-full text-sm text-gray-500
+              file:mr-4 file:py-3 file:px-5
+              file:rounded-full file:border-0
+              file:text-sm file:font-semibold
+              file:bg-indigo-50 file:text-indigo-700
+              hover:file:bg-indigo-100
+              focus:outline-none focus:ring-2 focus:ring-indigo-300
+              transition-all duration-300"
+          />
+        </div>
+      </div>
+  
+      <!-- Image Preview with Fade-In Animation -->
+      <div *ngIf="imagePreview" class="mb-6 animate-fade-in">
+        <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+          <svg class="w-5 h-5 text-indigo-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4-4m0 0l4 4m-4-4v12"></path>
+          </svg>
+          Image Preview:
+        </h3>
+        <div class="relative mt-2">
+          <img [src]="imagePreview" alt="Image Preview" class="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg"></div>
+        </div>
+      </div>
+  
+      <!-- Loading Spinner with Pulse Animation -->
+      <div *ngIf="isLoading" class="flex justify-center mb-4">
+        <svg class="animate-spin h-8 w-8 text-indigo-600 animate-pulse" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+  
+      <!-- Error Message with Slide-In Animation -->
+      <div *ngIf="errorMessage" class="mb-4 text-red-600 text-sm bg-red-50 p-3 rounded-lg animate-slide-in">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          {{ errorMessage }}
+        </div>
+      </div>
+  
+      <!-- Classification Result with Fade-In Animation -->
+      <div *ngIf="classificationResult" class="mb-6 animate-fade-in">
+        <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+          <svg class="w-5 h-5 text-indigo-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          Classification Result:
+        </h3>
+        <p class="mt-2 text-gray-600 bg-indigo-50 p-3 rounded-lg text-center font-medium text-indigo-800">
+          {{ classificationResult }}
+        </p>
+      </div>
+  
+      <!-- Buttons with Hover Effects -->
+      <div class="flex space-x-3">
+        <button
+          (click)="classifyImage()"
+          [disabled]="!selectedFile || isLoading"
+          class="flex-1 bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 disabled:bg-gray-400
+            transform transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+        >
+          Classify Image
+        </button>
+        <button
+          (click)="clearForm()"
+          class="flex-1 bg-gray-500 text-white py-3 px-4 rounded-lg hover:bg-gray-600
+            transform transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-300"
+        >
+          Clear
+        </button>
+      </div>
+    </div>
+  </div>

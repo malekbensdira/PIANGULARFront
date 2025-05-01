@@ -11,6 +11,8 @@ import { HeaderAfterSigninComponent } from './shared/header-after-signin/header-
 import { FooterComponent } from './shared/footer/footer.component';
 import { InsuranceManagerComponent } from './insurance-manager/insurance-manager.component';
 import { ClaimPredictorComponent } from './claim-predictor/claim-predictor.component';
+import { ClassificationComponent } from './classification/classification.component';
+import { NgChartsModule } from 'ng2-charts';
 
 
 
@@ -24,7 +26,8 @@ import { ClaimPredictorComponent } from './claim-predictor/claim-predictor.compo
     HeaderAfterSigninComponent,
     FooterComponent,
     InsuranceManagerComponent,
-    ClaimPredictorComponent
+    ClaimPredictorComponent,
+    ClassificationComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,8 @@ import { ClaimPredictorComponent } from './claim-predictor/claim-predictor.compo
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule, 
-    AppRoutingModule
+    AppRoutingModule,
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
