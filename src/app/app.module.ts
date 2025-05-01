@@ -17,6 +17,9 @@ import { FooterComponent } from "./components/immobiliers/footer/footer.componen
 import { HeaderComponent } from './components/immobiliers/header/header-after-signin.component';
 import { SafeUrlPipe } from "../shared/pipes/safe-url.pipe";
 import { AdminListComponent } from './components/immobiliers/admin-list/admin-list.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+
+
 
 @NgModule({
   declarations: [
@@ -38,7 +41,12 @@ import { AdminListComponent } from './components/immobiliers/admin-list/admin-li
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    SafeUrlPipe
+    SafeUrlPipe,
+    BrowserAnimationsModule,
+    CarouselModule,
+    
+    
+    
 ],
   providers: [ImmobilierService],
   bootstrap: [AppComponent]

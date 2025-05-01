@@ -40,8 +40,7 @@ export class ListComponent implements OnInit {
   showConfirmationDialog = false;
   notificationTimeout: any;
   propertyToDelete: number | null = null;
-
-   
+  hoveredProperty: number | null = null; // Ajouté pour gérer le survol
 
   constructor(
     private service: ImmobilierService,
@@ -56,17 +55,14 @@ export class ListComponent implements OnInit {
   loadImmobiliers(): void {
     this.service.getAll().subscribe({
       next: (data) => {
-        // Traitement des données pour s'assurer que les chemins d'images sont corrects
         this.immobiliers = data.map(item => {
           return {
             ...item,
-            // Normaliser le chemin de la photo principale
             photoPath: this.normalizePhotoPath(item.photoPath)
           };
         });
         
         console.log('Immobiliers chargés:', this.immobiliers);
-        // Vérifier les valeurs de photoPath reçues
         this.immobiliers.forEach(item => {
           console.log(`Bien ID:${item.id}, photoPath:${item.photoPath}`);
         });
@@ -74,10 +70,6 @@ export class ListComponent implements OnInit {
       error: (err) => console.error('Erreur:', err)
     });
   }
-  viewDetails(id: number): void {
-    this.router.navigate(['/detail', id]);
-  }
-  
 
   estimateProperty(item: Immobilier): void {
     this.router.navigate(['/estimate'], {
@@ -87,7 +79,7 @@ export class ListComponent implements OnInit {
           superficie: item.superficie,
           latitude: item.latitude,
           longitude: item.longitude,
-          nombrePieces: item.nombrePieces || 0 // Valeur par défaut si non défini
+          nombrePieces: item.nombrePieces || 0
         }
       }
     });
@@ -97,11 +89,9 @@ export class ListComponent implements OnInit {
     this.router.navigate(['/estimate']);
   }
 
-  // Méthode pour normaliser les chemins d'images
   normalizePhotoPath(photoPath: string | undefined): string | undefined {
     if (!photoPath) return undefined;
     
-    // Si c'est une chaîne JSON, essayer de l'extraire
     if (typeof photoPath === 'string' && 
         (photoPath.startsWith('[') || photoPath.startsWith('{'))) {
       try {
@@ -167,11 +157,9 @@ export class ListComponent implements OnInit {
     }
   }
 
-  // Méthode pour gérer les chemins d'images
   getImageUrl(photoPath: string | undefined, itemId?: number): string {
     console.log(`Traitement de l'image pour ID:${itemId}, photoPath initial:`, photoPath);
     
-    // SOLUTION RADICALE: D'abord vérifier dans le localStorage
     if (itemId) {
       const localStorageContent = localStorage.getItem('immobilier_images');
       console.log('Contenu complet du localStorage:', localStorageContent);
@@ -183,7 +171,6 @@ export class ListComponent implements OnInit {
         const localStoragePath = imageMapping[itemId];
         console.log(`Image trouvée dans localStorage pour ID:${itemId}:`, localStoragePath);
         
-        // Si le chemin commence par /uploads, c'est une image stockée sur le serveur
         if (localStoragePath.startsWith('/uploads/')) {
           const fullUrl = `http://localhost:8081${localStoragePath}`;
           console.log('URL serveur complète:', fullUrl);
@@ -196,32 +183,26 @@ export class ListComponent implements OnInit {
       }
     }
     
-    // Si photoPath est défini, l'utiliser
     if (photoPath) {
       console.log('Utilisation du photoPath fourni:', photoPath);
       
-      // Normaliser le chemin si nécessaire
       const normalizedPath = this.normalizePhotoPath(photoPath) || photoPath;
       
-      // Si le chemin commence par /uploads, c'est une image stockée sur le serveur
       if (normalizedPath.startsWith('/uploads/')) {
         const fullUrl = `http://localhost:8081${normalizedPath}`;
         console.log('URL serveur complète:', fullUrl);
         return fullUrl;
       }
       
-      // Si c'est déjà une URL complète
       if (normalizedPath.startsWith('http://') || normalizedPath.startsWith('https://')) {
         return normalizedPath;
       }
     }
     
-    // S'il n'y a pas de photoPath, on utilise une image par défaut
     console.log(`Aucune image trouvée pour ID:${itemId}, utilisation de l'image par défaut`);
     return 'https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=600';
   }
 
-  // Style d'arrière-plan
   getBackgroundStyle() {
     return {
       'background-image': 'url(assets/images/background.jpg)',

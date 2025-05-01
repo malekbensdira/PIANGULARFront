@@ -330,3 +330,201 @@
 .btn-buy i, .btn-estimate i {
   font-size: 18px;
 }
+/* Animation du prix */
+@keyframes fadeInPrice {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.price-section .price {
+  animation: fadeInPrice 0.6s ease-out;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #ffffff; /* Couleur du prix */
+}
+
+.recommendation-card {
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+  margin: 10px;
+}
+
+.recommendation-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.property-image img {
+  width: 100%;
+  transition: transform 0.3s ease;
+}
+
+.recommendation-card:hover .property-image img {
+  transform: scale(1.1);
+}
+
+/* Animation des sections au chargement */
+@keyframes fadeInSection {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.property-info,
+.recommendations-section,
+.action-buttons {
+  animation: fadeInSection 0.8s ease-out;
+}
+
+/* Animation des sections au chargement */
+@keyframes fadeInSection {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.property-info,
+.recommendations-section,
+.action-buttons {
+  animation: fadeInSection 0.8s ease-out;
+}
+
+/* Modal pour Google Maps */
+.map-modal-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: fadeInSection 0.5s ease-out;
+}
+
+.map-modal-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  animation: fadeInSection 0.5s ease-out;
+}
+
+.close-map-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+
+.leaflet-pane,
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 0 !important;
+}
+
+.leaflet-map {
+  height: 400px;
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+/* Styles pour la section des biens similaires */
+.similar-properties-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.similar-properties-section h3 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.properties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.property-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.property-card:hover {
+  transform: translateY(-5px);
+}
+
+.property-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.property-info {
+  padding: 1rem;
+}
+
+.property-info h4 {
+  margin: 0 0 0.5rem 0;
+  color: #34495e;
+}
+
+.property-info p {
+  margin: 0.5rem 0;
+  color: #7f8c8d;
+}
+
+.view-button {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.view-button:hover {
+  background: #2980b9;
+}

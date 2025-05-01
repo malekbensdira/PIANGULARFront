@@ -345,3 +345,175 @@
     flex-direction: column;
   }
 }
+/* Animation et styles pour les détails supplémentaires */
+.property-card {
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.property-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.property-extra-details {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  padding: 0 15px;
+  background: rgba(245, 245, 245, 0.9);
+  margin: 10px -15px -10px;
+  border-radius: 0 0 8px 8px;
+}
+
+.property-extra-details.show {
+  max-height: 150px;
+  opacity: 1;
+  padding: 10px 15px;
+  border-top: 1px solid #eee;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.detail-row i {
+  margin-right: 10px;
+  color: #666;
+  width: 20px;
+  text-align: center;
+}
+
+/* Ajustements pour les boutons d'action */
+.property-actions {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+/* Animation du prix */
+@keyframes fadeInPrice {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.property-price {
+  animation: fadeInPrice 0.6s ease-out;
+  font-size: 1.5rem; /* Ajuste la taille du texte selon ton besoin */
+  font-weight: bold;
+  color: #007bff; /* Couleur du prix */
+}
+.property-card {
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 10px; /* Coins arrondis pour plus de douceur */
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.property-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.property-image img {
+  width: 100%;
+  border-bottom: 2px solid #f1f1f1;
+}
+
+.property-info {
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #f1f1f1;
+  transition: all 0.3s ease;
+}
+
+.property-info:hover {
+  background-color: #e9ecef;
+}
+
+.property-extra-details {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.property-extra-details.show {
+  display: block;
+  opacity: 1;
+}
+
+.property-card {
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 10px; /* Coins arrondis pour plus de douceur */
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.property-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.property-image img {
+  width: 100%;
+  border-bottom: 2px solid #f1f1f1;
+}
+
+.property-info {
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #f1f1f1;
+  transition: all 0.3s ease;
+}
+
+.property-info:hover {
+  background-color: #e9ecef;
+}
+
+.property-extra-details {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.property-extra-details.show {
+  display: block;
+  opacity: 1;
+}
+
+.property-image img {
+  transition: transform 0.3s ease;
+}
+
+.property-image:hover img {
+  transform: scale(1.1);
+}
+.view-more-button {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-more-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}

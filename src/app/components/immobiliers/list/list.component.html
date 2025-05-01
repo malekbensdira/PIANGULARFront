@@ -1,5 +1,4 @@
 <div class="page-container">
-  <!-- Header intégré -->
   <app-header></app-header>
 
   <div class="background-container"
@@ -50,7 +49,10 @@
 
       <!-- Liste des biens -->
       <div class="property-list">
-        <div *ngFor="let item of immobiliers" class="property-card">
+        <div *ngFor="let item of immobiliers" class="property-card" 
+             (mouseenter)="hoveredProperty = item.id" 
+             (mouseleave)="hoveredProperty = null">
+          
           <!-- Image de la propriété -->
           <div class="property-image">
             <img [src]="getImageUrl(item.photoPath, item.id)" 
@@ -66,10 +68,28 @@
               <span *ngIf="item.nombrePieces"><i class="fas fa-door-open"></i> {{ item.nombrePieces }} pièces</span>
             </div>
             
-            <div class="property-actions">
-              <button class="action-button detail-button" (click)="viewDetails(item.id)">
-                <i class="fas fa-eye"></i> Détail
+            <!-- Détails supplémentaires qui apparaissent au survol -->
+            <div class="property-extra-details" [class.show]="hoveredProperty === item.id">
+              <div class="detail-row">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Année: {{item.anneeConstruction || 'N/A'}}</span>
+              </div>
+              <div class="detail-row">
+                <i class="fas fa-layer-group"></i>
+                <span>Étage: {{item.etage || 'N/A'}}</span>
+              </div>
+              <div class="detail-row">
+                <i class="fas fa-info-circle"></i>
+                <span>État: {{item.etat || 'Non spécifié'}}</span>
+              </div>
+
+              <!-- Bouton "Afficher plus de détails" -->
+              <button class="action-button view-more-button" [routerLink]="['/detail', item.id]">
+                <i class="fas fa-eye"></i> Afficher plus de détails
               </button>
+            </div>
+            
+            <div class="property-actions">
               <button class="action-button edit-button" (click)="editProperty(item.id)">
                 <i class="fas fa-edit"></i> Éditer
               </button>

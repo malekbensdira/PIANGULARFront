@@ -13,4 +13,7 @@ export class EstimationService {
   estimateProperty(data: any) {
     return this.http.post(`${this.flaskApiUrl}/predict`, data);
   }
+  recommanderBien(data: any) {
+    return this.http.post<any>(`${this.flaskApiUrl}/recommend`, data);
+  }
 }
