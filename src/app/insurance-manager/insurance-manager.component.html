@@ -8,8 +8,7 @@
       <ul>
         <li><a [routerLink]="['/user']"><i class="fas fa-user mr-2"></i> User</a></li>
         <li><a href="#"><i class="fas fa-credit-card mr-2"></i> Credit</a></li>
-        <li><a href="#"><i class="fas fa-hand-holding-heart mr-2"></i> Donations</a></li>
-        <li><a href="#"><i class="fas fa-building mr-2"></i> Real Estate</a></li>
+        <li><a [routerLink]="['/predict-claim']"><i class="fas fa-hand-holding-heart mr-2"></i> Predict Claim</a></li>
         <li><a [routerLink]="['/classification']"><i class="fas fa-image mr-2"></i> Classification</a></li>
         <!-- Dark Mode Toggle -->
         <button (click)="toggleDarkMode()" class="ml-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700" title="Toggle Dark Mode">
@@ -151,6 +150,45 @@
         </div>
       </form>
     </div>
+  </div>
+   <!-- Search Form -->
+   <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+    <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">Search Insurance</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Min Coverage Amount</label>
+        <input type="number" [(ngModel)]="minCoverageAmount" placeholder="e.g., 1000" class="mt-1 w-full p-2 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 dark:bg-gray-600 dark:text-white">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Max Coverage Amount</label>
+        <input type="number" [(ngModel)]="maxCoverageAmount" placeholder="e.g., 5000" class="mt-1 w-full p-2 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 dark:bg-gray-600 dark:text-white">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Min Premium</label>
+        <input type="number" [(ngModel)]="minPremium" placeholder="e.g., 50" class="mt-1 w-full p-2 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 dark:bg-gray-600 dark:text-white">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Max Premium</label>
+        <input type="number" [(ngModel)]="maxPremium" placeholder="e.g., 200" class="mt-1 w-full p-2 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 dark:bg-gray-600 dark:text-white">
+      </div>
+    </div>
+    <div class="mt-4 flex space-x-3">
+      <button (click)="searchInsurance()" class="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">Search</button>
+      <button (click)="clearFilters()" class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-300">Clear Filters</button>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="flex justify-center mb-4">
+    <svg class="animate-spin h-8 w-8 text-indigo-600 dark:text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="mb-4 text-red-600 dark:text-red-300 text-sm bg-red-50 dark:bg-red-900 p-3 rounded-lg">
+    {{ errorMessage }}
   </div>
 
   <!-- Insurance Policies Table -->

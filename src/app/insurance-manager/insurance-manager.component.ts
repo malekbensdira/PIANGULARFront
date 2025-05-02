@@ -5,6 +5,7 @@ import { PolicyType } from '../models/policy-type.enum';
 import { ClaimStatus } from '../models/claim-status.enum';
 import { ChartOptions, ChartType, ChartData } from 'chart.js';
 
+
 // Extend the Insurance interface to include animation flags
 interface AnimatedInsurance extends Insurance {
   isNew?: boolean;
@@ -26,6 +27,7 @@ export class InsuranceManagerComponent implements OnInit {
   policyTypes = PolicyType;
   isLoadingKpis: boolean = false;
   isDarkMode: boolean = false;
+  isLoading: boolean = false;
 
   // Chart properties
   barChartData: ChartData<'bar'> = { labels: [], datasets: [] };
@@ -35,6 +37,7 @@ export class InsuranceManagerComponent implements OnInit {
   pieChartData: ChartData<'pie'> = { labels: [], datasets: [] };
   pieChartOptions: ChartOptions = { responsive: true };
   pieChartType: ChartType = 'pie';
+  
 
   constructor(private insuranceService: ServiceService) {}
 
@@ -273,5 +276,40 @@ export class InsuranceManagerComponent implements OnInit {
     }
     console.log('Dark mode toggled to:', this.isDarkMode);
     console.log('HTML classes:', document.documentElement.classList.toString());
+  }
+  minCoverageAmount: number | null = null;
+  maxCoverageAmount: number | null = null;
+  minPremium: number | null = null;
+  maxPremium: number | null = null;
+
+  searchInsurance(): void {
+    this.isLoading = true;
+    this.errorMessage = null;
+    this.insuranceService.searchInsurance(
+      this.minCoverageAmount || undefined,
+      this.maxCoverageAmount || undefined,
+      this.minPremium || undefined,
+      this.maxPremium || undefined
+    ).subscribe({
+      next: (data) => {
+        console.log('Search Results:', data);
+        this.insurances = data;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Search Error:', err);
+        this.errorMessage = err.message || 'Failed to fetch insurance data.';
+        this.insurances = [];
+        this.isLoading = false;
+      }
+    });
+  }
+
+  clearFilters(): void {
+    this.minCoverageAmount = null;
+    this.maxCoverageAmount = null;
+    this.minPremium = null;
+    this.maxPremium = null;
+    this.searchInsurance();
   }
 }

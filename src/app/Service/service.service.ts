@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { Insurance } from '../models/insurance.model';
 import { ClaimStatus } from '../models/claim-status.enum';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -129,8 +131,13 @@ export class ServiceService {
   // Prédire une réclamation basée sur la catégorie de dommage
   predictClaim(damageCategory: string): Observable<any> {
     const params = new HttpParams().set('damageCategory', damageCategory);
-    return this.http.get<any>(`${this.apiUrl}/predict-claim`, { params }).pipe(
-      catchError(this.handleError)
+    return this.http.get<any>(this.apiUrl, { params }).pipe(
+      map(response => {
+        if (response.error) {
+          throw new Error(response.error);
+        }
+        return response;
+      })
     );
   }
 
@@ -158,10 +165,11 @@ export class ServiceService {
       catchError(this.handleError)
     );
   }
-
+  
   // Gérer les erreurs HTTP
   private handleError(error: any): Observable<never> {
     console.error('An error occurred:', error);
     return throwError(() => new Error(error.message || 'Something went wrong; please try again later.'));
   }
+  
 }

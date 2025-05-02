@@ -142,7 +142,7 @@ nav ul li a:hover {
 
 /* Header Title */
 h2 {
-  color: rgba(34, 68, 147, 0.619);
+  color: rgba(23, 54, 125, 0.619);
   margin-bottom: 15px;
   padding: 10px 20px;
   border-radius: 8px;
@@ -238,19 +238,42 @@ h2:hover {
 }
 
 /* Table */
-table {
-  width: 100%;
+.table {
   border-collapse: collapse;
+  width: 100%;
 }
 
-th,
-td {
+.tr {
+  opacity: 0; /* Start hidden for animation */
+}
+
+/* Slide-in and fade animation */
+.slide-in {
+  animation: slideInFade 0.5s ease-out forwards;
+}
+
+@keyframes slideInFade {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Optional: Enhance dark mode for table rows */
+.dark tr {
+  color: #e5e7eb; /* Light text for dark mode */
+}th,
+.td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
 }
 
-th {
+.th {
   background-color: #f2f2f2;
 }
 
