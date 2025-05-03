@@ -1,0 +1,166 @@
+<app-header-after-signin></app-header-after-signin>
+
+<div class="credit-container">
+  <div class="credit-header">
+    <h1 class="welcome-text">Credit Details</h1>
+    <p class="slogan">
+      <i class="fas fa-info-circle"></i> Complete Information About Your Credit <i class="fas fa-hand-holding-usd"></i>
+    </p>
+  </div>
+
+  <div class="content-wrapper">
+    <div *ngIf="loading" class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i> Loading credit details...
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      <i class="fas fa-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <div *ngIf="!loading && !error && credit">
+      <!-- Actions Bar -->
+      <div class="actions-bar">
+        <button class="btn-back" (click)="goBack()">
+          <i class="fas fa-arrow-left"></i> Back to Credits
+        </button>
+        <div class="actions-right">
+          <button class="btn-edit" (click)="goToEdit()">
+            <i class="fas fa-edit"></i> Edit
+          </button>
+          <button class="btn-delete" (click)="deleteCredit()">
+            <i class="fas fa-trash"></i> Delete
+          </button>
+        </div>
+      </div>
+
+      <!-- Status Banner -->
+      <div class="status-banner" [ngClass]="'status-' + credit.creditStatus.toLowerCase()">
+        <i class="status-icon" 
+           [ngClass]="{
+             'fas fa-hourglass-half': credit.creditStatus === 'PENDING',
+             'fas fa-check-circle': credit.creditStatus === 'APPROVED',
+             'fas fa-times-circle': credit.creditStatus === 'REJECTED',
+             'fas fa-lock': credit.creditStatus === 'CLOSED'
+           }"></i>
+        <span>Status: {{ credit.creditStatus }}</span>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-button" [ngClass]="{'active': activeTab === 'overview'}" (click)="setActiveTab('overview')">
+          <i class="fas fa-info-circle"></i> Overview
+        </button>
+        <button class="tab-button" [ngClass]="{'active': activeTab === 'schedule'}" (click)="setActiveTab('schedule')">
+          <i class="fas fa-calendar-alt"></i> Repayment Schedule
+        </button>
+      </div>
+
+      <!-- Overview Tab -->
+      <div *ngIf="activeTab === 'overview'" class="overview-tab">
+        <div class="overview-grid">
+          <div class="info-card">
+            <h3>Loan Amount</h3>
+            <p class="card-value">{{ formatCurrency(credit.loanAmount) }}</p>
+          </div>
+          <div class="info-card">
+            <h3>Loan Term</h3>
+            <p class="card-value">{{ credit.loanTerm }} months</p>
+          </div>
+          <div class="info-card">
+            <h3>Total Cost</h3>
+            <p class="card-value">{{ formatCurrency(getTotalCost()) }}</p>
+          </div>
+          <div class="info-card">
+            <h3>Total Interest</h3>
+            <p class="card-value">{{ formatCurrency(getTotalInterest()) }}</p>
+          </div>
+        </div>
+
+        <div class="summary-section">
+          <h3>Credit Summary</h3>
+          <div class="summary-grid">
+            <div class="summary-item">
+              <span class="summary-label">Credit Type</span>
+              <span class="summary-value">{{ credit.creditType }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Interest Type</span>
+              <span class="summary-value">{{ credit.interestType }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Monthly Income</span>
+              <span class="summary-value">{{ formatCurrency(credit.income) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="details-section">
+          <h3>Applicant Details</h3>
+          <div class="details-grid">
+            <div class="detail-item">
+              <span class="detail-label">Gender</span>
+              <span class="detail-value">{{ credit.gender }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Marital Status</span>
+              <span class="detail-value">{{ credit.married }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Education</span>
+              <span class="detail-value">{{ credit.education }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Self Employed</span>
+              <span class="detail-value">{{ credit.selfEmployed }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Repayment Schedule Tab -->
+      <div *ngIf="activeTab === 'schedule'" class="schedule-tab">
+        <div class="schedule-header">
+          <h3>Repayment Schedule</h3>
+          <p class="schedule-description">
+            Monthly breakdown of your loan repayments including principal, interest, and remaining balance.
+          </p>
+        </div>
+        
+        <!-- Add Chart Component -->
+        <app-repayment-chart [remboursements]="remboursements"></app-repayment-chart>
+
+        <div class="schedule-table-container">
+          <table class="schedule-table">
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Payment</th>
+                <th>Principal</th>
+                <th>Interest</th>
+                <th>Remaining Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let payment of remboursements">
+                <td>{{ payment.month }}</td>
+                <td>{{ formatCurrency(payment.annuite) }}</td>
+                <td>{{ formatCurrency(payment.capitalRepayment) }}</td>
+                <td>{{ formatCurrency(payment.interest) }}</td>
+                <td>{{ formatCurrency(payment.remainingCapital) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div *ngIf="remboursements.length === 0" class="no-data">
+          <i class="fas fa-info-circle"></i> No repayment schedule available.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="credit && credit.creditStatus === 'APPROVED'">
+    <app-contract-generator [credit]="credit"></app-contract-generator>
+  </div>
+</div>
+
+<app-footer></app-footer>

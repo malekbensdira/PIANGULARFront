@@ -1,0 +1,109 @@
+.admin-container {
+    padding: 20px;
+  }
+  
+  .admin-header {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .welcome-text {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .slogan {
+    font-size: 16px;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: #007bff;
+    font-size: 18px;
+  }
+  
+  .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 4px;
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  .summary-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(0, 123, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 20px;
+    color: #007bff;
+  }
+  
+  .card-content h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #6c757d;
+  }
+  
+  .card-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: #343a40;
+    margin: 5px 0 0 0;
+  }
+  
+  /* Different colors for different icons */
+  .summary-card:nth-child(2) .card-icon {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+  }
+  
+  .summary-card:nth-child(3) .card-icon {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+  }
+  
+  .summary-card:nth-child(4) .card-icon {
+    background-color: rgba(23, 162, 184, 0.1);
+    color: #17a2b8;
+  }

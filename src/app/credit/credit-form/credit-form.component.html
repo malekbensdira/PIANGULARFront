@@ -1,0 +1,147 @@
+<app-header-after-signin></app-header-after-signin>
+
+<div class="credit-container">
+  <div class="credit-header">
+    <h1 class="welcome-text">{{ isEditMode ? 'Edit Credit Application' : 'New Credit Application' }}</h1>
+    <p class="slogan">
+      <i class="fas fa-credit-card"></i> {{ isEditMode ? 'Update Your Credit Details' : 'Apply For A New Credit' }} <i class="fas fa-hand-holding-heart"></i>
+    </p>
+  </div>
+
+  <div class="content-wrapper">
+    <div *ngIf="loading" class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i> Loading credit data...
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      <i class="fas fa-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <form *ngIf="!loading && !error" [formGroup]="creditForm" (ngSubmit)="onSubmit()" class="credit-form">
+      <div class="form-section">
+        <h3>Personal Information</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" formControlName="gender" class="form-control">
+              <option *ngFor="let option of genderOptions" [value]="option">{{ option }}</option>
+            </select>
+            <div *ngIf="creditForm.get('gender')?.invalid && creditForm.get('gender')?.touched" class="validation-error">
+              Gender is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="married">Marital Status</label>
+            <select id="married" formControlName="married" class="form-control">
+              <option *ngFor="let option of marriedOptions" [value]="option">{{ option }}</option>
+            </select>
+            <div *ngIf="creditForm.get('married')?.invalid && creditForm.get('married')?.touched" class="validation-error">
+              Marital status is required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="education">Education</label>
+            <select id="education" formControlName="education" class="form-control">
+              <option *ngFor="let option of educationOptions" [value]="option">{{ option }}</option>
+            </select>
+            <div *ngIf="creditForm.get('education')?.invalid && creditForm.get('education')?.touched" class="validation-error">
+              Education is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="selfEmployed">Self Employed</label>
+            <select id="selfEmployed" formControlName="selfEmployed" class="form-control">
+              <option *ngFor="let option of selfEmployedOptions" [value]="option">{{ option }}</option>
+            </select>
+            <div *ngIf="creditForm.get('selfEmployed')?.invalid && creditForm.get('selfEmployed')?.touched" class="validation-error">
+              Self employed status is required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="income">Monthly Income</label>
+            <input type="number" id="income" formControlName="income" class="form-control" min="0" step="100">
+            <div *ngIf="creditForm.get('income')?.invalid && creditForm.get('income')?.touched" class="validation-error">
+              <span *ngIf="creditForm.get('income')?.errors?.['required']">Income is required</span>
+              <span *ngIf="creditForm.get('income')?.errors?.['min']">Income must be at least 0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Loan Details</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="loanAmount">Loan Amount</label>
+            <input type="number" id="loanAmount" formControlName="loanAmount" class="form-control" min="0" step="1000">
+            <div *ngIf="creditForm.get('loanAmount')?.invalid && creditForm.get('loanAmount')?.touched" class="validation-error">
+              <span *ngIf="creditForm.get('loanAmount')?.errors?.['required']">Loan amount is required</span>
+              <span *ngIf="creditForm.get('loanAmount')?.errors?.['min']">Loan amount must be at least 0</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="loanTerm">Loan Term (months)</label>
+            <input type="number" id="loanTerm" formControlName="loanTerm" class="form-control" min="1" step="1">
+            <div *ngIf="creditForm.get('loanTerm')?.invalid && creditForm.get('loanTerm')?.touched" class="validation-error">
+              <span *ngIf="creditForm.get('loanTerm')?.errors?.['required']">Loan term is required</span>
+              <span *ngIf="creditForm.get('loanTerm')?.errors?.['min']">Loan term must be at least 1 month</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="creditType">Credit Type</label>
+            <select id="creditType" formControlName="creditType" class="form-control">
+              <option *ngFor="let option of creditTypeOptions" [value]="option">{{ option }}</option>
+            </select>
+            <div *ngIf="creditForm.get('creditType')?.invalid && creditForm.get('creditType')?.touched" class="validation-error">
+              Credit type is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="interestType">Interest Type</label>
+            <select id="interestType" formControlName="interestType" class="form-control">
+              <option *ngFor="let option of interestTypeOptions" [value]="option">{{ option }}</option>
+            </select>
+            <div *ngIf="creditForm.get('interestType')?.invalid && creditForm.get('interestType')?.touched" class="validation-error">
+              Interest type is required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="creditStatus">Credit Status</label>
+            <select id="creditStatus" formControlName="creditStatus" class="form-control">
+              <option *ngFor="let option of creditStatusOptions" [value]="option">{{ option }}</option>
+            </select>
+            <div *ngIf="creditForm.get('creditStatus')?.invalid && creditForm.get('creditStatus')?.touched" class="validation-error">
+              Credit status is required
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" (click)="cancel()" class="btn-secondary">Cancel</button>
+        <button type="submit" [disabled]="submitting" class="btn-primary">
+          <i *ngIf="submitting" class="fas fa-spinner fa-spin"></i>
+          {{ isEditMode ? 'Update Credit' : 'Create Credit' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<app-footer></app-footer>

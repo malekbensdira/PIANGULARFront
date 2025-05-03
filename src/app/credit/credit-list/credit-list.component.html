@@ -1,0 +1,78 @@
+<app-header-after-signin></app-header-after-signin>
+
+<div class="credit-container">
+  <div class="credit-header">
+    <h1 class="welcome-text">Credit Management</h1>
+    <p class="slogan">
+      Manage Your <i class="fas fa-credit-card"></i> Credits With <i class="fas fa-hand-holding-heart"></i> Care!
+    </p>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="action-bar">
+      <button (click)="backToDashboard()" class="btn-back">
+        <i class="fas fa-tachometer-alt"></i> Back to Dashboard
+      </button>
+      <button (click)="createNewCredit()" class="btn-create">
+        <i class="fas fa-plus-circle"></i> New Credit Application
+      </button>
+    </div>
+
+    <div *ngIf="loading" class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i> Loading credits...
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      <i class="fas fa-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <div *ngIf="!loading && !error && credits.length === 0" class="empty-state">
+      <i class="fas fa-inbox fa-3x"></i>
+      <p>No credits found. Start by creating a new credit application.</p>
+    </div>
+
+    <div *ngIf="!loading && !error && credits.length > 0" class="credit-list">
+      <div class="credit-table-container">
+        <table class="credit-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Term</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let credit of credits">
+              <td>{{ credit.creditId }}</td>
+              <td>{{ credit.creditType }}</td>
+              <td>{{ credit.loanAmount | currency }}</td>
+              <td>{{ credit.loanTerm }} months</td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(credit.creditStatus)">
+                  {{ credit.creditStatus }}
+                </span>
+              </td>
+              <td class="actions">
+                <button (click)="viewCreditDetails(credit.creditId)" class="btn-action btn-view" title="View Details">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button (click)="editCredit(credit.creditId)" class="btn-action btn-edit" title="Edit">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button (click)="deleteCredit(credit.creditId)" class="btn-action btn-delete" title="Delete">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<app-footer></app-footer>

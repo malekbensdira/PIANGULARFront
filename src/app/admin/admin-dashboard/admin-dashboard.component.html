@@ -1,0 +1,66 @@
+<!--app-header-after-signin></!--app-header-after-signin-->
+
+<div class="admin-container">
+  <div class="admin-header">
+    <h1 class="welcome-text">Admin Dashboard</h1>
+    <p class="slogan">
+      <i class="fas fa-tachometer-alt"></i> Complete Administration Panel <i class="fas fa-shield-alt"></i>
+    </p>
+  </div>
+
+  <div class="content-wrapper">
+    <div *ngIf="loading" class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i> Loading dashboard data...
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      <i class="fas fa-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <div *ngIf="!loading && !error" class="dashboard-content">
+      <!-- Summary Cards -->
+      <div class="summary-cards">
+        <div class="summary-card">
+          <div class="card-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="card-content">
+            <h3>Total Users</h3>
+            <p class="card-value">{{ totalUsers }}</p>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="card-icon">
+            <i class="fas fa-credit-card"></i>
+          </div>
+          <div class="card-content">
+            <h3>Total Credits</h3>
+            <p class="card-value">{{ totalCredits }}</p>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="card-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="card-content">
+            <h3>Pending Approvals</h3>
+            <p class="card-value">{{ pendingCredits }}</p>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="card-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="card-content">
+            <h3>Approved Credits</h3>
+            <p class="card-value">{{ approvedCredits }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Sections -->
+      <div class="admin-sections">
+        <div class="admin-section-card" routerLink="/admin/users">

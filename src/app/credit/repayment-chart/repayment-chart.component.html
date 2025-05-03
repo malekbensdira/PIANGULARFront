@@ -1,0 +1,13 @@
+<div class="chart-container">
+    <div *ngIf="remboursements && remboursements.length > 0" class="chart">
+      <canvas baseChart
+        [type]="'line'"
+        [data]="chartData"
+        [options]="chartOptions">
+      </canvas>
+    </div>
+    <div *ngIf="!remboursements || remboursements.length === 0" class="no-data-message">
+      <i class="fas fa-chart-bar"></i>
+      <p>No repayment data available to display chart.</p>
+    </div>
+  </div>

@@ -1,0 +1,153 @@
+<app-header-after-signin></app-header-after-signin>
+
+<div class="admin-container">
+  <div class="admin-header">
+    <h1 class="welcome-text">User Management</h1>
+    <p class="slogan">
+      <i class="fas fa-users"></i> Manage All System Users <i class="fas fa-user-cog"></i>
+    </p>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="action-bar">
+      <a routerLink="/admin" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+      </a>
+      <div class="search-container">
+        <input type="text" [(ngModel)]="searchTerm" (input)="searchUsers()" placeholder="Search users..." class="search-input">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i> Loading users...
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      <i class="fas fa-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <div *ngIf="!loading && !error && !viewDetailsMode" class="users-content">
+      <div class="users-table-container">
+        <table class="users-table" *ngIf="filteredUsers.length > 0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Account Balance</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of filteredUsers">
+              <td>{{ user.id }}</td>
+              <td>{{ user.prenom }} {{ user.nom }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <span class="role-badge" [ngClass]="getRoleClass(user.role)">
+                  {{ user.role }}
+                </span>
+              </td>
+              <td>
+                <span [ngClass]="user.soldeCourant > 0 ? 'balance-positive' : 'balance-negative'">
+                  {{ formatCurrency(user.soldeCourant) }}
+                </span>
+              </td>
+              <td class="actions">
+                <button class="btn-action btn-view" (click)="viewUserDetails(user)" title="View Details">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn-action btn-delete" (click)="deleteUser(user.id)" title="Delete User">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="filteredUsers.length === 0 && !loading" class="no-users-message">
+          <i class="fas fa-users-slash"></i>
+          <p>No users found matching your search criteria.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Details View -->
+    <div *ngIf="selectedUser && viewDetailsMode" class="user-details">
+      <div class="section-header">
+        <h3>User Details</h3>
+        <button class="btn-close" (click)="closeUserDetails()" title="Close User Details">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="user-profile">
+        <div class="user-avatar">
+          <img [src]="selectedUser.image || 'assets/img/default-profile.png'" alt="User avatar">
+          <span class="role-badge large" [ngClass]="getRoleClass(selectedUser.role)">
+            {{ selectedUser.role }}
+          </span>
+        </div>
+
+        <div class="user-info">
+          <h2>{{ selectedUser.prenom }} {{ selectedUser.nom }}</h2>
+          <p class="user-email">
+            <i class="fas fa-envelope"></i> {{ selectedUser.email }}
+          </p>
+          <p class="user-phone">
+            <i class="fas fa-phone"></i> {{ selectedUser.tel || 'Not provided' }}
+          </p>
+        </div>
+      </div>
+
+      <div class="details-grid">
+        <div class="detail-card">
+          <h4><i class="fas fa-id-card"></i> Personal Information</h4>
+          <div class="detail-item">
+            <span class="detail-label">CIN:</span>
+            <span class="detail-value">{{ selectedUser.cin || 'Not provided' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Age:</span>
+            <span class="detail-value">{{ selectedUser.age || 'Not provided' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Gender:</span>
+            <span class="detail-value">{{ selectedUser.sexe || 'Not provided' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Address:</span>
+            <span class="detail-value">{{ selectedUser.adresse || 'Not provided' }}</span>
+          </div>
+        </div>
+
+        <div class="detail-card">
+          <h4><i class="fas fa-university"></i> Bank Information</h4>
+          <div class="detail-item">
+            <span class="detail-label">RIB:</span>
+            <span class="detail-value">{{ selectedUser.rib || 'Not provided' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Account Balance:</span>
+            <span class="detail-value" [ngClass]="selectedUser.soldeCourant > 0 ? 'balance-positive' : 'balance-negative'">
+              {{ formatCurrency(selectedUser.soldeCourant) }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-edit">
+          <i class="fas fa-edit"></i> Edit User
+        </button>
+        <button class="btn-delete" (click)="deleteUser(selectedUser.id)">
+          <i class="fas fa-trash"></i> Delete User
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
