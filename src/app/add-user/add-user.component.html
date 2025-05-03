@@ -52,12 +52,12 @@
 
         <!-- Troisième ligne : Mot de passe et Sexe -->
         <div class="form-group">
-          <label for="mdp">Password</label>
+          <label for="password">Password</label>
           <div class="input-group">
-            <input type="password" id="mdp" formControlName="mdp" class="form-control" placeholder="Enter the password"/>
+            <input type="password" id="password" formControlName="password" class="form-control" placeholder="Enter the password"/>
           </div>
-          <small class="text-danger" *ngIf="addUserForm.get('mdp')?.touched && addUserForm.get('mdp')?.invalid">
-            Password is required and must meet criteria.
+          <small class="text-danger" *ngIf="addUserForm.get('password')?.touched && addUserForm.get('password')?.invalid">
+            Password must be at least 6 characters long.
           </small>
         </div>
 
@@ -92,7 +92,7 @@
             <input type="text" id="adresse" formControlName="adresse" class="form-control" placeholder="Enter the address"/>
           </div>
           <small class="text-danger" *ngIf="addUserForm.get('adresse')?.touched && addUserForm.get('adresse')?.invalid">
-            Please enter an address.
+            Address must be at least 5 characters long.
           </small>
         </div>
 
@@ -103,7 +103,7 @@
             <input type="number" id="age" formControlName="age" class="form-control" placeholder="Enter the age"/>
           </div>
           <small class="text-danger" *ngIf="addUserForm.get('age')?.touched && addUserForm.get('age')?.invalid">
-            Age must be a valid number.
+            Age must be between 18 and 100.
           </small>
         </div>
 
@@ -113,14 +113,11 @@
             <select formControlName="role">
               <option *ngFor="let r of roles" [value]="r.nomRole">{{ r.nomRole }}</option>
             </select>
-            
           </div>
           <small class="text-danger" *ngIf="addUserForm.get('role')?.touched && addUserForm.get('role')?.invalid">
             Please select a role.
           </small>
         </div>
-        
-
 
         <!-- Sixième ligne : RIB et Image -->
         <div class="form-group">
@@ -129,7 +126,7 @@
             <input type="text" id="rib" formControlName="rib" class="form-control" placeholder="Enter the RIB" maxlength="20"/>
           </div>
           <small class="text-danger" *ngIf="addUserForm.get('rib')?.touched && addUserForm.get('rib')?.invalid">
-            RIB is required.
+            RIB must be 20 digits long.
           </small>
         </div>
 
@@ -137,7 +134,6 @@
           <label for="image">Upload Image</label>
           <input type="file" id="image" (change)="onImageSelected($event)" accept="image/*" />
         </div>
-        
 
         <!-- Septième ligne : Solde courant -->
         <div class="form-group">

@@ -1,0 +1,851 @@
+/* Structure principale */
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  gap: 20px;
+}
+
+app-sidebar-admin {
+  width: 250px;
+  flex-shrink: 0;
+  background-color: #2c3e50;
+  color: white;
+  margin-right: 20px;
+}
+
+.content-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  padding-right: 10px;
+}
+
+
+
+
+.main-content {
+  flex-grow: 8;
+  padding: 20px 0;
+  background-color: #f5f7fa6b;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Conteneur des boutons centrés */
+.action-buttons-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.action-buttons button {
+  padding: 10px 25px;
+  background-color: #224393;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.action-buttons button:hover {
+  background-color: #0b48d7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Conteneur du graphique */
+.chart-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px auto;
+  width: 80%;
+  max-width: 800px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.chart-title {
+  font-family: 'Poppins', sans-serif;
+  color: #224393;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Conteneur du tableau */
+.table-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin: 20px auto;
+}
+
+.table-title {
+  font-family: 'Poppins', sans-serif;
+  color: #224393;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.progress-bar-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  color: #224393;
+  margin-bottom: 20px; /* Increased spacing below title */
+  font-weight: bold;
+  text-align: center;
+}
+
+.progress-bar {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  height: 40px;
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(270deg, #99d7e5, rgb(56, 125, 236), #c0edf6);
+  background-size: 400% 400%;
+  animation: gradientMove 5s ease infinite;
+  border-radius: 30px;
+  position: relative;
+  box-shadow: 0 4px 10px #2052e9;
+  transition: width 3s ease-in-out;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.progress-message {
+  margin-top: 15px; /* Spacing between progress bar and message */
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #224393;
+}
+
+/* Animation lumière qui traverse */
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(
+    to right,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.5) 50%,
+    rgba(255,255,255,0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: lightSweep 2s infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes lightSweep {
+  0% { left: -50%; }
+  100% { left: 150%; }
+}
+
+.claims-table {
+  width: 100%;
+  max-width: 800px;
+  overflow-x: auto;
+  background: white;
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 0.85em;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  margin-left: 20px; /* Shift table to the right */
+}
+
+.claims-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Arial', sans-serif;
+}
+
+.claims-table th,
+.claims-table td {
+  padding: 8px 7px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.claims-table th {
+  background-color: #224393;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.claims-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.claims-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table-responsive-container {
+  width: 100%;
+}
+
+/* Bouton pour changer le statut */
+.btn-toggle-status {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-toggle-status:hover {
+  background-color: #45a049;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Conteneur pour le graphique de répartition par type de problème */
+.problem-type-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px auto;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.problem-type-title {
+  font-family: 'Poppins', sans-serif;
+  color: #224393;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.problem-type-insights {
+  margin-top: 15px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  color: #333;
+}
+
+.problem-type-insights p {
+  margin: 5px 0;
+}
+
+.problem-type-insights strong {
+  color: #224393;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .admin-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  app-sidebar-admin {
+    width: 100%;
+    margin-right: 0;
+  }
+  
+  .content-wrapper {
+    padding-right: 0;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .chart-container, .table-container, .problem-type-container {
+    width: 95%;
+  }
+  
+  .claims-table {
+    padding: 10px;
+    margin-left: 0; /* Remove right shift on small screens */
+  }
+}
+
+/* Styles pour la carte de détails */
+tr.selected {
+  background-color: #e0f7fa !important;
+  font-weight: bold;
+}
+
+.claim-detail-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  margin: 30px auto;
+  border-top: 4px solid #221289;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.4s ease-out forwards;
+  max-width: 800px;
+}
+
+.claim-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.claim-info h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.claim-meta {
+  margin-top: 8px;
+}
+
+.claim-status {
+  display: inline-block;
+  background: #e8f5e9;
+  color: #4caf50;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.claim-status.status-not-treated {
+  background: #ffebee;
+  color: #f44336;
+}
+
+.claim-details-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.detail-col {
+  flex: 1;
+  min-width: 250px;
+}
+
+.detail-item {
+  margin-bottom: 18px;
+}
+
+.detail-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.detail-value {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Structure principale */
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  gap: 20px;
+}
+
+app-sidebar-admin {
+  width: 250px;
+  flex-shrink: 0;
+  background-color: #2c3e50;
+  color: white;
+  margin-right: 20px;
+  z-index: 1000; /* Ajout d'un z-index élevé pour que la sidebar soit au premier plan */
+  position: relative; /* Assure que z-index fonctionne correctement */
+}
+
+.content-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  padding-right: 10px;
+}
+
+.main-content {
+  flex-grow: 8;
+  padding: 20px 0;
+  background-color: #f5f7fa6b;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Conteneur des boutons centrés */
+.action-buttons-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.action-buttons button {
+  padding: 10px 25px;
+  background-color: #224393;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.action-buttons button:hover {
+  background-color: #0b48d7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Conteneur du graphique */
+.chart-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px auto;
+  width: 80%;
+  max-width: 800px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.chart-title {
+  font-family: 'Poppins', sans-serif;
+  color: #224393;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Conteneur du tableau */
+.table-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin: 20px auto;
+}
+
+.table-title {
+  font-family: 'Poppins', sans-serif;
+  color: #224393;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.progress-bar-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 10; /* z-index bas pour rester en dessous de la sidebar */
+}
+
+.progress-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  color: #224393;
+  margin-bottom: 20px; /* Increased spacing below title */
+  font-weight: bold;
+  text-align: center;
+}
+
+.progress-bar {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  height: 40px;
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  z-index: 10; /* z-index bas pour rester en dessous de la sidebar */
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(270deg, #99d7e5, rgb(56, 125, 236), #c0edf6);
+  background-size: 400% 400%;
+  animation: gradientMove 5s ease infinite;
+  border-radius: 30px;
+  position: relative;
+  box-shadow: 0 4px 10px #2052e9;
+  transition: width 2s ease-in-out;
+  z-index: 11; /* Légèrement supérieur au progress-bar pour l'effet visuel */
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  z-index: 12; /* z-index pour que le texte soit au-dessus du progress-fill */
+}
+
+.progress-message {
+  margin-top: 15px; /* Spacing between progress bar and message */
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #224393;
+}
+
+/* Animation lumière qui traverse */
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(
+    to right,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.5) 50%,
+    rgba(255,255,255,0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: lightSweep 2s infinite;
+  z-index: 11; /* Même niveau que progress-fill pour l'effet */
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes lightSweep {
+  0% { left: -50%; }
+  100% { left: 150%; }
+}
+
+.claims-table {
+  width: 100%;
+  max-width: 800px;
+  overflow-x: auto;
+  background: white;
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 0.85em;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  margin-left: 20px; /* Shift table to the right */
+}
+
+.claims-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Arial', sans-serif;
+}
+
+.claims-table th,
+.claims-table td {
+  padding: 8px 7px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.claims-table th {
+  background-color: #224393;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.claims-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.claims-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table-responsive-container {
+  width: 100%;
+}
+
+/* Bouton pour changer le statut */
+.btn-toggle-status {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-toggle-status:hover {
+  background-color: #45a049;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Conteneur pour le graphique de répartition par type de problème */
+.problem-type-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px auto;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.problem-type-title {
+  font-family: 'Poppins', sans-serif;
+  color: #224393;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.problem-type-insights {
+  margin-top: 15px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  color: #333;
+}
+
+.problem-type-insights p {
+  margin: 5px 0;
+}
+
+.problem-type-insights strong {
+  color: #224393;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .admin-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  app-sidebar-admin {
+    width: 100%;
+    margin-right: 0;
+  }
+  
+  .content-wrapper {
+    padding-right: 0;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .chart-container, .table-container, .problem-type-container {
+    width: 95%;
+  }
+  
+  .claims-table {
+    padding: 10px;
+    margin-left: 0; /* Remove right shift on small screens */
+  }
+}
+
+/* Styles pour la carte de détails */
+tr.selected {
+  background-color: #e0f7fa !important;
+  font-weight: bold;
+}
+
+.claim-detail-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  margin: 30px auto;
+  border-top: 4px solid #221289;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.4s ease-out forwards;
+  max-width: 800px;
+}
+
+.claim-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.claim-info h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.claim-meta {
+  margin-top: 8px;
+}
+
+.claim-status {
+  display: inline-block;
+  background: #e8f5e9;
+  color: #4caf50;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.claim-status.status-not-treated {
+  background: #ffebee;
+  color: #f44336;
+}
+
+.claim-details-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.detail-col {
+  flex: 1;
+  min-width: 250px;
+}
+
+.detail-item {
+  margin-bottom: 18px;
+}
+
+.detail-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.detail-value {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,347 @@
+/* Structure principale */
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  gap: 20px;
+}
+
+app-sidebar-admin {
+  width: 250px;
+  flex-shrink: 0;
+  background-color: #2c3e50;
+  color: white;
+  margin-right: 20px;
+  z-index: 1000;
+  position: relative;
+}
+
+.content-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  padding: 20px;
+}
+
+.profile-settings {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.profile-image-frame {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #224393;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.profile-image-frame:hover {
+  transform: scale(1.05);
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-img.animate-move {
+  animation: moveIn 0.5s ease-out;
+}
+
+@keyframes moveIn {
+  from {
+      transform: translateY(-20px);
+      opacity: 0;
+  }
+  to {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+.edit-icon {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: #224393;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.edit-icon:hover {
+  background: #0b48d7;
+  transform: scale(1.1);
+}
+
+.profile-image-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2rem;
+  color: #224393;
+  text-align: center;
+  margin-bottom: 20px;
+  animation: moveIn 0.5s ease-out;
+}
+
+.profile-message {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  color: #224393;
+  text-align: center;
+  margin-bottom: 20px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.profile-message.show {
+  opacity: 1;
+}
+
+.page-content {
+  background-color: #f5f7fa6b;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.zoom-in-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  color: #224393;
+  text-align: center;
+  margin-bottom: 20px;
+  animation: zoomIn 0.5s ease-out;
+}
+
+@keyframes zoomIn {
+  from {
+      transform: scale(0.5);
+      opacity: 0;
+  }
+  to {
+      transform: scale(1);
+      opacity: 1;
+  }
+}
+
+.slogan {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  animation: typing 2s steps(40, end);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.privacy-message {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-container {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: 'Arial', sans-serif;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.profile-table tr {
+  transition: background 0.3s ease;
+}
+
+.profile-table tr:hover {
+  background-color: #f5f7fa;
+}
+
+.profile-table th,
+.profile-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+}
+
+.profile-table th {
+  background-color: #224393;
+  color: white;
+  font-weight: bold;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.profile-table td {
+  background-color: #ffffff;
+}
+
+.profile-table td input,
+.profile-table td select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: 'Arial', sans-serif;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-table td input:focus,
+.profile-table td select:focus {
+  outline: none;
+  border-color: #224393;
+  box-shadow: 0 0 5px rgba(34, 67, 147, 0.3);
+}
+
+.profile-table td select {
+  appearance: none;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23333" d="M6 9L2 5h8z"/></svg>') no-repeat right 10px center;
+  background-size: 12px;
+  padding-right: 30px;
+}
+
+.profile-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.edit-btn {
+  background-color: #224393;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #0b48d7;
+  transform: translateY(-2px);
+}
+
+.save-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+.cancel-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+}
+
+.delete-btn {
+  background-color: #d33;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #b71c1c;
+  transform: translateY(-2px);
+}
+
+.logout-btn {
+  background-color: #666;
+  color: white;
+}
+
+.logout-btn:hover {
+  background-color: #555;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .admin-container {
+      flex-direction: column;
+      gap: 10px;
+  }
+
+  app-sidebar-admin {
+      width: 100%;
+      margin-right: 0;
+  }
+
+  .content-wrapper {
+      padding: 10px;
+  }
+
+  .page-content {
+      padding: 10px;
+  }
+
+  .profile-table th,
+  .profile-table td {
+      padding: 10px;
+  }
+
+  .profile-buttons {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .profile-image-frame {
+      width: 80px;
+      height: 80px;
+  }
+
+  .edit-icon {
+      width: 24px;
+      height: 24px;
+      font-size: 12px;
+  }
+
+  .profile-image-title {
+      font-size: 1rem;
+  }
+
+  .profile-message {
+      font-size: 1.2rem;
+  }
+}

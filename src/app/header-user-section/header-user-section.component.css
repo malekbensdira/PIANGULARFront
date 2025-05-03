@@ -1,0 +1,153 @@
+
+  
+  .main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0);
+    position: relative;
+  }
+  
+  /* Profile section */
+  .profile-settings {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    justify-content: flex-end; /* ceci aligne tout à droite */
+    padding-right: 40px; /* espace à droite */
+  }
+  
+  /* Container du dropdown + image */
+  .user-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: right;
+  }
+  
+  
+  /* Profile image */
+  .profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+  
+  /* Dropdown container */
+  .user-dropdown {
+    position: right;
+  }
+  
+  /* User name button */
+  .user-name-btn {
+    background-color: transparent;
+    border: none;
+    color: #224393;
+    font-weight: bold;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  /* Dropdown menu style */
+  .dropdown-menu {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background-color: white;
+    color: #224393;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    min-width: 160px;
+  }
+  
+  /* Dropdown items */
+  .dropdown-item {
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 10px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    color: #224393;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f1f1f1;
+  }
+  
+
+ 
+
+  .animated-title {
+    font-size: 24px;
+    font-weight: normal;
+    color: #224393;
+    text-align: center;
+    margin: 0 auto 40px auto;
+    font-family: 'Courier New', monospace;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid #224393;
+    width: 42ch; /* Ajuste ce nombre selon le nombre de caractères de ton slogan */
+    text-shadow: 
+      -1px -1px 0 #224393,
+      1px -1px 0 #224393,
+      -1px 1px 0 #224393,
+      1px 1px 0 #224393;
+    opacity: 0;
+    animation: fadeInTyping 3s steps(44, end) 3s forwards, blink 0.75s step-end infinite 6s;
+  }
+  
+  @keyframes fadeInTyping {
+    from {
+      width: 0;
+      opacity: 1;
+    }
+    to {
+      width: 42ch;
+      opacity: 1;
+    }
+  }
+  
+  @keyframes blink {
+    0%, 100% {
+      border-color: transparent;
+    }
+    50% {
+      border-color: #224393;
+    }
+  }
+  .welcome-message {
+    font-size: 1.8rem;
+    font-weight: bold;
+    animation: fadeIn 2s ease-in-out;
+    font-family: 'Poppins', sans-serif;
+    color: #224393;
+    text-align: center;
+    width: 100%;
+    margin-left: 150px; /* Augmente la valeur pour le décalage */
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-100px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  
+  
+  

@@ -17,47 +17,80 @@ export class AddUserComponent implements OnInit {
     { idRole: 3, nomRole: 'CLIENT' },
     { idRole: 4, nomRole: 'INVESTOR' }
   ];
-  
 
-  constructor(private fb: FormBuilder, private userService: UserService) {}
-
-  ngOnInit(): void {
+  constructor(private fb: FormBuilder, private userService: UserService) {
     this.addUserForm = this.fb.group({
-      nom: ['', [Validators.required]],
-      prenom: ['', [Validators.required]],
+      nom: ['', [Validators.required, Validators.pattern('^[A-Za-z]+$')]],
+      prenom: ['', [Validators.required, Validators.pattern('^[A-Za-z]+$')]],
       cin: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
       email: ['', [Validators.required, Validators.email]],
-      mdp: ['', [Validators.required]],
-      sexe: ['', [Validators.required]],
-      tel: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      sexe: ['', [Validators.required, Validators.pattern('^(man|woman)$')]],
+      tel: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
       role: ['', [Validators.required]],
-      adresse: ['', [Validators.required]],
-      rib: ['', [Validators.required]],
-      soldeCourant: [''],
+      adresse: ['', [Validators.required, Validators.minLength(5)]],
+      rib: ['', [Validators.required, Validators.pattern('^[0-9]{20}$')]],
+      soldeCourant: [0, [Validators.min(0)]],
       age: ['', [Validators.required, Validators.min(18), Validators.max(100)]]
     });
   }
 
+  ngOnInit(): void {}
+
   onImageSelected(event: any): void {
     this.selectedImage = event.target.files[0];
   }
-  
+
   onSubmit(): void {
-    if (this.addUserForm.invalid) return;
-  
+    if (this.addUserForm.invalid) {
+      this.addUserForm.markAllAsTouched();
+      return;
+    }
+
     const formData = new FormData();
-    Object.entries(this.addUserForm.value).forEach(([key, value]) => {
-      formData.append(key, value as string);
+    const formValue = this.addUserForm.value;
+    Object.entries(formValue).forEach(([key, value]) => {
+      if (key === 'password') {
+        formData.append('mdp', value as string);
+      } else if (key === 'role') {
+        // Send role in uppercase to match backend expectations
+        formData.append('role', (value as string).toUpperCase());
+      } else {
+        formData.append(key, value as string);
+      }
     });
-  
+
     if (this.selectedImage) {
       formData.append('image', this.selectedImage);
     }
-  
+
+    // Log FormData contents for debugging
+    const formDataDebug: { [key: string]: any } = {};
+    formData.forEach((value, key) => {
+      formDataDebug[key] = value;
+    });
+    console.log('Registration form data:', formDataDebug);
+
     this.userService.registerUser(formData).subscribe({
-      next: res => alert("Utilisateur ajouté avec succès !"),
-      error: err => console.error(err)
+      next: (res) => {
+        alert('Utilisateur ajouté avec succès !');
+        this.addUserForm.reset();
+        this.selectedImage = null;
+      },
+      error: (err) => {
+        console.error('Registration failed:', err);
+        let errorMessage = 'Erreur lors de l\'ajout de l\'utilisateur. Veuillez réessayer.';
+        if (err.error) {
+          if (typeof err.error === 'string') {
+            errorMessage = err.error;
+          } else if (err.error.message) {
+            errorMessage = err.error.message;
+          } else {
+            errorMessage = JSON.stringify(err.error);
+          }
+        }
+        alert(errorMessage);
+      }
     });
   }
-  
 }

@@ -178,3 +178,76 @@ button[type="submit"]:hover {
 .success-notification.show {
   display: block;
 }
+
+/* ----------------- */
+
+/* Styles pour les champs de saisie, y compris select et file */
+.form-control, select, input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="file"] {
+  width: 100%;
+  padding: 8px; /* Réduit de 12px à 8px pour des champs plus compacts */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px; /* Réduit de 16px à 14px */
+  background-color: #f8f9fa;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus, select:focus, input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+  background-color: #fff;
+}
+
+/* Placeholder */
+.form-control::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Radio buttons */
+.input-group input[type="radio"] {
+  accent-color: #007bff;
+  margin-right: 6px; /* Réduit légèrement l'espacement */
+  transform: scale(1.1); /* Réduit de 1.2 à 1.1 pour une taille plus petite */
+  cursor: pointer;
+}
+
+.input-group input[type="radio"] + label {
+  font-size: 14px; /* Réduit pour correspondre à la nouvelle taille des champs */
+  cursor: pointer;
+}
+
+/* Select dropdown */
+select.form-control {
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><path fill="%23333" d="M5 7.5l3.5-3.5H1.5z"/></svg>'); /* Flèche légèrement plus petite */
+  background-repeat: no-repeat;
+  background-position: right 10px center; /* Ajusté pour le nouveau padding */
+  padding-right: 28px; /* Réduit de 32px à 28px */
+  cursor: pointer;
+}
+
+/* Champ de fichier */
+input[type="file"].form-control {
+  padding: 8px; /* Réduit pour correspondre aux autres champs */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  line-height: 1.5;
+  font-size: 14px; /* Réduit pour cohérence */
+}
+
+input[type="file"].form-control:hover {
+  border-color: #007bff;
+}
+
+/* Messages d'erreur */
+.text-danger {
+  color: #dc3545;
+  font-size: 12px; /* Réduit légèrement pour correspondre à la nouvelle échelle */
+  margin-top: 4px; /* Réduit pour compacité */
+  display: block;
+  font-weight: 500;
+}

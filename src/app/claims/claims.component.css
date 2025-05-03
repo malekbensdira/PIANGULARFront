@@ -1,0 +1,268 @@
+.claims-container {
+    padding: 40px;
+    font-family: 'Poppins', sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #224393;
+}
+
+.content-wrapper {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.claims-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.welcome-text {
+    font-size: 48px;
+    font-weight: 700;
+    color: #224393;
+    margin-bottom: 20px;
+    text-align: center;
+    animation: zoomIn 1.5s ease-in-out 1s forwards;
+    opacity: 0;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.4);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.slogan {
+    font-size: 24px;
+    font-weight: normal;
+    color: #224393;
+    text-align: center;
+    margin: 0 auto 40px auto;
+    font-family: 'Courier New', monospace;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid #224393;
+    width: 42ch;
+    text-shadow: 
+        -1px -1px 0 #224393,
+        1px -1px 0 #224393,
+        -1px 1px 0 #224393,
+        1px 1px 0 #224393;
+    opacity: 0;
+    animation: fadeInTyping 3s steps(42, end) 3s forwards, blink 0.75s step-end infinite 6s;
+}
+
+@keyframes fadeInTyping {
+    from {
+        width: 0;
+        opacity: 1;
+    }
+    to {
+        width: 42ch;
+        opacity: 1;
+    }
+}
+
+@keyframes blink {
+    0%, 100% {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #224393;
+    }
+}
+
+.claims-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-submit-claim {
+    padding: 12px 30px;
+    background-color: #f1dd5f;
+    color: #224393;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 40px;
+}
+
+.btn-submit-claim:hover {
+    background-color: #224393;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-submit-claim:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.claims-list {
+    width: 100%;
+    max-width: 800px;
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+}
+
+.claims-list h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #224393;
+}
+
+.claims-list .no-claims {
+    font-size: 16px;
+    color: #666;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+}
+
+.claims-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.claims-table th,
+.claims-table td {
+    padding: 16px;
+    text-align: center; /* Center all table content */
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+}
+
+.claims-table th {
+    background-color: #224393;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.claims-table tr {
+    transition: background-color 0.2s ease;
+}
+
+.claims-table tr:hover {
+    background-color: #f1dd5f;
+    cursor: pointer;
+}
+
+.claims-table tr:last-child td {
+    border-bottom: none;
+}
+
+.status-treated {
+    color: #4caf50;
+    font-weight: 500;
+    background-color: #e8f5e9;
+    padding: 4px 8px;
+    border-radius: 12px;
+    display: inline-block; /* Ensure badge aligns well when centered */
+}
+
+.status-not-treated {
+    color: #f44336;
+    font-weight: 500;
+    background-color: #ffebee;
+    padding: 4px 8px;
+    border-radius: 12px;
+    display: inline-block; /* Ensure badge aligns well when centered */
+}
+
+#logo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(2) rotate(0deg);
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    z-index: 1000;
+    animation: logoEntrance 3s ease-in-out forwards;
+}
+
+@keyframes logoEntrance {
+    0% {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(2) rotate(0deg);
+        width: 600px;
+        height: 600px;
+    }
+    100% {
+        top: -70px;
+        left: -70px;
+        transform: translate(0, 0) scale(1) rotate(360deg);
+        width: 300px;
+        height: 300px;
+    }
+}
+
+#content {
+    opacity: 0;
+    transition: opacity 1s ease-in;
+    padding: 30px;
+    font-family: 'Poppins', sans-serif;
+    background: #f9f9f9c9;
+}
+
+#content.visible {
+    opacity: 1;
+}
+
+.btn-edit,
+.btn-delete {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: all 0.3s ease;
+}
+
+.btn-edit {
+  background-color: #f1dd5f;
+  color: #224393;
+}
+
+.btn-edit:hover {
+  background-color: #224393;
+  color: #ffffff;
+}
+
+.btn-delete {
+  background-color: #f44336;
+  color: #ffffff;
+}
+
+.btn-delete:hover {
+  background-color: #d32f2f;
+  color: #ffffff;
+}

@@ -50,12 +50,12 @@ nav ul {
 nav ul li a {
   text-decoration: none;
   color: #fff;
-  font-size: 20px; /* Réduit la taille du texte pour que tout s'affiche bien */
+  font-size: 16px; /* Réduit la taille de la police pour éviter le retour à la ligne */
   font-weight: 600;
   display: flex;
   align-items: center;
   transition: 0.3s ease;
-  padding: 8px 12px; /* Réduit le padding pour moins d'espace autour du texte */
+  padding: 6px 10px; /* Réduit légèrement le padding pour compacter */
   border-radius: 8px;
 }
 
@@ -216,6 +216,3 @@ nav ul li a:hover {
 .dropdown-item:hover {
   background-color: #f1f1f1;
 }
-
-
-

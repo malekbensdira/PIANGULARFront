@@ -6,7 +6,7 @@
 // src/environments/environment.ts
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8081/api/users'  // Remplacez cela par l'URL de votre API backend
+  apiUrl: 'http://localhost:8081'  // Remplacez cela par l'URL de votre API backend
 };
 
 /*

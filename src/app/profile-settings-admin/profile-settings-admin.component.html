@@ -1,0 +1,66 @@
+<div class="admin-container">
+  <app-sidebar-admin class="sidebar" (animationend)="onSidebarAnimationEnd($event)"></app-sidebar-admin>
+
+  <div *ngIf="showContent && user" class="content-wrapper">
+    <div class="page-content">
+      <h2 class="zoom-in-title">Welcome to your personal dashboard</h2>
+      <div class="slogan">
+        You can now manage your profile and have access to your settings:
+      </div>
+      <p class="privacy-message">
+        These personal details are private and will not be visible to other users. They are only used to provide you with customer support.
+      </p>
+
+      <div class="profile-container">
+        <!-- Profile Image Frame -->
+        <div class="profile-image-frame">
+          <img [src]="userImageUrl" alt="User Image" class="profile-img animate-move">
+          <div *ngIf="isEditing" class="edit-icon" (click)="triggerFileInput()">
+            <i class="fas fa-pencil-alt"></i>
+          </div>
+          <input #fileInput type="file" (change)="onImageChange($event)" accept="image/*" style="display: none;">
+        </div>
+        <h3 class="profile-image-title">Profile Image</h3>
+
+        <p class="privacy-message">Details section:</p>
+
+        <table class="profile-table">
+          <tr><th>Name</th><td><span *ngIf="!isEditing">{{ user.nom }}</span><input *ngIf="isEditing" [(ngModel)]="user.nom" required pattern="[A-Za-z]+" title="Name must contain only letters" /></td></tr>
+          <tr><th>Surname</th><td><span *ngIf="!isEditing">{{ user.prenom }}</span><input *ngIf="isEditing" [(ngModel)]="user.prenom" required pattern="[A-Za-z]+" title="Surname must contain only letters" /></td></tr>
+          <tr><th>Email</th><td><span *ngIf="!isEditing">{{ user.email }}</span><input *ngIf="isEditing" [(ngModel)]="user.email" type="email" required pattern="[A-Za-z0-9+_.-]+@(.+)" title="Invalid email format" /></td></tr>
+          <tr><th>Phone</th><td><span *ngIf="!isEditing">{{ user.tel }}</span><input *ngIf="isEditing" [(ngModel)]="user.tel" type="number" required pattern="[0-9]{8}" title="Phone number must be 8 digits" /></td></tr>
+          <tr><th>Address</th><td><span *ngIf="!isEditing">{{ user.adresse }}</span><input *ngIf="isEditing" [(ngModel)]="user.adresse" required minlength="5" maxlength="100" title="Address must be 5-100 characters" /></td></tr>
+          <tr><th>Gender</th><td><span *ngIf="!isEditing">{{ user.sexe }}</span><select *ngIf="isEditing" [(ngModel)]="user.sexe" required><option value="man">Man</option><option value="woman">Woman</option></select></td></tr>
+          <tr><th>RIB</th><td><span *ngIf="!isEditing">{{ user.rib }}</span><input *ngIf="isEditing" [(ngModel)]="user.rib" required pattern="[0-9]{20}" title="RIB must be 20 digits" /></td></tr>
+          <tr><th>Role</th><td><span *ngIf="!isEditing">{{ user.role?.nomRole || 'N/A' }}</span><input *ngIf="isEditing" [(ngModel)]="user.role.nomRole" disabled /></td></tr>
+          <tr><th>Balance</th><td><span *ngIf="!isEditing">{{ user.soldeCourant }} DT</span><input *ngIf="isEditing" [(ngModel)]="user.soldeCourant" type="number" min="0" title="Balance cannot be negative" /></td></tr>
+          <tr><th>Age</th><td><span *ngIf="!isEditing">{{ user.age }}</span><input *ngIf="isEditing" [(ngModel)]="user.age" type="number" required min="20" max="60" title="Age must be between 20 and 60" /></td></tr>
+          <tr><th>CIN</th><td><span *ngIf="!isEditing">{{ user.cin }}</span><input *ngIf="isEditing" [(ngModel)]="user.cin" type="number" required pattern="[0-9]{8}" title="CIN must be 8 digits" /></td></tr>
+        </table>
+
+        <div class="profile-buttons">
+          <button *ngIf="!isEditing" class="btn edit-btn" (click)="toggleEdit()">
+            <i class="fas fa-user-edit"></i>
+            Edit personal details
+          </button>
+          <button *ngIf="isEditing" class="btn save-btn" (click)="saveChanges()">
+            <i class="fas fa-save"></i>
+            Save changes
+          </button>
+          <button *ngIf="isEditing" class="btn cancel-btn" (click)="cancelEdit()">
+            <i class="fas fa-times"></i>
+            Cancel
+          </button>
+          <button class="btn delete-btn" (click)="deleteAccount()">
+            <i class="fas fa-user-times"></i>
+            Delete account
+          </button>
+          <button class="btn logout-btn" (click)="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

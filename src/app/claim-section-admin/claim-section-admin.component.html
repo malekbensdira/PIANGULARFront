@@ -1,0 +1,146 @@
+<div class="admin-container">
+  <app-sidebar-admin class="sidebar"></app-sidebar-admin>
+
+  <div class="content-wrapper">
+    <main class="main-content">
+      <app-header-user-section></app-header-user-section>
+
+      
+
+      <div class="table-responsive-container">
+        <div class="table-container">
+          <h2 class="table-title">Claims Overview</h2>
+          <div class="progress-bar-container">
+            <h3 class="progress-title">Treated Claims Progress</h3>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="treatedPercentage"></div>
+              <span class="progress-text">{{ treatedPercentage | number:'1.0-0' }}% Treated</span>
+            </div>
+            <div class="progress-message">
+              <p *ngIf="treatedPercentage === 0">No progress made yet. Let's get started! 🚀</p>
+              <p *ngIf="treatedPercentage > 0 && treatedPercentage < 50">You're making progress! 👍</p>
+              <p *ngIf="treatedPercentage >= 50 && treatedPercentage < 100">Almost there! Keep going! 🚀</p>
+              <p *ngIf="treatedPercentage === 100">All claims treated! Well done, Admin! 🎉</p>
+            </div>
+          </div>
+
+          <div class="problem-type-container">
+            <h3 class="problem-type-title">Claims by Problem Type</h3>
+            <canvas baseChart
+                    [datasets]="problemTypeChartDatasets"
+                    [labels]="problemTypeChartLabels"
+                    [options]="problemTypeChartOptions"
+                    [legend]="true"
+                    chartType="doughnut"></canvas>
+            <div class="problem-type-insights">
+              <p *ngIf="mostFrequentProblemType">
+                <strong>Most Frequent:</strong> {{ mostFrequentProblemType.type }} ({{ mostFrequentProblemType.count }} claims)
+              </p>
+              <p *ngIf="leastFrequentProblemType">
+                <strong>Least Frequent:</strong> {{ leastFrequentProblemType.type }} ({{ leastFrequentProblemType.count }} claims)
+              </p>
+            </div>
+          </div>
+<div class="action-buttons-container">
+        <div class="action-buttons">
+          <button class="btn-search" (click)="toggleSort()">
+            {{ isSorted ? 'Reset Sort' : 'Sort by Priority' }}
+          </button>
+         
+        </div>
+      </div>
+          <div class="claims-table" *ngIf="claims">
+            <table>
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Priority</th>
+                  <th>Problem Type</th>
+                  <th>Requested Solution</th>
+                  <th>Date Submitted</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let claim of claims; let i = index" 
+                    (click)="selectClaim(claim)"
+                    [class.selected]="selectedClaim?.idComplaint === claim.idComplaint">
+                  <td>{{ claim.description }}</td>
+                  <td>{{ claim.priority }}</td>
+                  <td>{{ claim.problemType }}</td>
+                  <td>{{ claim.requestedSolution }}</td>
+                  <td>{{ claim.dateHeure | date:'medium' }}</td>
+                  <td>
+                    <span [ngClass]="{'status-treated': claim.status, 'status-not-treated': !claim.status}">
+                      {{ getStatusLabel(claim.status) }}
+                    </span>
+                    <button *ngIf="!claim.status" 
+                            class="btn-toggle-status" 
+                            (click)="toggleStatus(claim); $event.stopPropagation()">
+                      Mark as Treated
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <h2 class="chart-title">Claims Submitted per Day</h2>
+        <canvas baseChart
+                [datasets]="chartDatasets"
+                [labels]="chartLabels"
+                [options]="chartOptions"
+                [legend]="true"
+                chartType="line"></canvas>
+      </div>
+
+      <div *ngIf="selectedClaim" class="claim-detail-card">
+        <div class="claim-header">
+          <div class="claim-info">
+            <h2>{{ selectedClaim.prenomUser }} {{ selectedClaim.nomUser }}</h2>
+            <div class="claim-meta">
+              <span [ngClass]="{'claim-status': true, 'status-not-treated': !selectedClaim.status}">
+                {{ getStatusLabel(selectedClaim.status) }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="claim-details-grid">
+          <div class="detail-col">
+            <div class="detail-item">
+              <span class="detail-label">Email</span>
+              <span class="detail-value">{{ selectedClaim.emailUser }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Description</span>
+              <span class="detail-value">{{ selectedClaim.description }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Priority</span>
+              <span class="detail-value">{{ selectedClaim.priority }}</span>
+            </div>
+          </div>
+          
+          <div class="detail-col">
+            <div class="detail-item">
+              <span class="detail-label">Problem Type</span>
+              <span class="detail-value">{{ selectedClaim.problemType }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Requested Solution</span>
+              <span class="detail-value">{{ selectedClaim.requestedSolution }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Date Submitted</span>
+              <span class="detail-value">{{ selectedClaim.dateHeure | date:'medium' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

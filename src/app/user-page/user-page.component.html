@@ -4,10 +4,6 @@
 
   <!-- Affichage du bouton Messenger uniquement si l'utilisateur est authentifié -->
 
-
-
-
-
 </div>
 
 
@@ -20,7 +16,8 @@
   <ng-template #beforeLogin>
     <app-header-before-signin></app-header-before-signin>
   </ng-template>
-  <app-messenger [userName]="userName" [isLoggedIn]="isLoggedIn"></app-messenger>
+ <app-messenger *ngIf="userRole !== 'CLIENT'" [userName]="userName" [isLoggedIn]="isLoggedIn"></app-messenger>
+
 
 
   

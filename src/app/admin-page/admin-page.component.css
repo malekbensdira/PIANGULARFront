@@ -1,23 +1,1336 @@
-.user-list {
-    display: flex;
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+
+
+.admin-container {
+  display: flex;
+  background-color: #f5f5f59f;
+  padding: 20px;
+  margin-left: 200px; /* Ajout d'une marge gauche pour déplacer tout le conteneur */
+}
+
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  padding-left: 100px; /* Ajout d'une marge à gauche pour décaler le contenu */
+  background-color: rgba(255, 255, 255, 0);
+  position: relative;
+}
+
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.animated-title1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  color: rgb(10, 78, 188);
+  text-align: center;
+  width: 100%;
+  margin-top: 1px;
+  margin-left: 1px;
+}
+
+.animated-title2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  color: rgb(0, 43, 110);
+  text-align: center;
+  width: 100%;
+  margin-top: -1px;
+  margin-left: 1px;
+}
+
+/* Conteneur du message avec fond blanc et bords arrondis */
+.progress-message-container {
+  background-color: #fff; /* Fond blanc */
+  font-weight: bold; 
+  padding: 5px; /* Espace autour du texte */
+  border-radius: 15px; /* Bords arrondis */
+  box-shadow: 0 4px 8px rgba(45, 77, 182, 0.1); /* Ombre douce autour du cadre */
+  margin-top: 20px; /* Marge au-dessus pour l'espacement */
+  width: 100%; /* Prendre toute la largeur disponible */
+  max-width: 600px; /* Limiter la largeur à 600px */
+  margin-left: auto; /* Centrer horizontalement */
+  margin-right: auto; /* Centrer horizontalement */
+}
+
+/* Optionnel : Si tu veux personnaliser la couleur du texte pour chaque message */
+.progress-message-container p {
+  font-size: 18px;
+  font-weight: normal;
+  font-weight: bold; 
+  color: #2052e9; /* Couleur du texte */
+  text-align: center; /* Centrer le texte */
+}
+
+
+.animated-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  color: rgb(10, 78, 188);
+  text-align: center;
+  width: 100%;
+  margin-top: 1px;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+.progress-bar-container {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  height: 40px;
+  width: 150%;
+  margin-top: 15px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform: translateX(-10px);
+}
+
+.progress {
+  height: 100%;
+  background: linear-gradient(
+    270deg,
+    #99d7e5,
+    rgb(56, 125, 236),
+    #c0edf6
+  );
+  background-size: 400% 400%;
+  animation: gradientMove 5s ease infinite; /* <<< supprimé fillProgress */
+  border-radius: 30px;
+  position: relative;
+  box-shadow: 0 4px 10px #2052e9;
+}
+
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes fillProgress {
+  from { width: 0; }
+  to { width: var(--progress-width, 70%); } /* tu peux mettre une valeur par défaut ici */
+}
+
+/* Animation lumière qui traverse */
+.progress::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(
+    to right,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.5) 50%,
+    rgba(255,255,255,0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: lightSweep 2s infinite;
+}
+
+@keyframes lightSweep {
+  0% { left: -50%; }
+  100% { left: 150%; }
+}
+
+
+.goal-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 1s ease-in-out, visibility 1s ease-in-out;
+}
+
+.goal-list-container.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.goal-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly; /* Espacement uniforme entre les cartes */
+  gap: 16px; /* Espacement entre les cartes */
+  width: 100%; /* Prend toute la largeur disponible */
+}
+
+.goal-item {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+  width: 30%;
+  box-shadow: 0 4px 8px rgba(75, 30, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Alignement horizontal */
+  text-align: center;  /* Centrage du texte */
+}
+
+
+.goal-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px #f1dd5f;
+}
+
+.goal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.goal-header h3 {
+  font-size: 1.4rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.goal-priority {
+  font-size: 1.5rem;
+  color: #f5a623;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: none; /* Par défaut caché */
+  transition: all 0.3s ease;
+}
+
+.goal-item:hover .goal-priority {
+  display: block; /* Affiché au survol */
+}
+
+.goal-details {
+  margin: 10px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.goal-deadline {
+  font-size: 1rem;
+  color: #1343b5;
+  font-weight: bold;
+}
+
+.goal-footer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.checkbox-container {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkbox-container input {
+  opacity: 0;
+  position: absolute;
+  left: -9999px;
+}
+
+.checkbox-container .checkmark {
+  width: 22px;
+  height: 22px;
+  background-color: #ddd;
+  border-radius: 5px;
+  display: inline-block;
+  transition: background-color 0.3s;
+}
+
+.checkbox-container input:checked + .checkmark {
+  background-color: #5ff1b2;
+}
+
+.checkbox-container .checkmark:after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 4px;
+  width: 9px;
+  height: 15px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.checkbox-container input:checked + .checkmark:after {
+  opacity: 1;
+}
+
+.no-goals-message {
+  font-size: 1.2rem;
+  color: #777;
+}
+
+
+
+
+
+.checkbox-container .checkmark:after {
+  content: '';
+  position: absolute;
+  left: 8px;  /* Ajuste la position pour le centrer à l'intérieur */
+  top: 4px;    /* Ajuste la position pour le centrer verticalement */
+  width: 8px;  /* Largeur de la coche */
+  height: 14px; /* Hauteur de la coche */
+  border: solid white;
+  border-width: 0 3px 3px 0; /* Épaisseur de la coche */
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+
+.goal-header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #b9d8f9; /* Bleu moderne */
+  color: #fff;
+  padding: 15px 20px;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 4px 10px rgba(115, 144, 233, 0.1); /* Ombre légère */
+  text-align: center; /* Centrer le titre */
+}
+
+.goal-header-banner h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0; /* Enlever le margin pour bien centrer */
+}
+
+.goal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 8px 15px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #4CAF50; /* Bouton Edit : couleur verte */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.delete-btn {
+  background-color: #f44336; /* Bouton Delete : couleur rouge */
+}
+
+.edit-btn:hover {
+  background-color: #45a049; /* Couleur au survol */
+}
+
+.delete-btn:hover {
+  background-color: #e53935; /* Couleur au survol */
+}
+
+.goal-item {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+  width: 30%; /* Ajustez la largeur selon le nombre de cartes à afficher côte à côte */
+  box-shadow: 0 4px 8px rgba(75, 30, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.goal-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px #f1dd5f;
+}
+
+.goal-details {
+  margin: 10px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.goal-deadline {
+  font-size: 1rem;
+  color: #224393;
+  font-weight: bold;
+}
+
+/* Animation pour le survol du bouton */
+.edit-btn:hover, .delete-btn:hover {
+  transform: scale(1.05);
+}
+
+.checkbox-container {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkbox-container input {
+  opacity: 0;
+  position: absolute;
+  left: -9999px;
+}
+
+.checkbox-container .checkmark {
+  width: 30px; 
+  height: 30px; 
+  background-color: #ddd;
+  border-radius: 5px;
+  display: inline-block;
+  position: relative;
+  transition: background-color 0.3s;
+}
+
+.checkbox-container .checkmark:after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 5px;
+  width: 8px;
+  height: 14px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.checkbox-container input:checked + .checkmark:after {
+  opacity: 1;
+}
+
+.checkbox-container input:checked + .checkmark {
+  background-color: #5ff1b2;
+}
+
+
+.goal-item {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+  width: 30%; /* Ajustez la largeur selon le nombre de cartes à afficher côte à côte */
+  box-shadow: 0 4px 8px rgba(197, 195, 204, 0.1);
+  position: relative;
+}
+
+.goal-header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #85b6ea; /* Bleu moderne */
+  color: #fff;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(224, 211, 211, 0.1); /* Ombre légère */
+  border-bottom: 2px solid #cccccc; /* Séparateur entre le header et le contenu */
+}
+
+.separator {
+  width: 2px; /* Largeur de la ligne verticale */
+  height: 200px; /* Hauteur de la ligne verticale */
+  background-color: #cccccc; /* Couleur de la ligne */
+  margin-left: 15px; /* Espacement entre le titre et la ligne */
+}
+
+
+.goal-header-banner {
+  display: flex;
+  background: #85b6ea; 
+  color: #fff;
+  justify-content: space-between;
+  width: 100%;
+}
+
+
+.goal-header h3 {
+  color: #31312f;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0; /* Enlever le margin pour bien centrer */
+  text-align: center; /* Centrer le titre */
+}
+
+.pin-icon {
+  font-size: 1.5rem;
+  color: #fff;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.goal-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.checkbox-container {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkbox-container input {
+  opacity: 0;
+  position: absolute;
+  left: -9999px;
+}
+
+.checkbox-container .checkmark {
+  width: 30px;
+  height: 30px;
+  background-color: #ddd;
+  border-radius: 5px;
+  display: inline-block;
+  position: relative;
+  transition: background-color 0.3s;
+}
+
+.checkbox-container .checkmark:after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 5px;
+  width: 8px;
+  height: 14px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.checkbox-container input:checked + .checkmark:after {
+  opacity: 1;
+}
+
+.checkbox-container input:checked + .checkmark {
+  background-color: #5ff1b2;
+}
+
+/* Style pour les boutons */
+.goal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 8px 15px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #224393; /* Vert pour Edit */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.delete-btn {
+  background-color: #f55058; /* Rouge pour Delete */
+}
+
+.edit-btn i, .delete-btn i {
+  margin-right: 5px; /* Espacement entre l'icône et le texte */
+}
+
+.edit-btn:hover {
+  background-color: #345297;
+}
+
+.delete-btn:hover {
+  background-color: #f55058;
+}
+  
+.goal-header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #85b6ea; /* Bleu moderne */
+  color: #fff;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+}
+
+.goal-header h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+  text-align: center;
+}
+
+.pin-icon {
+  font-size: 2rem; /* Taille plus grande pour mettre en valeur */
+  color: #fff; /* Couleur blanche */
+  position: absolute;
+  top: 10px; /* Ajuste la position pour être dans le coin supérieur droit */
+  right: 10px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.pin-icon:hover {
+  color: #f5a623; /* Changer la couleur au survol pour un effet interactif */
+}
+
+.goal-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+/* Ajout d'un effet de survol sur l'icône de punaise */
+.pin-icon:hover {
+  transform: scale(1.2); /* Agrandit l'icône au survol */
+}
+
+.checkbox-container {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkbox-container input {
+  opacity: 0;
+  position: absolute;
+  left: -9999px;
+}
+
+.checkbox-container .checkmark {
+  width: 30px;
+  height: 30px;
+  background-color: #ddd;
+  border-radius: 5px;
+  display: inline-block;
+  position: relative;
+  transition: background-color 0.3s;
+}
+
+.checkbox-container input:checked + .checkmark {
+  background-color: #5ff1b2;
+}
+
+/* Style pour l'étoile de priorité */
+.priority {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 50px;
+  height: 50px;
+  background-color: rgb(253, 231, 104);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  font-size: 14px;
+}
+
+.priority-star {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Assurez-vous que la police pour le message progress-message est la même que pour le % completed */
+.progress-message p {
+  font-size: 18px; /* Ajustez selon votre besoin */
+  font-weight: normal;
+  margin-top: 10px; /* Pour le décaler légèrement vers le bas */
+  color: #333; /* Couleur du texte (vous pouvez personnaliser cette couleur) */
+}
+
+/* Optionnel : Si vous souhaitez personnaliser la couleur du texte en fonction du progrès */
+.progress-message p {
+  color: #333; /* Couleur de base */
+}
+
+.progress-message p.ng-star-inserted {
+  font-size: 18px;
+}
+
+/* Décalage global de la barre de recherche vers la gauche */
+.search-sort-container {
+  margin-left: -40px; /* ajustez cette valeur selon vos besoins */
+}
+
+/* Label en gras, même police que Global Progress */
+.search-label {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 1.4rem;      /* légèrement plus petit que Global Progress (1.8rem) */
+  color: rgb(10, 78, 188);
+  margin-right: 12px;
+}
+
+/* Pour rappel, voici le style des boutons s'ils ont besoin d'être harmonisés */
+.btn-search {
+  background-color: #28a745;
+  color: #fff;
+  border-radius: 6px;
+  padding: 8px 16px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: background-color 0.3s, box-shadow 0.2s;
+}
+
+.btn-search:hover {
+  background-color: #218838;
+  box-shadow: 0 4px 10px rgba(33,136,56,0.4);
+}
+
+.btn-sort {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 6px;
+  padding: 8px 16px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: background-color 0.3s, box-shadow 0.2s;
+}
+
+.btn-sort:hover {
+  background-color: #0069d9;
+  box-shadow: 0 4px 10px rgba(0,105,217,0.4);
+}
+/* ==== Reprise de tout ton CSS existant ==== */
+/* ... (body, .admin-container, barre de progression, .goal-item, etc.) ... */
+
+/* ========== Section Recherche & Tri ========== */
+.search-sort-container {
+  display: flex;
+  justify-content: flex-start; /* aligne vers la gauche */
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding-left: 40px; /* décalage global */
+}
+
+.search-group,
+.sort-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-label {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: rgb(10, 78, 188);
+}
+
+.search-input {
+  padding: 6px 10px;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-input:focus {
+  outline: none;
+  border-color: rgb(10, 78, 188);
+  box-shadow: 0 0 5px rgba(10, 78, 188, 0.3);
+}
+
+.btn {
+  padding: 8px 16px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-search {
+  background-color: #28a745;
+  color: #fff;
+}
+.btn-search:hover {
+  background-color: #218838;
+  box-shadow: 0 4px 10px rgba(33, 136, 56, 0.4);
+}
+
+.btn-sort {
+  background-color: #007bff;
+  color: #fff;
+}
+.btn-sort:hover {
+  background-color: #0069d9;
+  box-shadow: 0 4px 10px rgba(0, 105, 217, 0.4);
+}
+
+.btn-reset {
+  background-color: #6c757d;
+  color: #fff;
+}
+.btn-reset:hover {
+  background-color: #5a6268;
+  box-shadow: 0 4px 10px rgba(90, 98, 104, 0.4);
+}
+
+/* ==== Responsive ==== */
+@media (max-width: 600px) {
+  .search-sort-container {
     flex-direction: column;
-    padding: 20px;
+    align-items: stretch;
+    padding-left: 0;
   }
-  
-  .user-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  .btn {
+    width: 100%;
+    text-align: center;
   }
-  
-  .user-info {
-    margin-right: 15px;
+}
+
+/* ==== Reste de ton CSS existant ==== */
+/* ... .goal-items, .goal-item, animations, etc. ... */
+
+/* Espace identique entre Search ↔ Sort */
+.search-group {
+  margin-right: -9px; /* ajustez selon votre goût */
+}
+
+/* Espace identique entre Sort ↔ Reset */
+.btn-sort {
+  margin-right: 1px; /* même valeur que ci-dessus */
+}
+
+/* ======= Ton CSS existant au-dessus ======= */
+/* … (body, .admin-container, animations, .goal-item…) … */
+
+/* ========== Section Recherche & Tri ========== */
+.search-sort-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-left: 40px;
+}
+
+.search-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 16px;
+}
+
+.sort-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-label {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: rgb(10, 78, 188);
+}
+
+.search-input {
+  padding: 6px 10px;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+}
+
+.btn {
+  padding: 8px 16px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-search { background: #f1dd5f; color: #224393; }
+.btn-search:hover { background: #ffdd00; }
+
+.btn-sort { background: #0069d9; color: #fff; margin-right: 16px; }
+.btn-sort:hover { background: #004cff; }
+
+.btn-reset { background: #224393; color: #fff; }
+.btn-reset:hover { background: #0236af; }
+
+/* ======= Responsive ======= */
+@media (max-width: 600px) {
+  .search-sort-container { flex-direction: column; padding-left: 0; }
+  .btn { width: 100%; }
+}
+
+/* ======= Reste de ton CSS existant ======= */
+/* … .goal-items, .progress-bar, etc. … */
+
+
+/* Bouton Set a New Goal */
+.new-goal-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 15px;
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(37, 117, 252, 0.3);
+  transition: all 0.3s ease;
+}
+
+.new-goal-button i {
+  font-size: 20px;
+}
+
+.new-goal-button:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+  box-shadow: 0 12px 24px rgba(106, 17, 203, 0.4);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #f1ebeb;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn-submit, .btn-cancel {
+  padding: 8px 20px;
+  width: 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-submit {
+  background-color: #28a745;
+  width: 20px;
+  color: white;
+}
+
+.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Style pour la fenêtre modale */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  z-index: 1000;
+  visibility: hidden; /* Cache le modal par défaut */
+  transition: visibility 0.3s ease-in-out;
+}
+
+/* Pour afficher le modal lorsque nécessaire */
+.modal.show {
+  visibility: visible;
+}
+
+/* Contenu de la fenêtre modale */
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+/* Bouton de fermeture en haut à droite */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+  background: none;
+  border: none;
+}
+
+.close:hover {
+  color: red; /* Effet visuel sur la croix */
+}
+
+/* Style pour le formulaire modal */
+.modal-form input, .modal-form button {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+}
+/* Style pour la fenêtre modale */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Fond semi-transparent sombre */
+  z-index: 1000;
+  visibility: hidden; /* Cache le modal par défaut */
+  transition: visibility 0.3s ease-in-out;
+}
+
+/* Pour afficher le modal lorsque nécessaire */
+.modal.show {
+  visibility: visible;
+}
+
+/* Contenu de la fenêtre modale */
+.modal-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+  position: relative;
+  transform: translateY(-50px);
+  animation: modalIn 0.4s ease-out;
+  background: linear-gradient(135deg, #c2d6ea, #0066cc); /* Dégradé bleu et jaune */
+  color: white;
+}
+
+/* Effet d'animation d'entrée */
+@keyframes modalIn {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
   }
-  
-  .user-image img {
-    border-radius: 50%;
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
-  
+}
+
+/* Bouton de fermeture en haut à droite */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 35px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+  background: none;
+  border: none;
+  transition: color 0.3s ease;
+}
+
+.close:hover {
+  color: #ffcc00; /* Couleur jaune lors du survol */
+}
+
+/* Style pour le formulaire modal */
+.modal-form input,
+.modal-form button {
+  width: 100%;
+  margin: 15px 0;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Effet de focus pour les champs du formulaire */
+.modal-form input:focus, .modal-form button:focus {
+  border-color: #0066cc; /* Bordure bleue lors du focus */
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 102, 204, 0.6);
+}
+
+/* Style pour le bouton de soumission */
+.modal-form button {
+  background-color: #004d99;
+  color: #ffffff;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.modal-form button:hover {
+  background-color: #0066cc; /* Effet hover pour le bouton */
+}
+
+
+    .AddnewGoal {
+      font-size: 1.8rem;
+      font-weight: bold;
+      animation: fadeIn 2s ease-in-out;
+      font-family: 'Poppins', sans-serif;
+      color: #224393;
+      text-align: center;
+      width: 100%;
+      margin-left: 10px; /* Augmente la valeur pour le décalage */
+    }
+
+
+    .btn-submit {
+      width: auto; /* Réduit la largeur automatique du bouton */
+      padding: 10px 20px; /* Ajuste le padding */
+      font-size: 16px; /* Taille de texte */
+      background-color: #ffcc00; /* Jaune */
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .btn-submit:hover {
+      background-color: #ff9900; /* Change la couleur au survol */
+    }
+    .priority-dropdown {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      color: #333;
+      margin-top: 10px;
+    }
+    
+    .priority-dropdown:focus {
+      outline: none;
+      border-color: #ffcc00;
+    }
+    .error-message {
+      color: red;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    
+    .error-message {
+      color: red;
+      font-size: 14px;
+    }
+    
+    .error-message p {
+      margin: 0;
+    }
+    
+
+    .priority-dropdown {
+      display: block;
+      width: 100%; /* pour qu'il prenne tout l'espace */
+      max-height: 150px;
+      overflow-y: auto;
+    }
+/* Styles pour le message de confirmation */
+.confirmation-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #28a745; /* Vert pour le succès */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.5s, transform 0.5s ease-in-out;
+  z-index: 9999;
+  font-size: 16px;
+}
+
+.confirmation-message.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+.confirmation-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  opacity: 0;
+  animation: fadeInOut 3s forwards;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+}
+
+/* Styles pour la fenêtre de confirmation */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  text-align: center;
+}
+
+.confirmation-message h3 {
+  margin-bottom: 15px;
+}
+
+.confirmation-message p {
+  margin-bottom: 20px;
+}
+
+.confirmation-message button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-confirm {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-cancel {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}

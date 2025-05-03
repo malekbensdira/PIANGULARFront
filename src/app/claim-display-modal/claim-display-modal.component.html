@@ -1,0 +1,69 @@
+<div class="modal-overlay" (click)="onClose()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Claim Details</h2>
+        <button class="close-btn" (click)="onClose()">×</button>
+      </div>
+      <div class="modal-body" *ngIf="claim">
+        <!-- Display Mode -->
+        <div *ngIf="!isEditMode && !isDeleteConfirmMode">
+          <p><strong>Description:</strong> {{ claim.description }}</p>
+          <p><strong>Problem Type:</strong> {{ claim.problemType }}</p>
+          <p><strong>Requested Solution:</strong> {{ claim.requestedSolution }}</p>
+          <p><strong>Date Submitted:</strong> {{ claim.dateHeure | date:'medium' }}</p>
+          <p><strong>Status:</strong> 
+            <span [ngClass]="{'status-treated': claim.status, 'status-not-treated': !claim.status}">
+              {{ getStatusLabel(claim.status) }}
+            </span>
+          </p>
+          <p><strong>Submitted By:</strong> {{ claim.prenomUser }} {{ claim.nomUser }} ({{ claim.emailUser }})</p>
+        </div>
+        <!-- Edit Mode -->
+        <div *ngIf="isEditMode && editedClaim">
+          <div class="form-group">
+            <label><strong>Description:</strong></label>
+            <textarea [(ngModel)]="editedClaim.description" class="form-control" required></textarea>
+          </div>
+          <div class="form-group">
+            <label><strong>Problem Type:</strong></label>
+            <select [(ngModel)]="editedClaim.problemType" class="form-control" required>
+              <option *ngFor="let option of problemTypeOptions" [value]="option">{{ option }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label><strong>Requested Solution:</strong></label>
+            <select *ngIf="editedClaim.requestedSolution !== 'OTHER'" [(ngModel)]="editedClaim.requestedSolution" class="form-control" required>
+              <option *ngFor="let option of requestedSolutionOptions" [value]="option">{{ option }}</option>
+            </select>
+            <textarea *ngIf="editedClaim.requestedSolution === 'OTHER'" [(ngModel)]="editedClaim.requestedSolution" class="form-control" required></textarea>
+          </div>
+          <p><strong>Date Submitted:</strong> {{ claim.dateHeure | date:'medium' }}</p>
+          <p><strong>Status:</strong> 
+            <span [ngClass]="{'status-treated': claim.status, 'status-not-treated': !claim.status}">
+              {{ getStatusLabel(claim.status) }}
+            </span>
+          </p>
+          <p><strong>Submitted By:</strong> {{ claim.prenomUser }} {{ claim.nomUser }} ({{ claim.emailUser }})</p>
+        </div>
+        <!-- Delete Confirmation Mode -->
+        <div *ngIf="isDeleteConfirmMode" class="delete-confirmation">
+          <p>Are you sure you want to delete this claim? This action cannot be undone.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <ng-container *ngIf="!isEditMode && !isDeleteConfirmMode && claim && !claim.status">
+          <button class="btn-edit" (click)="toggleEditMode()">Edit</button>
+          <button class="btn-delete" (click)="showDeleteConfirmation()">Delete</button>
+        </ng-container>
+        <ng-container *ngIf="isEditMode">
+          <button class="btn-save" (click)="saveChanges()">Save</button>
+          <button class="btn-cancel" (click)="toggleEditMode()">Cancel</button>
+        </ng-container>
+        <ng-container *ngIf="isDeleteConfirmMode">
+          <button class="btn-confirm-delete" (click)="confirmDelete()">Confirm</button>
+          <button class="btn-cancel" (click)="cancelDelete()">Cancel</button>
+        </ng-container>
+        <button class="btn-close" (click)="onClose()">Close</button>
+      </div>
+    </div>
+  </div>

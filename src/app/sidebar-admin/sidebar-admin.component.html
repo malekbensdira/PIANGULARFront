@@ -1,0 +1,45 @@
+<aside class="sidebar">
+  <!-- Logo animé centré -->
+  <app-logo-animated class="logo-centered"></app-logo-animated>
+
+  <!-- Menu principal -->
+  <ul class="sidebar-menu">
+    <!-- Section utilisateur avec sous-menu -->
+    <li class="menu-title has-submenu" (click)="toggleUserSection()">
+      <div class="menu-link">
+        <i class="fas fa-user"></i>
+        <span>User Section</span>
+      </div>
+      <i class="fas fa-chevron-down dropdown-icon" [class.open]="userSectionOpen"></i>
+    </li>
+    <ul class="submenu" *ngIf="userSectionOpen">
+      <li>
+        <a routerLink="/users-list">
+          <i class="fas fa-users"></i> View Users
+        </a>
+      </li>
+      <li>
+        <a routerLink="/claim-section-admin">
+          <i class="fas fa-file-alt"></i> Claims Section
+        </a>
+      </li>
+    </ul>
+
+    <!-- Autres liens -->
+    <li>
+      <a routerLink="#"><i class="fas fa-briefcase"></i> Insurance Section</a>
+    </li>
+    <li>
+      <a routerLink="#"><i class="fas fa-credit-card"></i> Credit Section</a>
+    </li>
+    <li>
+      <a routerLink="#"><i class="fas fa-hand-holding-heart"></i> Donation Section</a>
+    </li>
+    <li>
+      <a routerLink="#"><i class="fas fa-building"></i> Real Estate Section</a>
+    </li>
+    <li>
+      <a routerLink="#"><i class="fas fa-money-check-alt"></i> Transaction Section</a>
+    </li>
+  </ul>
+</aside>

@@ -1,75 +1,83 @@
 <ng-container *ngIf="isLoggedIn">
-    <div class="messenger-button" (click)="toggleGif()">
-      <div class="floating-message" *ngIf="showFloatingMessage && isLoggedIn" (click)="dismissFloatingMessage()">
-        <div class="message-bubble">
-          <span class="message-text typing-effect">Hey {{ userName }}, I am Amena's Messenger!</span>
+  <div class="messenger-button" (click)="toggleGif()">
+    <div class="floating-message" *ngIf="showFloatingMessage" (click)="dismissFloatingMessage()">
+      <div class="message-bubble">
+        <span class="message-text typing-effect">
+          Hey {{ userName }}, I am Amena's Messenger!
+        </span>
+      </div>
+    </div>
+    <img [src]="isGif9 ? 'assets/img/gif 9.gif' : 'assets/img/gif-8.gif'" alt="Messenger" />
+  </div>
+
+  <div class="chat-window" *ngIf="showChatWindow">
+    <div class="chat-header">
+      <i class="fas fa-chevron-left back-icon" *ngIf="selectedAgent" (click)="selectedAgent = null"></i>
+      <i class="fas fa-envelope-open-text messenger-icon"></i>
+      <span>Amena's Messenger</span>
+      <button class="close-btn" (click)="closeChat()">×</button>
+    </div>
+
+    <div class="chat-body">
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+      <ng-container *ngIf="!selectedAgent">
+        <p class="choose-agent-message">{{ message }}</p>
+        <div *ngFor="let contact of contacts" class="contact-item" (click)="selectAgent(contact)">
+          <img
+            *ngIf="contact.image"
+            [src]="'http://localhost:8081/images/' + extractImageName(contact.image)"
+            class="contact-avatar"
+          />
+          <div class="contact-info">
+            <p class="contact-name">
+              {{ contact.nom }} {{ contact.prenom }}
+              <span *ngIf="unreadCounts[contact.id] > 0" class="unread-badge">
+                {{ unreadCounts[contact.id] }}
+              </span>
+            </p>
+            <p class="contact-role">{{ contact.role?.nomRole }}</p>
+          </div>
         </div>
-      </div>
-  
-      <img
-        [src]="isGif9 ? 'assets/img/gif 9.gif' : 'assets/img/gif-8.gif'"
-        alt="Messenger"
-      />
-    </div>
-  
-    <!-- FENÊTRE DE CHAT MESSENGER -->
-    <div class="chat-window" *ngIf="showChatWindow">
-        <div class="chat-header">
-            <i class="fas fa-chevron-left back-icon" *ngIf="selectedAgent" (click)="selectedAgent = null"></i>
-            <i class="fas fa-envelope-open-text messenger-icon"></i>
-            <span>Amena's Messenger</span>
-            <button class="close-btn" (click)="closeChat()">×</button>
-          </div>
-          
-      <!-- Affichage du message dynamique -->
-      <div class="chat-body">
-        <ng-container *ngIf="!selectedAgent">
-          <p class="choose-agent-message">{{ message }}</p>
-  
-          <div 
-            *ngFor="let contact of contacts" 
-            class="contact-item"
-            (click)="selectAgent(contact)"
-          >
+      </ng-container>
+
+      <ng-container *ngIf="selectedAgent">
+        <div class="chat-with-agent">
+          <div class="agent-header">
             <img
-              *ngIf="contact.image"
-              [src]="'http://localhost:8081/images/' + extractImageName(contact.image)"
-              alt="Photo"
-              class="contact-avatar"
+              *ngIf="selectedAgent.image"
+              [src]="'http://localhost:8081/images/' + extractImageName(selectedAgent.image)"
+              class="agent-avatar"
             />
-            <div class="contact-info">
-              <p class="contact-name">{{ contact.nom }} {{ contact.prenom }}</p>
-              <p class="contact-role">{{ contact.role?.nomRole }}</p>
+            <div>
+              <p class="agent-name">{{ selectedAgent.nom }} {{ selectedAgent.prenom }}</p>
+              <p class="agent-email">{{ selectedAgent.email }}</p>
             </div>
           </div>
-        </ng-container>
-  
-        <ng-container *ngIf="selectedAgent">
-          <div class="chat-with-agent">
-            <div class="agent-header">
-              <img 
-                *ngIf="selectedAgent.image"
-                [src]="'http://localhost:8081/images/' + extractImageName(selectedAgent.image)"
-                class="agent-avatar"
-              />
-              <div>
-                <p class="agent-name">{{ selectedAgent.nom }} {{ selectedAgent.prenom }}</p>
-                <p class="agent-email">{{ selectedAgent.email }}</p>
+
+          <div class="chat-messages" #chatContainer>
+            <p class="chat-title">💬 Vous discutez avec {{ selectedAgent.prenom }}</p>
+            <ng-container *ngFor="let msg of messages">
+              <div class="message-bubble" [ngClass]="{
+                'user-message': msg.senderId === myId,
+                'agent-message': msg.senderId !== myId
+              }">
+                {{ msg.content }}
               </div>
-            </div>
-  
-            <div class="chat-messages">
-              <p>💬 Vous discutez avec {{ selectedAgent.prenom }}</p>
-            </div>
-  
-            <div class="chat-input">
-              <input type="text" placeholder="Écrivez un message..." [(ngModel)]="chatInput" />
-              <button (click)="sendMessage()">Envoyer</button>
-            </div>
+            </ng-container>
           </div>
-        
-        </ng-container>
-      </div>
+
+          <div class="chat-input">
+            <input
+              type="text"
+              placeholder="Écrivez un message..."
+              [(ngModel)]="chatInput"
+              (keyup.enter)="sendMessage()"
+            />
+            <button (click)="sendMessage()">Envoyer</button>
+          </div>
+        </div>
+      </ng-container>
     </div>
-  </ng-container>
-  
+  </div>
+</ng-container>

@@ -1,0 +1,115 @@
+/* Sidebar container */
+.sidebar {
+  width: 250px;
+  background-color: #224393; /* Couleur de fond du sidebar */
+  color: white;
+  height: 100vh;
+  padding: 20px;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Ombre subtile pour un effet flottant */
+  position: fixed; /* Assure que la sidebar reste fixe */
+  top: 0;
+  left: 0;
+  transition: background-color 0.3s ease-in-out;
+  padding-top: 10px; /* Réduire l'espace en haut */
+}
+
+/* Sidebar menu */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin-top: 170px; /* Ajuste selon la taille de ton logo */
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Eléments du menu principal */
+.sidebar-menu li {
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+/* Style des liens */
+.sidebar-menu li a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
+}
+
+/* Hover menu */
+.sidebar-menu li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffdd57;
+  transform: translateX(10px);
+}
+
+/* Hover liens */
+.sidebar-menu li a:hover {
+  color: #ffdd57;
+  font-weight: 600;
+}
+
+/* Icônes */
+.sidebar-menu i {
+  margin-right: 10px;
+}
+
+/* Menu déroulant */
+.dropdown-icon {
+  margin-left: auto;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-icon.open {
+  transform: rotate(180deg);
+}
+
+/* Sous-menu */
+.submenu {
+  list-style: none;
+  padding-left: 20px;
+  background-color: #1e387d; /* Optionnel : couleur plus sombre pour le sous-menu */
+  border-radius: 6px;
+  margin-top: 5px;
+}
+
+.submenu li a {
+  font-size: 0.9em;
+  color: #f0f0f0;
+  padding: 8px 20px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.submenu li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Titre de menu comme User Section */
+.sidebar-menu .menu-title {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #f0f0f0;
+  padding: 12px 20px;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.sidebar-menu .menu-title:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+/* Survol complet de la sidebar */
+.sidebar:hover {
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+  background-color: #2e55a5;
+}

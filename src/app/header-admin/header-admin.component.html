@@ -1,0 +1,31 @@
+<div class="profile-settings" tabindex="0" (blur)="closeDropdown()">
+    <div class="welcome-message" *ngIf="welcomeMessage">
+      <h2>{{ welcomeMessage }}</h2>
+      <h2 class="animated-title">Set Your Goals Today!</h2>
+    </div>
+  
+    <div class="user-dropdown">
+      <div class="profile-info" (click)="toggleDropdown()">
+        <img
+          *ngIf="userImageUrl"
+          [src]="userImageUrl"
+          alt="User Profile"
+          class="profile-img"
+        />
+        <button class="user-name-btn">
+          {{ userName || 'Utilisateur' }}
+          <i class="fas fa-caret-down"></i>
+        </button>
+      </div>
+  
+      <div class="dropdown-menu" *ngIf="dropdownOpen">
+        <button class="dropdown-item" (click)="goToProfile()">
+          <i class="fas fa-user-cog"></i> Profile Settings
+        </button>
+        <button class="dropdown-item" (click)="logout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+  </div>
+  

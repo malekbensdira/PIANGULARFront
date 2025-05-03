@@ -1,0 +1,22 @@
+<div class="modal-container">
+    <h2>Feedback Statistics for {{ data.agentName }}</h2>
+    
+    <div class="stats-container">
+      <div class="stat-item">
+        <span class="stat-label">Positive</span>
+        <span class="stat-value">{{ data.statsData.positive }}%</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Negative</span>
+        <span class="stat-value">{{ data.statsData.negative }}%</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Neutral</span>
+        <span class="stat-value">{{ data.statsData.neutral }}%</span>
+      </div>
+    </div>
+  
+    <div class="modal-actions">
+      <button mat-button (click)="closeModal()">Close</button>
+    </div>
+  </div>

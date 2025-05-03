@@ -1,0 +1,165 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .modal-header h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #224393;
+    margin: 0;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+  }
+  
+  .close-btn:hover {
+    color: #224393;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #224393;
+    margin-bottom: 8px;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .form-group textarea {
+    resize: vertical;
+    max-width: 400px; /* Reduce textarea width */
+    margin: 0 auto; /* Center the textarea */
+    display: block; /* Ensure centering works */
+  }
+  
+  .form-group select {
+    appearance: none;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="6"><path fill="%23224393" d="M0 0h12l-6 6z"/></svg>') no-repeat right 10px center;
+    background-size: 12px;
+  }
+  
+  .error {
+    color: #d32f2f;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  .btn-cancel,
+  .btn-submit {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-cancel {
+    background-color: #ccc;
+    color: #333;
+  }
+  
+  .btn-cancel:hover {
+    background-color: #bbb;
+  }
+  
+  .btn-submit {
+    background-color: #224393;
+    color: white;
+  }
+  
+  .btn-submit:hover {
+    background-color: #f1dd5f;
+    color: #224393;
+  }
+  
+  .btn-submit:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  .confirmation-message {
+    text-align: center;
+    padding: 20px;
+    background-color: #e6f4ea;
+    border-radius: 8px;
+    margin: 20px;
+  }
+  
+  .confirmation-message h3 {
+    color: #2e7d32;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .confirmation-message p {
+    color: #388e3c;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+  }
+  
+  .btn-close-confirmation {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  
+  .btn-close-confirmation:hover {
+    background-color: #45a049;
+  }

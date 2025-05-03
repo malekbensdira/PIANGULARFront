@@ -1,0 +1,72 @@
+<div class="modal-overlay" (click)="close()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <button class="close-btn" (click)="close()">×</button>
+      </div>
+      <div *ngIf="showConfirmation" class="confirmation-message">
+        <h3>Your claim is successfully registered!</h3>
+        <p>We will do our best to treat your request promptly.</p>
+        <button class="btn-close-confirmation" (click)="close()">Close</button>
+      </div>
+      <form *ngIf="!showConfirmation" [formGroup]="claimForm" (ngSubmit)="onSubmit()">
+        <h2>Submit a New Claim</h2>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            placeholder="Describe your problem..."
+            rows="5"></textarea>
+          <div class="error" *ngIf="claimForm.get('description')?.touched && claimForm.get('description')?.errors?.required">
+            Description is required
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="problemType">Problem Type</label>
+          <select id="problemType" formControlName="problemType">
+            <option value="" disabled selected>Select problem type</option>
+            <option *ngFor="let type of problemTypes" [value]="type">{{ type }}</option>
+          </select>
+          <div class="error" *ngIf="claimForm.get('problemType')?.touched && claimForm.get('problemType')?.errors?.required">
+            Problem type is required
+          </div>
+          <div class="form-group" *ngIf="claimForm.get('problemType')?.value === 'OTHER'">
+            <label for="otherProblemType">Specify Other Problem</label>
+            <input
+              id="otherProblemType"
+              type="text"
+              formControlName="otherProblemType"
+              placeholder="Specify your problem..." />
+            <div class="error" *ngIf="claimForm.get('otherProblemType')?.touched && claimForm.get('otherProblemType')?.errors?.required">
+              Other problem description is required
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="requestedSolution">Requested Solution</label>
+          <select id="requestedSolution" formControlName="requestedSolution">
+            <option value="" disabled selected>Select requested solution</option>
+            <option *ngFor="let solution of requestedSolutions" [value]="solution">{{ solution }}</option>
+          </select>
+          <div class="error" *ngIf="claimForm.get('requestedSolution')?.touched && claimForm.get('requestedSolution')?.errors?.required">
+            Requested solution is required
+          </div>
+          <div class="form-group" *ngIf="claimForm.get('requestedSolution')?.value === 'OTHER'">
+            <label for="otherSolution">Specify Other Solution</label>
+            <input
+              id="otherSolution"
+              type="text"
+              formControlName="otherSolution"
+              placeholder="Specify your solution..." />
+            <div class="error" *ngIf="claimForm.get('otherSolution')?.touched && claimForm.get('otherSolution')?.errors?.required">
+              Other solution description is required
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="close()">Cancel</button>
+          <button type="submit" class="btn-submit" [disabled]="claimForm.invalid">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>

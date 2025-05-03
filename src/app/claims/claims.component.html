@@ -1,0 +1,52 @@
+<app-header-after-signin></app-header-after-signin>
+
+<img src="assets/img/LOGOAMENA.png" alt="Logo" id="logo">
+
+<div class="claims-container">
+  <div class="content-wrapper">
+    <div class="claims-header">
+      <div class="welcome-text">Welcome to the Claims section!</div>
+      <div class="slogan">Here you can submit and track your claims:</div>
+    </div>
+    <div class="claims-content">
+      <button class="btn-submit-claim" (click)="openClaimModal()">Submit a New Claim</button>
+      <div class="claims-list">
+        <h2>Your Claims</h2>
+        <div *ngIf="claims.length === 0" class="no-claims">
+          No claims submitted yet.
+        </div>
+        <div *ngIf="claims.length > 0" class="claims-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Problem Type</th>
+                <th>Requested Solution</th>
+                <th>Date Submitted</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let claim of claims" (click)="openDisplayModal(claim)">
+                <td>{{ claim.description }}</td>
+                <td>{{ claim.priority }}</td>
+                <td>{{ claim.problemType }}</td>
+                <td>{{ claim.requestedSolution }}</td>
+                <td>{{ claim.dateHeure | date:'medium' }}</td>
+                <td>
+                  <span [ngClass]="{'status-treated': claim.status, 'status-not-treated': !claim.status}">
+                    {{ getStatusLabel(claim.status) }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-claim-modal *ngIf="showModal" (closeModal)="closeClaimModal()"></app-claim-modal>
+<app-claim-display-modal *ngIf="showDisplayModal" [claim]="selectedClaim" (closeModal)="closeDisplayModal()"></app-claim-display-modal>

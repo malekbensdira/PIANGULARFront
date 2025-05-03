@@ -1,18 +1,166 @@
-<div class="user-list">
-    <div *ngFor="let user of users" class="user-item">
-      <div class="user-info">
-        <div><strong>{{ user.nom }} {{ user.prenom }}</strong></div>
-        <div>Email: {{ user.email }}</div>
-        <div>Rôle: {{ user.role }}</div>
-        <div>Solde courant: {{ user.soldeCourant | currency }}</div>
-        <div>Adresse: {{ user.adresse }}</div>
-        <div>Âge: {{ user.age }}</div>
+<div class="admin-container">
+  <app-sidebar-admin #sidebar></app-sidebar-admin>
+
+  <main class="main-content">
+    <app-header-admin></app-header-admin>
+
+    <div id="content" class="goal-list-container" [class.visible]="logoAnimationDone">
+      <!-- Indicateur de chargement -->
+      <div *ngIf="showLoading" class="loading-indicator">
+        Chargement des objectifs...
       </div>
-  
-      <!-- Affichage de l'image de l'utilisateur -->
-      <div class="user-image">
-        <img [src]="user.image" alt="Image de {{ user.nom }}" width="100" height="100">
+
+      <!-- Section de la barre de progression -->
+      <div class="progress-bar-container">
+        <h2 class="animated-title">Global Progress</h2>
+        <div class="progress-bar">
+          <div class="progress" [ngStyle]="{ width: progress + '%' }"></div>
+        </div>
+        <h2 class="animated-title1">
+          <p>{{ progress }}% completed</p>
+        </h2>
       </div>
+
+   
+      
+
+      <!-- Section de recherche et tri -->
+      <div class="search-sort-container">
+        <div class="search-group">
+          <label for="searchDeadline" class="search-label">
+            Search task by deadline
+          </label>
+          <input
+            type="date"
+            id="searchDeadline"
+            [(ngModel)]="searchDeadline"
+            class="search-input"
+          />
+          <button class="btn btn-search" (click)="searchGoals()">Search</button>
+        </div>
+
+        <div class="sort-group">
+          <button class="btn btn-sort" (click)="sortGoalsByPriority()">Sort by Priority</button>
+          <button class="btn btn-reset" (click)="resetGoals()">Reset</button>
+        </div>
+      </div>
+
+      <!-- Messages d’avancement -->
+      <div class="animated-title2">
+        <div class="progress-message-container">
+          <p *ngIf="progress === 0">No progress made yet. Let's get started! 🚀</p>
+          <p *ngIf="progress > 0 && progress < 50">You're making progress! 👍</p>
+          <p *ngIf="progress >= 50 && progress < 100">Almost there! Keep going! 🚀</p>
+          <p *ngIf="progress === 100">All goals completed! Well done, Admin! 🎉</p>
+        </div>
+        <button class="new-goal-button" (click)="openModal()">
+          <i class="fas fa-bullseye"></i> Set a New Goal
+        </button>
+      </div>
+
+      <!-- Liste des objectifs -->
+      <div *ngIf="goals.length > 0; else noGoals" class="goal-items">
+        <div *ngFor="let goal of goals" class="goal-item">
+          <div class="goal-header">
+            <div class="priority">
+              <div class="priority-star">
+                <span class="star-number">{{ goal.priority }}</span>
+              </div>
+            </div>
+            <div class="goal-header-banner">
+              <h3>{{ goal.content }}</h3>
+            </div>
+            <div class="separator"></div>
+            <i class="pin-icon fas fa-thumbtack"></i>
+            <div class="goal-details">
+              <p class="goal-deadline">
+                Deadline: <strong>{{ goal.deadline | date:'yyyy-MM-dd HH:mm' }}</strong>
+              </p>
+              
+              <p>Status: 
+                <span [ngClass]="{
+                  'completed': goal.status,
+                  'expired': goal.deadline < todayDate && !goal.status
+                }">
+                  {{ goal.status ? 'Done' : (goal.deadline < todayDate && !goal.status ? 'Deadline Expired' : 'In Progress') }}
+                </span>
+              </p>
+              <div class="goal-footer">
+                <label class="checkbox-container">
+                  <input type="checkbox" [checked]="goal.status" (change)="toggleStatus(goal)" />
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="goal-actions">
+            <button class="edit-btn" (click)="editGoal(goal)">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <!-- Exemple de bouton pour supprimer un objectif -->
+<button class="delete-btn" (click)="deleteGoal(goal)">
+  <i class="fas fa-trash-alt"></i> Delete
+</button>
+
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noGoals>
+        <p>No goals found for this user.</p>
+      </ng-template>
     </div>
+  </main>
+</div>
+
+<!-- ============================== -->
+<!-- Modale AJOUT de Goal -->
+<div class="modal" *ngIf="isModalOpen" [ngClass]="{ 'show': isModalOpen }">
+  <div class="modal-content">
+    <button class="close" (click)="closeModal()">&times;</button>
+    <div class="AddnewGoal">
+      <h2><i class="fas fa-bullseye"></i> Set a new Goal</h2>
+    </div>
+
+    <form (ngSubmit)="submitNewGoal()" #goalForm="ngForm" class="modal-form">
+      <input type="text" placeholder="Content" [(ngModel)]="newGoal.content" name="content" required #contentInput="ngModel" />
+      <div *ngIf="contentInput.invalid && contentInput.touched" class="error-message">This field is required and must be at least 3 characters long.</div>
+
+      <select [(ngModel)]="newGoal.priority" name="priority" required class="priority-dropdown" #priorityInput="ngModel">
+        <option *ngFor="let i of priorityOptions" [value]="i">{{ i }}</option>
+      </select>
+      <div *ngIf="priorityInput.invalid && priorityInput.touched" class="error-message">Please select a valid priority.</div>
+
+      <input type="datetime-local" placeholder="Deadline" [(ngModel)]="newGoal.deadline" name="deadline" required [min]="minDate" #deadlineInput="ngModel" />
+      <div *ngIf="deadlineInput.invalid && deadlineInput.touched" class="error-message">Deadline is required and cannot be in the past.</div>
+
+      <button type="submit" class="btn-submit" [disabled]="goalForm.invalid">Add Goal</button>
+    </form>
   </div>
-  
+</div>
+
+<!-- ============================== -->
+<!-- Nouvelle petite fenêtre d'EDIT -->
+<div class="modal" *ngIf="isEditModalOpen" [ngClass]="{ 'show': isEditModalOpen }">
+  <div class="modal-content">
+    <button class="close" (click)="closeEditModal()">&times;</button>
+    <div class="AddnewGoal">
+      <h2><i class="fas fa-edit"></i> Edit Goal</h2>
+    </div>
+
+    <form (ngSubmit)="submitEditGoal()" #editForm="ngForm" class="modal-form">
+      <input type="text" placeholder="Content" [(ngModel)]="editedGoal.content" name="editContent" required />
+      <select [(ngModel)]="editedGoal.priority" name="editPriority" required class="priority-dropdown">
+        <option *ngFor="let i of priorityOptions" [value]="i">{{ i }}</option>
+      </select>
+      <input type="datetime-local" placeholder="Deadline" [(ngModel)]="editedGoal.deadline" name="editDeadline" required [min]="minDate" />
+
+      <button type="submit" class="btn-submit">Update Goal</button>
+    </form>
+  </div>
+</div>
+
+<!-- Message de confirmation après ajout -->
+<div *ngIf="confirmationMessageVisible" class="confirmation-message">
+  {{ confirmationMessage }}
+</div>

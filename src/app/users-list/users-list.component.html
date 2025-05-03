@@ -1,0 +1,210 @@
+<div class="admin-container">
+  <app-sidebar-admin #sidebar class="sidebar"></app-sidebar-admin>
+
+  <div class="content-wrapper">
+    <main class="main-content">
+      <app-header-user-section></app-header-user-section>
+
+      <!-- Boutons d'action et recherche -->
+      <div class="action-buttons-container">
+        <div class="action-buttons">
+          <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search users by any attribute..." [(ngModel)]="searchQuery" (keyup.enter)="searchUsers()">
+            <button class="btn-search" (click)="searchUsers()">Search</button>
+            <button class="btn-reset" (click)="resetSearch()">Reset</button>
+          </div>
+          </div>
+      </div>
+
+      <!-- Conteneur pour le tableau et le camembert -->
+      <div class="table-chart-container" style="display: flex; gap: 2px;">
+        <!-- Tableau -->
+        <div class="table-responsive-container" style="flex: 2;">
+          <div class="table-container">
+            <h2 class="table-title">Users Overview</h2>
+            <div class="users-table" *ngIf="users">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Profile</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let user of filteredUsers; let i = index" 
+                      (click)="selectUser(user)"
+                      [class.selected]="selectedUser?.id === user.id">
+                    <td class="image-cell">
+                      <img *ngIf="user.image" [src]="user.image" alt="User image">
+                      <div *ngIf="!user.image" class="avatar-initials">
+                        {{ user.prenom.charAt(0) }}{{ user.nom.charAt(0) }}
+                      </div>
+                    </td>
+                    <td>{{ user.prenom }}</td>
+                    <td>{{ user.nom }}</td>
+                    <td><span class="role-badge">{{ user.role.nomRole }}</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Camembert -->
+        <div class="chart-container" style="flex: 1; max-width: 400px; min-height: 300px; margin-left: -40px;">
+          <div class="chart-box">
+            <h2 class="chart-title">Role Distribution Overview</h2>
+            <div *ngIf="!pieChartDatasets[0]?.data || pieChartDatasets[0].data.length === 0" style="text-align: center; color: red;">
+              No data available for the chart
+            </div>
+            <canvas baseChart
+                    [datasets]="pieChartDatasets"
+                    [labels]="pieChartLabels"
+                    [chartType]="pieChartType"
+                    [options]="pieChartOptions"
+                    [colors]="pieChartColors"
+                    [legend]="pieChartLegend"
+                    [plugins]="pieChartPlugins"
+                    style="display: block; width: 100%; height: 300px;">
+            </canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carte de détails moderne -->
+      <div *ngIf="selectedUser" class="user-detail-card">
+        <div class="user-header">
+          <div class="user-avatar">
+            <img *ngIf="selectedUser.image" [src]="selectedUser.image" alt="User image">
+            <div *ngIf="!selectedUser.image" class="avatar-placeholder">
+              {{ selectedUser.prenom.charAt(0) }}{{ selectedUser.nom.charAt(0) }}
+            </div>
+          </div>
+          <div class="user-info">
+            <h2>{{ selectedUser.prenom }} {{ selectedUser.nom }}</h2>
+            <div class="user-meta">
+              <span class="user-role">{{ selectedUser.role.nomRole }}</span>
+            </div>
+          </div>
+          <button *ngIf="selectedUser.role.nomRole === 'AGENT'" 
+                  class="feedback-btn1"
+                  (click)="viewFeedback()">View Feedback</button>
+        </div>
+
+        <div class="user-details-grid">
+          <div class="detail-col">
+            <div class="detail-item">
+              <span class="detail-label">Email</span>
+              <span class="detail-value">{{ selectedUser.email }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Phone</span>
+              <span class="detail-value">{{ selectedUser.tel }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">CIN</span>
+              <span class="detail-value">{{ selectedUser.cin }}</span>
+            </div>
+          </div>
+          
+          <div class="detail-col">
+            <div class="detail-item">
+              <span class="detail-label">Address</span>
+              <span class="detail-value">{{ selectedUser.adresse }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Age</span>
+              <span class="detail-value">{{ selectedUser.age }} years</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Gender</span>
+              <span class="detail-value">{{ selectedUser.sexe }}</span>
+            </div>
+          </div>
+          
+          <div class="detail-col">
+            <div class="detail-item">
+              <span class="detail-label">RIB</span>
+              <span class="detail-value">{{ selectedUser.rib }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Balance</span>
+              <span class="detail-value">{{ selectedUser.soldeCourant }} DT</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback Modal -->
+      <div *ngIf="showFeedbackModal" class="feedback-modal">
+        <div class="modal-content">
+          <span class="close" (click)="closeFeedbackModal()">×</span>
+          <h2 class="feedback-title">Feedback Statistics for {{ selectedUser?.prenom }} {{ selectedUser?.nom }}</h2>
+      
+          <button class="feedback-btn" (click)="downloadPdf(selectedUser.id)" [disabled]="downloading">
+            <span *ngIf="downloading">Downloading...</span>
+            <span *ngIf="!downloading">Download PDF</span>
+          </button>
+      
+          <!-- Warning Notification -->
+          <div *ngIf="feedbackStats?.negativePercentage >= 70" class="warning-notification">
+             A warning mail is sent to this agent
+          </div>
+      
+          <div *ngIf="feedbackStats && !feedbackStats.error" class="stats-container">
+            <!-- Positive Feedback -->
+            <div class="stat-item positive">
+              <div class="stat-circle">
+                <svg class="circle-chart" viewBox="0 0 36 36">
+                  <path class="circle-bg"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="circle-fill"
+                    stroke-dasharray="{{feedbackStats.positivePercentage}}, 100"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="percentage">{{feedbackStats.positivePercentage}}%</div>
+              </div>
+              <h3>Positive</h3>
+            </div>
+      
+            <!-- Neutral Feedback -->
+            <div class="stat-item neutral">
+              <div class="stat-circle">
+                <svg class="circle-chart" viewBox="0 0 36 36">
+                  <path class="circle-bg"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="circle-fill"
+                    stroke-dasharray="{{feedbackStats.neutralPercentage}}, 100"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="percentage">{{feedbackStats.neutralPercentage}}%</div>
+              </div>
+              <h3>Neutral</h3>
+            </div>
+      
+            <!-- Negative Feedback -->
+            <div class="stat-item negative">
+              <div class="stat-circle">
+                <svg class="circle-chart" viewBox="0 0 36 36">
+                  <path class="circle-bg"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="circle-fill"
+                    stroke-dasharray="{{feedbackStats.negativePercentage}}, 100"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="percentage">{{feedbackStats.negativePercentage}}%</div>
+              </div>
+              <h3>Negative</h3>
+            </div>
+          </div>
+      
+          <div *ngIf="feedbackStats?.error" class="error-message">
+            {{ feedbackStats.error }}
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

@@ -6,15 +6,19 @@
     <!-- Menu si besoin -->
   </nav>
 
-  <!-- Image de profil à gauche -->
+  <!-- Image de profil avec cadre -->
   <div class="profile-settings" tabindex="0">
-    <img
-      class="profile-img"
-      [ngClass]="{ 'animate-move': animate }"
-      [src]="userImageUrl"
-      alt="User Profile"
-      (animationend)="onAnimationEnd()" 
-    />
+    <div class="profile-image-frame">
+      <img
+        class="profile-img"
+        [ngClass]="{ 'animate-move': animate }"
+        [src]="userImageUrl"
+        alt="User Profile"
+        (animationend)="onAnimationEnd()"
+        (click)="triggerFileInput()"
+      />
+      <input #fileInput type="file" (change)="onImageChange($event)" accept="image/*" style="display: none;">
+    </div>
   </div>
 
   <!-- Message centré dans le header -->
@@ -25,13 +29,12 @@
 
 <!-- Contenu de la page à afficher uniquement après l'animation -->
 <div *ngIf="showMessage" class="page-content">
-
   <!-- Zoom effet sur le titre -->
   <h2 class="zoom-in-title">Welcome to your personal dashboard</h2>
 
   <!-- Typing effet sur le sous-texte -->
   <div class="slogan">
-    You can now manage your profile and have access to your settings :
+    You can now manage your profile and have access to your settings:
   </div>
 
   <!-- Message de confidentialité -->
@@ -42,45 +45,159 @@
   <div *ngIf="user" class="profile-container">
     <p class="privacy-message">Details section:</p>
 
-    <!-- Table des informations utilisateur -->
-    <table class="profile-table">
-      <tr><th>Name</th><td><span *ngIf="!isEditing">{{ user.nom }}</span><input *ngIf="isEditing" [(ngModel)]="user.nom" /></td></tr>
-      <tr><th>Surname</th><td><span *ngIf="!isEditing">{{ user.prenom }}</span><input *ngIf="isEditing" [(ngModel)]="user.prenom" /></td></tr>
-      <tr><th>Email</th><td><span *ngIf="!isEditing">{{ user.email }}</span><input *ngIf="isEditing" [(ngModel)]="user.email" /></td></tr>
-      <tr><th>Phone</th><td><span *ngIf="!isEditing">{{ user.tel }}</span><input *ngIf="isEditing" [(ngModel)]="user.tel" /></td></tr>
-      <tr><th>Address</th><td><span *ngIf="!isEditing">{{ user.adresse }}</span><input *ngIf="isEditing" [(ngModel)]="user.adresse" /></td></tr>
-      <tr><th>Gender</th><td><span *ngIf="!isEditing">{{ user.sexe }}</span><input *ngIf="isEditing" [(ngModel)]="user.sexe" /></td></tr>
-      <tr><th>RIB</th><td><span *ngIf="!isEditing">{{ user.rib }}</span><input *ngIf="isEditing" [(ngModel)]="user.rib" /></td></tr>
-      <tr><th>Role</th><td><span *ngIf="!isEditing">{{ user.role?.nomRole }}</span><input *ngIf="isEditing" [(ngModel)]="user.role.nomRole" /></td></tr>
-      <tr><th>Balance</th><td><span *ngIf="!isEditing">{{ user.soldeCourant }} DT</span><input *ngIf="isEditing" [(ngModel)]="user.soldeCourant" /></td></tr>
-      <tr><th>Age</th><td><span *ngIf="!isEditing">{{ user.age }}</span><input *ngIf="isEditing" [(ngModel)]="user.age" /></td></tr>
-      <tr><th>CIN</th><td><span *ngIf="!isEditing">{{ user.cin }}</span><input *ngIf="isEditing" [(ngModel)]="user.cin" /></td></tr>
-    </table>
+    <!-- Table des informations utilisateur avec formulaire réactif -->
+    <form [formGroup]="userForm" class="profile-table">
+      <table>
+        <tr>
+          <th>Name</th>
+          <td>
+            <span *ngIf="!isEditing">{{ user.nom }}</span>
+            <div *ngIf="isEditing" class="input-container">
+              <input formControlName="nom" required />
+              <div *ngIf="userForm.get('nom')?.invalid && userForm.get('nom')?.touched" class="error-message">
+                Name must contain only letters.
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>Surname</th>
+          <td>
+            <span *ngIf="!isEditing">{{ user.prenom }}</span>
+            <div *ngIf="isEditing" class="input-container">
+              <input formControlName="prenom" required />
+              <div *ngIf="userForm.get('prenom')?.invalid && userForm.get('prenom')?.touched" class="error-message">
+                Surname must contain only letters.
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>Email</th>
+          <td>
+            <span *ngIf="!isEditing">{{ user.email }}</span>
+            <div *ngIf="isEditing" class="input-container">
+              <input formControlName="email" type="email" required />
+              <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="error-message">
+                Invalid email format.
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>Phone</th>
+          <td>
+            <span *ngIf="!isEditing">{{ user.tel }}</span>
+            <div *ngIf="isEditing" class="input-container">
+              <input formControlName="tel" type="number" required />
+              <div *ngIf="userForm.get('tel')?.invalid && userForm.get('tel')?.touched" class="error-message">
+                Phone number must be 8 digits.
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>Address</th>
+          <td>
+            <span *ngIf="!isEditing">{{ user.adresse }}</span>
+            <div *ngIf="isEditing" class="input-container">
+              <input formControlName="adresse" required />
+              <div *ngIf="userForm.get('adresse')?.invalid && userForm.get('adresse')?.touched" class="error-message">
+                Address must be 5-100 characters.
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>Gender</th>
+          <td>
+            <span *ngIf="!isEditing">{{ user.sexe }}</span>
+            <div *ngIf="isEditing" class="input-container">
+              <select formControlName="sexe" required>
+                <option value="man">Man</option>
+                <option value="woman">Woman</option>
+              </select>
+              <div *ngIf="userForm.get('sexe')?.invalid && userForm.get('sexe')?.touched" class="error-message">
+                Sex must be "man" or "woman".
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>RIB</th>
+          <td>
+            <span *ngIf="!isEditing">{{ user.rib }}</span>
+            <div *ngIf="isEditing" class="input-container">
+              <input formControlName="rib" required />
+              <div *ngIf="userForm.get('rib')?.invalid && userForm.get('rib')?.touched" class="error-message">
+                RIB must be 20 digits.
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>Role</th>
+          <td>
+            <span *ngIf="!isEditing">{{ user.role?.nomRole || 'N/A' }}</span>
+            <input *ngIf="isEditing" [value]="user.role?.nomRole || 'N/A'" disabled />
+          </td>
+        </tr>
+        <tr>
+          <th>Balance</th>
+          <td>
+            <span *ngIf="!isEditing">{{ user.soldeCourant }} DT</span>
+            <div *ngIf="isEditing" class="input-container">
+              <input formControlName="soldeCourant" type="number" />
+              <div *ngIf="userForm.get('soldeCourant')?.invalid && userForm.get('soldeCourant')?.touched" class="error-message">
+                Balance cannot be negative.
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>Age</th>
+          <td>
+            <span *ngIf="!isEditing">{{ user.age }}</span>
+            <div *ngIf="isEditing" class="input-container">
+              <input formControlName="age" type="number" required />
+              <div *ngIf="userForm.get('age')?.invalid && userForm.get('age')?.touched" class="error-message">
+                Age must be between 20 and 60.
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>CIN</th>
+          <td>
+            <span *ngIf="!isEditing">{{ user.cin }}</span>
+            <div *ngIf="isEditing" class="input-container">
+              <input formControlName="cin" type="number" required />
+              <div *ngIf="userForm.get('cin')?.invalid && userForm.get('cin')?.touched" class="error-message">
+                CIN must be 8 digits.
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </form>
 
     <div class="profile-buttons">
-      <!-- Bouton pour basculer en mode édition -->
       <button *ngIf="!isEditing" class="btn edit-btn" (click)="toggleEdit()">
         <i class="fas fa-user-edit"></i>
         Edit personal details
       </button>
-
-      <!-- Bouton pour sauvegarder les modifications -->
-      <button *ngIf="isEditing" class="btn save-btn" (click)="saveChanges()">
+      <button *ngIf="isEditing" class="btn save-btn" (click)="saveChanges()" [disabled]="userForm.invalid">
         <i class="fas fa-save"></i>
         Save changes
       </button>
-
-      <!-- Bouton pour annuler les modifications -->
       <button *ngIf="isEditing" class="btn cancel-btn" (click)="cancelEdit()">
         <i class="fas fa-times"></i>
         Cancel
       </button>
-
       <button class="btn delete-btn" (click)="deleteAccount()">
         <i class="fas fa-user-times"></i>
         Delete account
       </button>
-
       <button class="btn logout-btn" (click)="logout()">
         <i class="fas fa-sign-out-alt"></i>
         Logout
