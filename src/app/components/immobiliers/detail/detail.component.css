@@ -3,13 +3,13 @@
 
 /* Variables */
 :root {
-  --primary-color: #4a6fa5;
-  --secondary-color: #166088;
+  --primary-color: #3366cc;
+  --secondary-color: #1e4b9a;
   --accent-color: #4fc3f7;
-  --text-color: #333;
-  --light-gray: #f5f5f5;
-  --border-radius: 8px;
-  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --text-color: #2c3e50;
+  --light-gray: rgba(240, 240, 240, 0.7);
+  --border-radius: 10px;
+  --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Base Styles */
@@ -19,6 +19,7 @@
   padding: 2rem;
   color: var(--text-color);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
 }
 
 /* Header */
@@ -30,22 +31,25 @@
 }
 
 .back-button {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: var(--border-radius);
+  background-color: white;
+  color: var(--text-color);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 12px 24px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 16px;
+  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 10px;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .back-button:hover {
-  background-color: var(--secondary-color);
-  transform: translateY(-2px);
+  background-color: #f8f9fa;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 .property-title {
@@ -55,38 +59,61 @@
   text-align: center;
 }
 
-/* Content Layout */
+/* Content Layout avec un style plus premium */
 .property-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-/* Gallery */
-.property-gallery {
-  position: relative;
-}
-
-.main-image {
+  gap: 2.5rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
   border-radius: var(--border-radius);
-  overflow: hidden;
   box-shadow: var(--box-shadow);
+  padding: 2.5rem;
+  margin-bottom: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Styles pour le conteneur d'image principal avec effet moderne */
+.main-image {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  position: relative;
+  width: 100%;
+  height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
 }
 
 .property-image {
-  width: 100%;
-  height: auto;
-  max-height: 500px;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
   display: block;
-  transition: transform 0.3s ease;
+  object-fit: contain;
+  transition: transform 0.4s ease;
 }
 
-.property-image:hover {
-  transform: scale(1.02);
+/* Style amélioré pour le badge du type de propriété */
+.property-type-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 22px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  z-index: 2;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  text-transform: uppercase;
 }
 
-/* Property Info */
+/* Property Info avec style premium */
 .property-info {
   display: flex;
   flex-direction: column;
@@ -94,29 +121,48 @@
 }
 
 .price-section {
-  background-color: var(--light-gray);
-  padding: 1.5rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  padding: 1.8rem;
   border-radius: var(--border-radius);
   text-align: center;
-  box-shadow: var(--box-shadow);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.price-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+  z-index: 1;
 }
 
 .price {
   font-size: 2.5rem;
   font-weight: bold;
-  color: var(--secondary-color);
+  color: white;
   display: block;
-  line-height: 1;
+  line-height: 1.2;
+  position: relative;
+  z-index: 2;
 }
 
 .price-label {
   font-size: 1rem;
-  color: #666;
+  color: rgba(255, 255, 255, 0.9);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  margin-top: 5px;
+  position: relative;
+  z-index: 2;
 }
 
-/* Details Grid */
+/* Details Grid modernisée */
 .details-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -124,14 +170,16 @@
 }
 
 .detail-item {
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
   padding: 1.5rem;
   border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
   gap: 1rem;
   transition: transform 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .detail-item:hover {
@@ -223,6 +271,10 @@
     grid-template-columns: 1fr;
   }
   
+  .main-image {
+    padding-bottom: 56.25%; /* Ratio 16:9 pour les écrans plus petits */
+  }
+  
   .property-title {
     font-size: 1.5rem;
   }
@@ -235,6 +287,14 @@
   
   .property-detail-container {
     padding: 1rem;
+  }
+  
+  .property-content {
+    padding: 1rem;
+  }
+  
+  .main-image {
+    padding-bottom: 75%; /* Ratio 4:3 pour les très petits écrans */
   }
 }
 /* Bouton Retour */
@@ -457,23 +517,42 @@
   height: 400px;
   width: 100%;
   margin-top: 20px;
-  border-radius: 10px;
-  z-index: 1;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 /* Styles pour la section des biens similaires */
 .similar-properties-section {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-top: 3rem;
+  padding: 2rem 0;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(5px);
 }
 
 .similar-properties-section h3 {
-  color: #2c3e50;
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1.8rem;
+  font-size: 1.8rem;
+  text-align: center;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.similar-properties-section h3::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  border-radius: 3px;
 }
 
 .properties-grid {
@@ -483,48 +562,505 @@
 }
 
 .property-card {
-  background: white;
+  flex: 0 0 280px;
+  width: 280px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  transition: all 0.4s ease, opacity 0.3s ease, filter 0.3s ease;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+  animation: cardEntrance 0.6s ease-out forwards;
+  animation-delay: calc(var(--card-index, 0) * 0.1s);
+  transform: translateY(30px);
+  opacity: 0;
+  backdrop-filter: blur(5px);
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Effet de floutage pour les cartes non survolées */
+.property-carousel:hover .property-card {
+  opacity: 0.5;
+  filter: blur(4px) grayscale(60%);
+  transform: scale(0.92);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.property-carousel:hover .property-card:hover {
+  opacity: 1;
+  filter: blur(0) grayscale(0%);
+  transform: translateY(-12px) scale(1.05);
+  z-index: 10;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.property-card .property-image {
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+}
+
+.property-card .property-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.property-card:hover .property-image img {
+  transform: scale(1.1);
+}
+
+.property-card .property-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  z-index: 2;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.property-card .property-info {
+  padding: 20px;
+  background: none;
+}
+
+.property-card .property-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0 0 8px 0;
+}
+
+.property-card .property-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.property-card .property-details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Styles pour les détails supplémentaires qui apparaissent au survol */
+.property-card .property-extra-details {
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.4s ease;
+}
+
+.property-card .property-extra-details.show {
+  height: auto;
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 15px;
+}
+
+.property-card .detail-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #6c757d;
+  animation: detailFadeIn 0.4s ease-out forwards;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+@keyframes detailFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.property-card .property-extra-details.show .detail-row:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.property-card .property-extra-details.show .detail-row:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.property-card .property-extra-details.show .detail-row:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.property-card .property-extra-details.show .view-more-button {
+  animation-delay: 0.4s;
+  animation: detailFadeIn 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+.property-card .detail-row i {
+  font-size: 1rem;
+  color: var(--primary-color);
+  width: 20px;
+  text-align: center;
+}
+
+.property-card .view-more-button {
+  width: 100%;
+  padding: 10px 0;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-top: 12px;
+}
+
+.property-card .view-more-button:hover {
+  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* Styles pour les boutons de navigation */
+.carousel-nav-button {
+  background-color: var(--primary-color);
+  color: white;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  z-index: 10;
+}
+
+.carousel-nav-button:hover {
+  background-color: var(--secondary-color);
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+/* Style pour la carte */
+.leaflet-map {
+  height: 400px;
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Styles pour le carousel d'images */
+.image-carousel {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.property-image {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.property-image:hover {
+  transform: scale(1.05);
+}
+
+/* Boutons de navigation */
+.prev-image-button, .next-image-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #333;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.prev-image-button {
+  left: 15px;
+}
+
+.next-image-button {
+  right: 15px;
+}
+
+.prev-image-button:hover, .next-image-button:hover {
+  background-color: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Indicateur du nombre de photos */
+.image-counter {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  z-index: 5;
+}
+
+/* Miniatures */
+.image-thumbnails {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 15px;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 60px;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
   cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
-.property-card:hover {
-  transform: translateY(-5px);
-}
-
-.property-image img {
+.thumbnail img {
   width: 100%;
-  height: 180px;
+  height: 100%;
   object-fit: cover;
 }
 
-.property-info {
-  padding: 1rem;
+.thumbnail.active {
+  border-color: #4a6fa5;
+  opacity: 1;
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.property-info h4 {
-  margin: 0 0 0.5rem 0;
-  color: #34495e;
+.thumbnail:hover:not(.active) {
+  opacity: 0.9;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.property-info p {
-  margin: 0.5rem 0;
-  color: #7f8c8d;
+/* Animation pour les slides */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.view-button {
-  background: #3498db;
-  color: white;
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Responsive design pour le carousel */
+@media (max-width: 768px) {
+  .image-carousel {
+    height: 300px;
+  }
+  
+  .thumbnail {
+    width: 60px;
+    height: 45px;
+  }
+  
+  .prev-image-button, .next-image-button {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+/* Styles pour la modal d'image en plein écran */
+.fullscreen-modal,
+@keyframes fadeInModal,
+.fullscreen-image-container,
+.fullscreen-image,
+.close-fullscreen-btn,
+.close-fullscreen-btn:hover,
+.fullscreen-controls,
+.fullscreen-nav-btn,
+.fullscreen-nav-btn:hover,
+.fullscreen-counter,
+.zoom-controls,
+.zoom-btn,
+.zoom-btn:hover {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .main-image {
+    height: 300px;
+  }
+}
+
+/* Style pour le bouton de carte */
+.btn-map {
+  padding: 12px 24px;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #2196F3, #0D47A1);
+  color: white;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
 }
 
-.view-button:hover {
-  background: #2980b9;
+.btn-map:hover {
+  background: linear-gradient(135deg, #1E88E5, #0D47A1);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(33, 150, 243, 0.4);
+}
+
+.prev-button {
+  margin-right: 15px;
+}
+
+.next-button {
+  margin-left: 15px;
+}
+
+.carousel-nav-button i {
+  font-size: 18px;
+}
+
+/* Adaptations responsive pour le carousel */
+@media (max-width: 768px) {
+  .property-card {
+    flex: 0 0 260px;
+    width: 260px;
+  }
+  
+  .carousel-nav-button {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 576px) {
+  .property-card {
+    flex: 0 0 220px;
+    width: 220px;
+  }
+  
+  .carousel-nav-button {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .carousel-nav-button i {
+    font-size: 14px;
+  }
+}
+
+/* Amélioration du container carousel pour un meilleur effet */
+.property-carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 20px 10px;
+  margin: 15px 0;
+  overflow: hidden;
+}
+
+.property-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  gap: 30px;
+  padding: 30px 10px;
+  width: 100%;
+  will-change: transform;
+}
+
+.property-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Renforcer l'effet de hover */
+.property-carousel .property-card {
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.5s ease, transform 0.5s ease;
+}
+
+/* Effet de floutage plus prononcé */
+.property-carousel:hover .property-card {
+  opacity: 0.5;
+  filter: blur(4px) grayscale(60%);
+  transform: scale(0.92);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.property-carousel:hover .property-card:hover {
+  opacity: 1;
+  filter: blur(0) grayscale(0%);
+  transform: translateY(-12px) scale(1.05);
+  z-index: 10;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.7);
 }

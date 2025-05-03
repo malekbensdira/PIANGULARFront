@@ -46,8 +46,6 @@
   border: none;
 }
 
-
-
 .add-button {
   background-color: #224393;
   color: white;
@@ -77,12 +75,19 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
 
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-  }
+.property-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.property-card:active {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .property-image {
@@ -326,7 +331,6 @@
   }
 
   .list-header {
-    
     flex-direction: column;
     align-items: flex-start;
   }
@@ -345,58 +349,101 @@
     flex-direction: column;
   }
 }
-/* Animation et styles pour les détails supplémentaires */
-.property-card {
-  position: relative;
-  transition: all 0.3s ease;
-  overflow: hidden;
-  cursor: pointer;
-}
 
-.property-card:hover {
+/* Style spécifique pour la carte développée */
+.property-card.expanded {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 2px solid #224393;
 }
 
+/* Style pour les détails supplémentaires qui s'affichent au survol */
 .property-extra-details {
   max-height: 0;
-  opacity: 0;
   overflow: hidden;
-  transition: all 0.4s ease;
-  padding: 0 15px;
-  background: rgba(245, 245, 245, 0.9);
-  margin: 10px -15px -10px;
-  border-radius: 0 0 8px 8px;
+  transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+  opacity: 0;
+  margin-top: 0;
 }
 
 .property-extra-details.show {
-  max-height: 150px;
+  max-height: 300px;
   opacity: 1;
-  padding: 10px 15px;
-  border-top: 1px solid #eee;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Animation pour les détails qui apparaissent */
+@keyframes fadeInSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.property-extra-details.show .detail-row {
+  animation: fadeInSlideDown 0.3s ease forwards;
+}
+
+.property-extra-details.show .detail-row:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.property-extra-details.show .detail-row:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.property-extra-details.show .detail-row:nth-child(3) {
+  animation-delay: 0.15s;
 }
 
 .detail-row {
   display: flex;
   align-items: center;
-  margin: 5px 0;
-  font-size: 14px;
-  color: #555;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
 }
 
 .detail-row i {
-  margin-right: 10px;
-  color: #666;
+  color: #224393;
+  font-size: 1rem;
   width: 20px;
   text-align: center;
 }
 
-/* Ajustements pour les boutons d'action */
-.property-actions {
-  margin-top: 15px;
-  padding-top: 10px;
-  border-top: 1px solid #eee;
+/* Styles pour les actions sur les détails */
+.detail-actions {
+  margin-top: 1rem;
+  display: flex;
+  width: 100%;
 }
+
+.view-details-button {
+  flex: 1;
+  background-color: #224393;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.view-details-button:hover {
+  background-color: #1a3478;
+}
+
 /* Animation du prix */
 @keyframes fadeInPrice {
   0% {
@@ -414,45 +461,6 @@
   font-size: 1.5rem; /* Ajuste la taille du texte selon ton besoin */
   font-weight: bold;
   color: #007bff; /* Couleur du prix */
-}
-.property-card {
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 10px; /* Coins arrondis pour plus de douceur */
-  overflow: hidden;
-  background-color: #fff;
-}
-
-.property-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.property-image img {
-  width: 100%;
-  border-bottom: 2px solid #f1f1f1;
-}
-
-.property-info {
-  padding: 15px;
-  background-color: #f9f9f9;
-  border-top: 1px solid #f1f1f1;
-  transition: all 0.3s ease;
-}
-
-.property-info:hover {
-  background-color: #e9ecef;
-}
-
-.property-extra-details {
-  display: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.property-extra-details.show {
-  display: block;
-  opacity: 1;
 }
 
 .property-card {
@@ -502,6 +510,7 @@
 .property-image:hover img {
   transform: scale(1.1);
 }
+
 .view-more-button {
   margin-top: 10px;
   background-color: #007bff;
@@ -516,4 +525,69 @@
 .view-more-button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
+}
+
+/* Styles pour la recherche */
+.search-container {
+  position: relative;
+  margin-right: 15px;
+  flex-grow: 1;
+  max-width: 400px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 15px 10px 40px;
+  border-radius: 25px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+/* Styles pour le message "Aucun résultat" */
+.no-results {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.no-results-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+  color: #ccc;
+}
+
+/* Ajustements pour le header */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-container {
+    max-width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
 }

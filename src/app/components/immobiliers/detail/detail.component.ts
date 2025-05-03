@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ImmobilierService } from '../../../services/immobilier.service';
 import { EstimationService } from '../../../services/estimation.service';
@@ -26,6 +26,12 @@ export class DetailComponent implements OnInit {
   map: L.Map | null = null;
   marker!: L.Marker;
   hoveredProperty: number | null = null;
+  
+  // Variables pour la navigation des images
+  imageUrls: string[] = [];
+  currentImageIndex: number = 0;
+  
+  @ViewChild('propertyCarousel') propertyCarousel!: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,6 +49,63 @@ export class DetailComponent implements OnInit {
     }
   }
 
+  // Getter pour l'URL de l'image courante
+  get currentImageUrl(): string {
+    return this.imageUrls.length > 0 ? this.imageUrls[this.currentImageIndex] : this.getDefaultImageUrl();
+  }
+
+  // Méthode pour charger les URLs des images
+  loadImageUrls(): void {
+    this.imageUrls = [];
+    
+    if (!this.property) return;
+    
+    // Ajouter l'image principale si elle existe
+    if (this.property.photoPath) {
+      this.addImageUrl(this.property.photoPath);
+    }
+    
+    // Ajouter les images supplémentaires si elles existent
+    if (this.property.images && Array.isArray(this.property.images)) {
+      this.property.images.forEach(img => {
+        this.addImageUrl(img);
+      });
+    }
+    
+    // Si aucune image n'est disponible, ajouter une image par défaut
+    if (this.imageUrls.length === 0) {
+      this.imageUrls.push(this.getDefaultImageUrl());
+    }
+    
+    console.log('Images chargées:', this.imageUrls);
+  }
+  
+  // Méthode pour ajouter une URL d'image au tableau en évitant les doublons
+  addImageUrl(imagePath: string): void {
+    const url = this.getImageUrl(imagePath);
+    if (!this.imageUrls.includes(url)) {
+      this.imageUrls.push(url);
+    }
+  }
+  
+  // Méthode pour obtenir l'URL d'image par défaut
+  getDefaultImageUrl(): string {
+    return 'https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=600';
+  }
+  
+  // Navigation entre les images
+  nextImage(): void {
+    if (this.imageUrls.length > 1) {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.imageUrls.length;
+    }
+  }
+  
+  prevImage(): void {
+    if (this.imageUrls.length > 1) {
+      this.currentImageIndex = (this.currentImageIndex - 1 + this.imageUrls.length) % this.imageUrls.length;
+    }
+  }
+
   loadProperty(id: number): void {
     this.isLoading = true;
     this.immobilierService.getById(id).subscribe({
@@ -51,6 +114,11 @@ export class DetailComponent implements OnInit {
           ...data,
           photoPath: this.normalizePhotoPath(data.photoPath)
         };
+        
+        // Charger les URLs des images
+        this.loadImageUrls();
+        this.currentImageIndex = 0;
+        
         console.log('Bien chargé:', this.property);
         this.loadSimilarProperties(data);
         this.isLoading = false;
@@ -61,6 +129,69 @@ export class DetailComponent implements OnInit {
         console.error('Erreur:', err);
       }
     });
+  }
+
+  normalizePhotoPath(photoPath: string | undefined): string | undefined {
+    if (!photoPath) return undefined;
+
+    // Si photoPath est une chaîne JSON, essayons de la parser
+    if (typeof photoPath === 'string' && 
+        (photoPath.startsWith('[') || photoPath.startsWith('{'))) {
+      try {
+        const parsed = JSON.parse(photoPath);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed[0]; // Renvoie le premier élément si c'est un tableau
+        } else if (typeof parsed === 'string') {
+          return parsed; // Renvoie la chaîne si c'est une chaîne
+        } else if (parsed && typeof parsed === 'object') {
+          // Si c'est un objet avec une propriété qui pourrait contenir le chemin
+          for (const key of ['path', 'url', 'src', 'href']) {
+            if (parsed[key] && typeof parsed[key] === 'string') {
+              return parsed[key];
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('Impossible de parser photoPath:', photoPath);
+      }
+    }
+
+    return photoPath;
+  }
+
+  getImageUrl(photoPath: string | undefined): string {
+    if (!photoPath) {
+      return this.getDefaultImageUrl();
+    }
+
+    try {
+      // Essayons de voir si c'est un JSON
+      if (typeof photoPath === 'string' && 
+          (photoPath.startsWith('[') || photoPath.startsWith('{'))) {
+        const parsed = JSON.parse(photoPath);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          photoPath = parsed[0];
+        } else if (typeof parsed === 'string') {
+          photoPath = parsed;
+        }
+      }
+    } catch (e) {
+      // Ignorer l'erreur, utiliser photoPath tel quel
+    }
+
+    if (typeof photoPath !== 'string') {
+      return this.getDefaultImageUrl();
+    }
+
+    if (photoPath.startsWith('http')) {
+      return photoPath;
+    }
+
+    if (photoPath.startsWith('/uploads/')) {
+      return `http://localhost:8081${photoPath}`;
+    }
+
+    return photoPath;
   }
 
   loadSimilarProperties(currentProperty: Immobilier): void {
@@ -204,45 +335,29 @@ export class DetailComponent implements OnInit {
     this.showMapModal = false;
     this.googleMapsLink = null;
   }
-
-  normalizePhotoPath(photoPath: string | undefined): string | undefined {
-    if (!photoPath) return undefined;
-
-    if (typeof photoPath === 'string' && 
-        (photoPath.startsWith('[') || photoPath.startsWith('{'))) {
-      try {
-        const parsed = JSON.parse(photoPath);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed[0];
-        } else if (typeof parsed === 'string') {
-          return parsed;
-        }
-      } catch (e) {
-        console.warn('Impossible de parser photoPath:', photoPath);
-      }
-    }
-
-    return photoPath;
-  }
-
-  getImageUrl(photoPath: string | undefined): string {
-    if (!photoPath) {
-      return 'https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=600';
-    }
-
-    if (photoPath.startsWith('http')) {
-      return photoPath;
-    }
-
-    if (photoPath.startsWith('/uploads/')) {
-      return `http://localhost:8081${photoPath}`;
-    }
-
-    return photoPath;
-  }
-
+  
   viewDetails(id: number): void {
-    console.log('Tentative de navigation vers ID:', id); // Log pour déboguer
-    // this.router.navigate(['/detail', id]); // Commenté car les ID temporaires ne sont pas valides
+    console.log('Tentative de navigation vers ID:', id);
+    this.router.navigate(['/detail', id]);
+  }
+
+  scrollCarousel(direction: 'left' | 'right'): void {
+    if (!this.propertyCarousel) return;
+    
+    const container = this.propertyCarousel.nativeElement;
+    const scrollAmount = 320; // La largeur approximative d'une carte + margin
+    
+    if (direction === 'left') {
+      container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    } else {
+      container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  }
+
+  // Méthode pour définir l'image courante en cliquant sur une miniature
+  setCurrentImage(index: number): void {
+    if (index >= 0 && index < this.imageUrls.length) {
+      this.currentImageIndex = index;
+    }
   }
 }

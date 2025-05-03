@@ -57,11 +57,18 @@
           <button type="button" class="cancel-button" (click)="cancel()">
             <i class="fas fa-times"></i> Annuler
           </button>
-          <button type="submit" class="save-button">
-            <i class="fas fa-save"></i> {{ isEditMode ? 'Mettre à jour' : 'Enregistrer' }}
+          <button type="submit" class="save-button" [disabled]="isLoading">
+            <i class="fas fa-save"></i> 
+            <span *ngIf="!isLoading">{{ isEditMode ? 'Mettre à jour' : 'Enregistrer' }}</span>
+            <span *ngIf="isLoading">Chargement...</span>
           </button>
         </div>
       </form>
+      
+      <!-- Message d'erreur -->
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
     </div>
   </main>
 </div>

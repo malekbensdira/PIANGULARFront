@@ -53,6 +53,13 @@ export class ImmobilierService {
     );
   }
 
+  updateWithImages(id: number, formData: FormData): Observable<Immobilier> {
+    return this.http.put<ApiImmobilierResponse>(`${this.apiUrl}/${id}/photos`, formData).pipe(
+      map(response => this.transformResponse(response)),
+      catchError(this.handleError)
+    );
+  }
+
   deleteImmobilier(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
       catchError(this.handleError)

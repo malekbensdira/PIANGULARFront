@@ -4,10 +4,35 @@
   <div class="property-detail-container">
     <div *ngIf="property" class="property-content">
       <div class="property-gallery">
+        <!-- Navigation d'image simplifiée -->
         <div class="main-image">
-          <img [src]="getImageUrl(property.photoPath)" 
+          <img [src]="currentImageUrl" 
                [alt]="property.type + ' à ' + property.ville"
                class="property-image">
+          
+          <div class="property-type-badge">{{ property.type }}</div>
+          
+          <button *ngIf="imageUrls.length > 1" class="prev-image-button" (click)="prevImage()">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          
+          <button *ngIf="imageUrls.length > 1" class="next-image-button" (click)="nextImage()">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          
+          <div *ngIf="imageUrls.length > 1" class="image-counter">
+            {{ currentImageIndex + 1 }} / {{ imageUrls.length }}
+          </div>
+        </div>
+        
+        <!-- Miniatures des images -->
+        <div *ngIf="imageUrls.length > 1" class="image-thumbnails">
+          <div *ngFor="let imageUrl of imageUrls; let i = index" 
+               class="thumbnail" 
+               [class.active]="currentImageIndex === i"
+               (click)="setCurrentImage(i)">
+            <img [src]="imageUrl" [alt]="'Miniature ' + (i+1)">
+          </div>
         </div>
       </div>
 
@@ -43,10 +68,10 @@
           </div>
 
           <div class="detail-item">
-            <i class="fas fa-home"></i>
+            <i class="fas fa-door-open"></i>
             <div>
-              <span class="detail-label">Type</span>
-              <span class="detail-value">{{property.type}}</span>
+              <span class="detail-label">Pièces</span>
+              <span class="detail-value">{{property.nombrePieces || 'N/A'}}</span>
             </div>
           </div>
 
@@ -69,15 +94,15 @@
 
         <div class="action-buttons">
           <button class="back-button" routerLink="/list" aria-label="Retour à la liste">
-            <svg class="back-icon" viewBox="0 0 24 24">
-              <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-            </svg>
-            <span class="back-text">Retour à la liste</span>
+            <i class="fas fa-arrow-left"></i>
+            <span>Retour à la liste</span>
           </button>
           <button class="btn-buy" (click)="buyProperty()">
             <i class="fas fa-shopping-cart"></i> Acheter le bien
           </button>
-          <button (click)="onLoadMapClick()">Charger la localisation</button>
+          <button class="btn-map" (click)="onLoadMapClick()">
+            <i class="fas fa-map-marked-alt"></i> Voir la localisation
+          </button>
         </div>
       </div>
     </div>
@@ -90,51 +115,69 @@
       <div id="leaflet-map" class="leaflet-map"></div>
     </div>
 
-    <!-- Section des biens similaires avec le design de list.component.html -->
-    <div *ngIf="recommendedProperties.length > 0" class="similar-properties-section">
+    <!-- Section des biens similaires -->
+    <div *ngIf="recommendedProperties && recommendedProperties.length > 0" class="similar-properties-section">
       <h3>Biens similaires dans la région</h3>
-      <div class="property-list">
-        <div *ngFor="let item of recommendedProperties" class="property-card" 
-             (mouseenter)="hoveredProperty = item.id" 
-             (mouseleave)="hoveredProperty = null">
-          
-          <!-- Image de la propriété -->
-          <div class="property-image">
-            <img [src]="getImageUrl(item.photoPath)" 
-                 [alt]="item.type + ' à ' + item.ville">
-            <div class="property-badge">{{ item.type }}</div>
-          </div>
-          
-          <div class="property-info">
-            <h3 class="property-title">{{ item.ville }}</h3>
-            <div class="property-price">{{ item.prix | currency:'EUR':'symbol':'1.0-0' }}</div>
-            <div class="property-details">
-              <span><i class="fas fa-ruler-combined"></i> {{ item.superficie }} m²</span>
-              <span *ngIf="item.nombrePieces"><i class="fas fa-door-open"></i> {{ item.nombrePieces }} pièces</span>
+      
+      <div class="property-carousel-container">
+        <button class="carousel-nav-button prev-button" (click)="scrollCarousel('left')">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <div class="property-carousel" #propertyCarousel>
+          <div *ngFor="let item of recommendedProperties; let i = index" 
+               class="property-card" 
+               (mouseenter)="hoveredProperty = item.id" 
+               (mouseleave)="hoveredProperty = null"
+               [style.--card-index]="i">
+            
+            <!-- Image de la propriété -->
+            <div class="property-image">
+              <img [src]="getImageUrl(item.photoPath)" 
+                   [alt]="item.type + ' à ' + item.ville">
+              <div class="property-badge">{{ item.type }}</div>
             </div>
             
-            <!-- Détails supplémentaires qui apparaissent au survol -->
-            <div class="property-extra-details" [class.show]="hoveredProperty === item.id">
-              <div class="detail-row">
-                <i class="fas fa-calendar-alt"></i>
-                <span>Année: {{item.anneeConstruction || 'N/A'}}</span>
+            <div class="property-info">
+              <h3 class="property-title">{{ item.ville }}</h3>
+              <div class="property-price">{{ item.prix | currency:'EUR':'symbol':'1.0-0' }}</div>
+              <div class="property-details">
+                <span><i class="fas fa-ruler-combined"></i> {{ item.superficie }} m²</span>
+                <span *ngIf="item.nombrePieces"><i class="fas fa-door-open"></i> {{ item.nombrePieces }} pièces</span>
               </div>
-              <div class="detail-row">
-                <i class="fas fa-layer-group"></i>
-                <span>Étage: {{item.etage || 'N/A'}}</span>
+              
+              <!-- Détails supplémentaires qui apparaissent au survol -->
+              <div class="property-extra-details" [class.show]="hoveredProperty === item.id">
+                <div class="detail-row">
+                  <i class="fas fa-calendar-alt"></i>
+                  <span>Année: {{item.anneeConstruction || 'N/A'}}</span>
+                </div>
+                <div class="detail-row">
+                  <i class="fas fa-layer-group"></i>
+                  <span>Étage: {{item.etage || 'N/A'}}</span>
+                </div>
+                <div class="detail-row">
+                  <i class="fas fa-info-circle"></i>
+                  <span>État: {{item.etat || 'Non spécifié'}}</span>
+                </div>
+                
+                <!-- Bouton "Afficher plus de détails" -->
+                <button class="view-more-button" (click)="viewDetails(item.id || 0)">
+                  <i class="fas fa-eye"></i> Voir ce bien
+                </button>
               </div>
-              <div class="detail-row">
-                <i class="fas fa-info-circle"></i>
-                <span>État: {{item.etat || 'Non spécifié'}}</span>
-              </div>
-
-              <!-- Bouton "Afficher plus de détails" -->
-              <button class="action-button view-more-button" (click)="viewDetails(item.id)">
-                <i class="fas fa-eye"></i> Afficher plus de détails
+              
+              <!-- Bouton visible seulement quand pas survolé -->
+              <button *ngIf="hoveredProperty !== item.id" class="view-more-button" (click)="viewDetails(item.id || 0)">
+                <i class="fas fa-eye"></i> Voir plus
               </button>
             </div>
           </div>
         </div>
+        
+        <button class="carousel-nav-button next-button" (click)="scrollCarousel('right')">
+          <i class="fas fa-chevron-right"></i>
+        </button>
       </div>
     </div>
   </div>

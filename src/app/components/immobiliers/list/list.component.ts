@@ -4,6 +4,7 @@ import { ImmobilierService } from '../../../services/immobilier.service';
 import { Immobilier } from '../../../models/immobilier.model';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { EstimationService } from '../../../services/estimation.service';
+import { FormsModule } from '@angular/forms'; // Ajouté pour ngModel
 
 interface FlyingKey {
   left: number;
@@ -36,12 +37,14 @@ interface FlyingKey {
 })
 export class ListComponent implements OnInit {
   immobiliers: Immobilier[] = [];
+  filteredImmobiliers: Immobilier[] = []; // Nouvelle propriété pour les résultats filtrés
+  searchTerm: string = ''; // Terme de recherche
   showDeleteNotification = false;
   showConfirmationDialog = false;
   notificationTimeout: any;
   propertyToDelete: number | null = null;
-  hoveredProperty: number | null = null; // Ajouté pour gérer le survol
-
+  hoveredProperty: number | null = null;
+  
   constructor(
     private service: ImmobilierService,
     private router: Router,
@@ -61,14 +64,28 @@ export class ListComponent implements OnInit {
             photoPath: this.normalizePhotoPath(item.photoPath)
           };
         });
-        
+        this.filteredImmobiliers = [...this.immobiliers]; // Initialise avec tous les immobiliers
         console.log('Immobiliers chargés:', this.immobiliers);
-        this.immobiliers.forEach(item => {
-          console.log(`Bien ID:${item.id}, photoPath:${item.photoPath}`);
-        });
       },
       error: (err) => console.error('Erreur:', err)
     });
+  }
+
+  // Méthode pour filtrer les résultats
+  filterImmobiliers(): void {
+    if (!this.searchTerm) {
+      this.filteredImmobiliers = [...this.immobiliers];
+      return;
+    }
+
+    const term = this.searchTerm.toLowerCase();
+    this.filteredImmobiliers = this.immobiliers.filter(item => 
+      (item.type?.toLowerCase().includes(term)) ||
+      (item.adresse?.toLowerCase().includes(term)) ||
+      (item.ville?.toLowerCase().includes(term)) ||
+      
+      (item.prix?.toString().includes(term))
+    );
   }
 
   estimateProperty(item: Immobilier): void {
@@ -127,6 +144,7 @@ export class ListComponent implements OnInit {
       this.service.deleteImmobilier(this.propertyToDelete).subscribe({
         next: () => {
           this.immobiliers = this.immobiliers.filter(item => item.id !== this.propertyToDelete);
+          this.filteredImmobiliers = this.filteredImmobiliers.filter(item => item.id !== this.propertyToDelete);
           this.showConfirmationDialog = false;
           this.showDeleteNotification = true;
           
@@ -158,48 +176,29 @@ export class ListComponent implements OnInit {
   }
 
   getImageUrl(photoPath: string | undefined, itemId?: number): string {
-    console.log(`Traitement de l'image pour ID:${itemId}, photoPath initial:`, photoPath);
-    
     if (itemId) {
       const localStorageContent = localStorage.getItem('immobilier_images');
-      console.log('Contenu complet du localStorage:', localStorageContent);
-      
       const imageMapping = JSON.parse(localStorageContent || '{}');
-      console.log('Mapping des images:', imageMapping);
       
       if (imageMapping[itemId]) {
         const localStoragePath = imageMapping[itemId];
-        console.log(`Image trouvée dans localStorage pour ID:${itemId}:`, localStoragePath);
-        
         if (localStoragePath.startsWith('/uploads/')) {
-          const fullUrl = `http://localhost:8081${localStoragePath}`;
-          console.log('URL serveur complète:', fullUrl);
-          return fullUrl;
+          return `http://localhost:8081${localStoragePath}`;
         }
-        
         return localStoragePath;
-      } else {
-        console.log(`Aucune image trouvée dans localStorage pour ID:${itemId}`);
       }
     }
     
     if (photoPath) {
-      console.log('Utilisation du photoPath fourni:', photoPath);
-      
       const normalizedPath = this.normalizePhotoPath(photoPath) || photoPath;
-      
       if (normalizedPath.startsWith('/uploads/')) {
-        const fullUrl = `http://localhost:8081${normalizedPath}`;
-        console.log('URL serveur complète:', fullUrl);
-        return fullUrl;
+        return `http://localhost:8081${normalizedPath}`;
       }
-      
       if (normalizedPath.startsWith('http://') || normalizedPath.startsWith('https://')) {
         return normalizedPath;
       }
     }
     
-    console.log(`Aucune image trouvée pour ID:${itemId}, utilisation de l'image par défaut`);
     return 'https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=600';
   }
 

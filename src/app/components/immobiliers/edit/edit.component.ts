@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImmobilierService } from '../../../services/immobilier.service';
 import { Immobilier, TypeImmobilier } from '../../../models/immobilier.model';
+import { lastValueFrom } from 'rxjs';
+import { take, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-edit',
@@ -29,7 +32,7 @@ export class EditComponent implements OnInit {
   typeImmobilierOptions = Object.values(TypeImmobilier);
   isLoading = false;
   errorMessage: string | null = null;
-isEditMode: any;
+  isEditMode = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -55,7 +58,7 @@ isEditMode: any;
     }
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (!this.property.id) {
       this.errorMessage = 'ID du bien non valide';
       return;
@@ -64,20 +67,23 @@ isEditMode: any;
     this.isLoading = true;
     this.errorMessage = null;
 
-    this.service.updateImmobilier(this.property.id, this.property)
-      .subscribe({
-        next: () => {
-          this.isLoading = false;
-          this.router.navigate(['/list'], {
-            queryParams: { refresh: new Date().getTime() } // Force le rafraîchissement
-          });
-        },
-        error: (err) => {
-          console.error('Erreur:', err);
-          this.errorMessage = 'Échec de la mise à jour. Veuillez réessayer.';
-          this.isLoading = false;
-        }
+    try {
+      await lastValueFrom(
+        this.service.updateImmobilier(this.property.id, this.property).pipe(
+          take(1),
+          catchError(error => throwError(() => new Error(error.message)))
+        )
+      );
+      
+      this.router.navigate(['/list'], {
+        queryParams: { refresh: new Date().getTime() } // Force le rafraîchissement
       });
+    } catch (err: any) {
+      console.error('Erreur:', err);
+      this.errorMessage = err.message || 'Échec de la mise à jour. Veuillez réessayer.';
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   cancel(): void {

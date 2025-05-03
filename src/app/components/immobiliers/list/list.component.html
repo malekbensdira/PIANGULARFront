@@ -34,10 +34,18 @@
     </div>
 
     <div class="content-container">
-      <!-- En-tête avec bouton d'ajout -->
+      <!-- En-tête avec bouton d'ajout et recherche -->
       <div class="list-header">
         <h2>Liste des biens immobiliers</h2>
         <div class="header-actions">
+          <div class="search-container">
+            <input type="text" 
+                   [(ngModel)]="searchTerm" 
+                   (input)="filterImmobiliers()" 
+                   placeholder="Rechercher par type, ville, prix..."
+                   class="search-input">
+            <i class="fas fa-search search-icon"></i>
+          </div>
           <button class="add-button" routerLink="/add">
             <i class="fas fa-plus"></i> Ajouter un bien
           </button>
@@ -49,9 +57,10 @@
 
       <!-- Liste des biens -->
       <div class="property-list">
-        <div *ngFor="let item of immobiliers" class="property-card" 
+        <div *ngFor="let item of filteredImmobiliers" class="property-card" 
              (mouseenter)="hoveredProperty = item.id" 
-             (mouseleave)="hoveredProperty = null">
+             (mouseleave)="hoveredProperty = null"
+             [routerLink]="['/detail', item.id]">
           
           <!-- Image de la propriété -->
           <div class="property-image">
@@ -82,22 +91,23 @@
                 <i class="fas fa-info-circle"></i>
                 <span>État: {{item.etat || 'Non spécifié'}}</span>
               </div>
-
-              <!-- Bouton "Afficher plus de détails" -->
-              <button class="action-button view-more-button" [routerLink]="['/detail', item.id]">
-                <i class="fas fa-eye"></i> Afficher plus de détails
-              </button>
             </div>
             
             <div class="property-actions">
-              <button class="action-button edit-button" (click)="editProperty(item.id)">
+              <button class="action-button edit-button" (click)="editProperty(item.id); $event.stopPropagation()">
                 <i class="fas fa-edit"></i> Éditer
               </button>
-              <button class="action-button delete-button" (click)="deleteProperty(item.id)">
+              <button class="action-button delete-button" (click)="deleteProperty(item.id); $event.stopPropagation()">
                 <i class="fas fa-trash"></i> Supprimer
               </button>
             </div>
           </div>
+        </div>
+
+        <!-- Message si aucun résultat trouvé -->
+        <div *ngIf="filteredImmobiliers.length === 0" class="no-results">
+          <i class="fas fa-search no-results-icon"></i>
+          <p>Aucun bien immobilier ne correspond à votre recherche.</p>
         </div>
       </div>
     </div>
