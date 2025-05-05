@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ServiceService } from '../Service/service.service';
 import { Insurance } from '../models/insurance.model';
 import { PolicyType } from '../models/policy-type.enum';
 import { ClaimStatus } from '../models/claim-status.enum';
 import { ChartOptions, ChartType, ChartData } from 'chart.js';
-
+import { Subscription } from 'rxjs';
 
 // Extend the Insurance interface to include animation flags
 interface AnimatedInsurance extends Insurance {
@@ -12,22 +12,60 @@ interface AnimatedInsurance extends Insurance {
   isDeleting?: boolean;
 }
 
+// Base subscription request interface
+interface BaseSubscriptionRequest {
+  id: number;
+  name: string;
+  email: string;
+  policyType: PolicyType;
+}
+
+// Interfaces for policy-specific fields
+interface AutoSubscriptionRequest extends BaseSubscriptionRequest {
+  policyType: PolicyType.AUTO_INSURANCE;
+  vehicleMake?: string;
+  vehicleModel?: string;
+  vehicleYear?: number;
+  kilometers?: number;
+}
+
+interface HealthSubscriptionRequest extends BaseSubscriptionRequest {
+  policyType: PolicyType.HEALTH_INSURANCE;
+  age?: number;
+  hasPreExistingCondition?: boolean;
+}
+
+interface HomeSubscriptionRequest extends BaseSubscriptionRequest {
+  policyType: PolicyType.HOME_INSURANCE;
+  propertyAddress?: string;
+  propertyValue?: number;
+}
+
+// Union type for all subscription requests
+type SubscriptionRequest = AutoSubscriptionRequest | HealthSubscriptionRequest | HomeSubscriptionRequest | BaseSubscriptionRequest;
+
 @Component({
   selector: 'app-insurance-manager',
   templateUrl: './insurance-manager.component.html',
   styleUrls: ['./insurance-manager.component.css']
 })
-export class InsuranceManagerComponent implements OnInit {
+export class InsuranceManagerComponent implements OnInit, OnDestroy {
   insurances: AnimatedInsurance[] = [];
   newInsurance: AnimatedInsurance = this.resetNewInsurance();
   isEditing: boolean = false;
   selectedInsuranceId: number | null = null;
+  selectedSubscriptionId: number | null = null; // Track selected subscription for detailed view
+  selectedSubscription: SubscriptionRequest | null = null; // Store the selected subscription for display
   claimAmount: number = 0;
   errorMessage: string | null = null;
   policyTypes = PolicyType;
   isLoadingKpis: boolean = false;
   isDarkMode: boolean = false;
   isLoading: boolean = false;
+  showKpis: boolean = false;
+  showNotifications: boolean = false; // Toggle for notification view
+  pendingSubscriptions: SubscriptionRequest[] = [];
+  private subscriptionCheckInterval?: any;
 
   // Chart properties
   barChartData: ChartData<'bar'> = { labels: [], datasets: [] };
@@ -37,14 +75,42 @@ export class InsuranceManagerComponent implements OnInit {
   pieChartData: ChartData<'pie'> = { labels: [], datasets: [] };
   pieChartOptions: ChartOptions = { responsive: true };
   pieChartType: ChartType = 'pie';
-  
+
+  minCoverageAmount: number | null = null;
+  maxCoverageAmount: number | null = null;
+  minPremium: number | null = null;
+  maxPremium: number | null = null;
 
   constructor(private insuranceService: ServiceService) {}
 
   ngOnInit(): void {
     this.loadInsurances();
-    this.loadKpis();
     this.loadDarkMode();
+    this.startSubscriptionCheck();
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscriptionCheckInterval) {
+      clearInterval(this.subscriptionCheckInterval);
+    }
+  }
+
+  startSubscriptionCheck(): void {
+    this.checkSubscriptions();
+    this.subscriptionCheckInterval = setInterval(() => {
+      this.checkSubscriptions();
+    }, 30000); // Check every 30 seconds
+  }
+
+  checkSubscriptions(): void {
+    this.insuranceService.getPendingSubscriptions().subscribe({
+      next: (subscriptions: SubscriptionRequest[]) => {
+        this.pendingSubscriptions = subscriptions;
+      },
+      error: (err: Error) => {
+        this.errorMessage = err.message || 'Failed to load pending subscriptions.';
+      }
+    });
   }
 
   loadInsurances(): void {
@@ -60,6 +126,7 @@ export class InsuranceManagerComponent implements OnInit {
 
   loadKpis(): void {
     this.isLoadingKpis = true;
+    this.errorMessage = null;
     Promise.all([
       this.insuranceService.getClaimsRejectionRatio().toPromise(),
       this.insuranceService.getLossRatio().toPromise(),
@@ -103,6 +170,22 @@ export class InsuranceManagerComponent implements OnInit {
     });
   }
 
+  toggleKpis(): void {
+    this.showKpis = !this.showKpis;
+    this.showNotifications = false; // Hide notifications when showing KPIs
+    if (this.showKpis && !(this.barChartData.labels ?? []).length) {
+      this.loadKpis(); // Load KPIs only if not already loaded
+    }
+  }
+
+  toggleNotifications(): void {
+    this.showNotifications = !this.showNotifications;
+    this.showKpis = false; // Hide KPIs when showing notifications
+    if (this.showNotifications) {
+      this.checkSubscriptions(); // Refresh subscriptions when opening notifications
+    }
+  }
+
   resetNewInsurance(): AnimatedInsurance {
     return {
       userId: 0,
@@ -125,17 +208,58 @@ export class InsuranceManagerComponent implements OnInit {
     }
   }
 
+  createFromSubscription(subscription: SubscriptionRequest): void {
+    // Prefill the form with subscription data
+    this.newInsurance = {
+      userId: 0, // Admin should set this, as subscription doesn't have userId
+      policyType: subscription.policyType,
+      coverageAmount: 0, // Admin will fill this
+      premium: 0, // Admin will fill this
+      startDate: '', // Admin will fill this
+      endDate: '', // Admin will fill this
+      claimStatus: ClaimStatus.PENDING,
+      isNew: false,
+      isDeleting: false
+    };
+    // Ensure the form is in "create mode" and visible
+    this.isEditing = false;
+    this.showNotifications = false; // Hide notifications to show the form
+    this.showKpis = false; // Hide KPIs to show the form
+    this.selectedSubscriptionId = null; // Close the subscription modal
+    this.selectedSubscription = null;
+  }
+
+  rejectSubscription(id: number): void {
+    this.insuranceService.rejectSubscription(id).subscribe({
+      next: () => {
+        this.pendingSubscriptions = this.pendingSubscriptions.filter(s => s.id !== id);
+        this.errorMessage = 'Subscription rejected successfully.';
+        this.selectedSubscriptionId = null; // Clear selected subscription if it was being viewed
+        this.selectedSubscription = null;
+      },
+      error: (err: Error) => {
+        this.errorMessage = err.message || 'Failed to reject subscription.';
+      }
+    });
+  }
+
+  viewSubscription(id: number): void {
+    this.selectedSubscriptionId = id;
+    this.selectedSubscription = this.pendingSubscriptions.find(sub => sub.id === id) || null;
+  }
+
   createInsurance(): void {
+    console.log('Creating insurance with payload:', this.newInsurance);
     this.insuranceService.createInsurance(this.newInsurance).subscribe({
       next: (insurance: AnimatedInsurance) => {
-        // Mark the new insurance as "new" for animation
         insurance.isNew = true;
         insurance.isDeleting = false;
         this.insurances.push(insurance);
-        this.resetNewInsurance();
+        this.newInsurance = this.resetNewInsurance();
       },
-      error: (err: Error) => {
-        this.errorMessage = err.message || 'Failed to create insurance.';
+      error: (err: any) => {
+        console.error('Error creating insurance:', err);
+        this.errorMessage = err.error?.message || err.message || 'Failed to create insurance. Please check the server logs for more details.';
       }
     });
   }
@@ -146,12 +270,12 @@ export class InsuranceManagerComponent implements OnInit {
         next: (insurance: AnimatedInsurance) => {
           const index = this.insurances.findIndex(i => i.id === insurance.id);
           if (index !== -1) {
-            insurance.isNew = false; // Ensure updated rows don't animate as new
+            insurance.isNew = false;
             insurance.isDeleting = false;
             this.insurances[index] = insurance;
           }
           this.isEditing = false;
-          this.resetNewInsurance();
+          this.newInsurance = this.resetNewInsurance();
         },
         error: (err: Error) => {
           this.errorMessage = err.message || 'Failed to update insurance.';
@@ -167,16 +291,14 @@ export class InsuranceManagerComponent implements OnInit {
 
   cancelEdit(): void {
     this.isEditing = false;
-    this.resetNewInsurance();
+    this.newInsurance = this.resetNewInsurance();
   }
 
   deleteInsurance(id: number): void {
     if (confirm('Are you sure you want to delete this insurance policy?')) {
       const index = this.insurances.findIndex(i => i.id === id);
       if (index !== -1) {
-        // Mark the row as "deleting" to trigger the exit animation
         this.insurances[index].isDeleting = true;
-        // Wait for the animation to complete (500ms) before removing the row
         setTimeout(() => {
           this.insuranceService.deleteInsurance(id).subscribe({
             next: () => {
@@ -184,7 +306,6 @@ export class InsuranceManagerComponent implements OnInit {
             },
             error: (err: Error) => {
               this.errorMessage = err.message || 'Failed to delete insurance.';
-              // Reset the deleting flag if the request fails
               if (index !== -1) {
                 this.insurances[index].isDeleting = false;
               }
@@ -277,10 +398,6 @@ export class InsuranceManagerComponent implements OnInit {
     console.log('Dark mode toggled to:', this.isDarkMode);
     console.log('HTML classes:', document.documentElement.classList.toString());
   }
-  minCoverageAmount: number | null = null;
-  maxCoverageAmount: number | null = null;
-  minPremium: number | null = null;
-  maxPremium: number | null = null;
 
   searchInsurance(): void {
     this.isLoading = true;
@@ -311,5 +428,18 @@ export class InsuranceManagerComponent implements OnInit {
     this.minPremium = null;
     this.maxPremium = null;
     this.searchInsurance();
+  }
+
+  // Methods for modal handling
+  closeModal(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.selectedSubscriptionId = null;
+    this.selectedSubscription = null;
+  }
+
+  stopPropagation(event: Event): void {
+    event.stopPropagation();
   }
 }

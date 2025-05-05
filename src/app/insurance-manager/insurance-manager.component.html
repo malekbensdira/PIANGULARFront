@@ -1,15 +1,28 @@
 <div class="container mt-5 min-h-screen bg-gradient-to-br from-indigo-100 via-gray-50 to-indigo-100 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800">
   <!-- Header -->
   <header class="relative">
-    <div class="logo-header-container">
+    <div class="logo-header-container" [routerLink]="['/user']">
       <img src="assets/img/LOGOAMENA.png" alt="Logo" id="logo" />
     </div>
     <nav>
       <ul>
         <li><a [routerLink]="['/user']"><i class="fas fa-user mr-2"></i> User</a></li>
-        <li><a href="#"><i class="fas fa-credit-card mr-2"></i> Credit</a></li>
+        <li><a [routerLink]="['/insurance-manager']"><i class="fas fa-briefcase"></i> Insurance</a></li>
         <li><a [routerLink]="['/predict-claim']"><i class="fas fa-hand-holding-heart mr-2"></i> Predict Claim</a></li>
         <li><a [routerLink]="['/classification']"><i class="fas fa-image mr-2"></i> Classification</a></li>
+        <!-- KPI Toggle Button -->
+        <li>
+          <a (click)="toggleKpis()" class="cursor-pointer hover:text-indigo-200 transition-colors duration-200 animate-fade-in" [class.text-indigo-600]="showKpis" [class.text-white]="!showKpis">
+            <i class="fas fa-chart-pie mr-2"></i> KPIs
+          </a>
+        </li>
+        <!-- Notifications Toggle Button -->
+        <li>
+          <a (click)="toggleNotifications()" class="cursor-pointer hover:text-indigo-200 transition-colors duration-200 animate-fade-in" [class.text-indigo-600]="showNotifications" [class.text-white]="!showNotifications">
+            <i class="fas fa-bell mr-2"></i> Notifications
+            <span *ngIf="pendingSubscriptions && pendingSubscriptions.length > 0" class="ml-1 bg-red-600 text-white text-xs rounded-full px-2 py-1">{{ pendingSubscriptions.length }}</span>
+          </a>
+        </li>
         <!-- Dark Mode Toggle -->
         <button (click)="toggleDarkMode()" class="ml-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700" title="Toggle Dark Mode">
           <svg *ngIf="!isDarkMode" class="w-5 h-5 text-gray-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -25,9 +38,7 @@
 
   <!-- Title with Icon -->
   <h2 class="animate-fade-in flex items-center">
-    <svg class="w-8 h-8 text-indigo-600 dark:text-indigo-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    
-    </svg>
+    <svg class="w-8 h-8 text-indigo-600 dark:text-indigo-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"></svg>
     Insurance Manager
   </h2>
 
@@ -40,7 +51,7 @@
   </div>
 
   <!-- Add/Edit Insurance Form -->
-  <div class="card mb-4 form-section bg-white dark:bg-gray-800 rounded-2xl shadow-xl transform transition-all duration-500 hover:shadow-2xl">
+  <div class="card mb-4 form-section bg-white dark:bg-gray-800 rounded-2xl shadow-xl transform transition-all duration-500 hover:shadow-2xl" *ngIf="!showKpis && !showNotifications">
     <div class="card-header bg-gradient-to-r from-indigo-600 to-indigo-800 text-white p-4 rounded-t-2xl">
       <h4 class="text-xl font-semibold flex items-center">
         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -151,8 +162,9 @@
       </form>
     </div>
   </div>
-   <!-- Search Form -->
-   <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+
+  <!-- Search Form -->
+  <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg" *ngIf="!showKpis && !showNotifications">
     <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">Search Insurance</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
@@ -186,13 +198,8 @@
     </svg>
   </div>
 
-  <!-- Error Message -->
-  <div *ngIf="errorMessage" class="mb-4 text-red-600 dark:text-red-300 text-sm bg-red-50 dark:bg-red-900 p-3 rounded-lg">
-    {{ errorMessage }}
-  </div>
-
   <!-- Insurance Policies Table -->
-  <div class="scrollable-table-container list-section mt-6">
+  <div class="scrollable-table-container list-section mt-6" *ngIf="!showKpis && !showNotifications">
     <table class="table table-bordered w-full rounded-lg shadow-lg overflow-hidden">
       <thead class="bg-indigo-600 text-white sticky top-0 z-10">
         <tr>
@@ -209,22 +216,22 @@
       <tbody>
         <tr *ngFor="let insurance of insurances; let i = index"
           class="border-b border-gray-200 dark:border-gray-700 transition-all duration-500 ease-in-out hover:bg-indigo-50 dark:hover:bg-gray-700 table-row"
-          [ngClass]="{'animate-row-enter': insurance.isNew, 'animate-row-exit': insurance.isDeleting}">
-          <td class="py-4 px-6 text-gray-800 dark:text-gray-200">{{ insurance.id }}</td>
-          <td class="py-4 px-6 text-gray-800 dark:text-gray-200">{{ formatPolicyType(insurance.policyType) }}</td>
-          <td class="py-4 px-6 text-gray-800 dark:text-gray-200">{{ insurance.coverageAmount | currency }}</td>
-          <td class="py-4 px-6 text-gray-800 dark:text-gray-200">{{ insurance.premium | currency }}</td>
-          <td class="py-4 px-6 text-gray-800 dark:text-gray-200">{{ insurance.startDate | date }}</td>
-          <td class="py-4 px-6 text-gray-800 dark:text-gray-200">{{ insurance.endDate | date }}</td>
+          [ngClass]="{'animate-row-enter': insurance?.isNew, 'animate-row-exit': insurance?.isDeleting}">
+          <td class="py-4 px-6 text-gray-800 dark:text-gray-200">{{ insurance?.id }}</td>
+          <td class="py-4 px-6 text-gray-800 dark:text-gray-200">{{ formatPolicyType(insurance?.policyType ?? '') }}</td>
+          <td class="py-4 px-6 text-gray-800 dark:text-gray-200">{{ insurance?.coverageAmount | currency }}</td>
+          <td class="py-4 px-6 text-gray-800 dark:text-gray-200">{{ insurance?.premium | currency }}</td>
+          <td class="py-4 px-6 text-gray-800 dark:text-gray-200">{{ insurance?.startDate | date }}</td>
+          <td class="py-4 px-6 text-gray-800 dark:text-gray-200">{{ insurance?.endDate | date }}</td>
           <td class="py-4 px-6">
-            <span [ngClass]="getStatusClass(insurance.claimStatus)" class="inline-block px-3 py-1 rounded-full text-sm font-medium">
-              {{ insurance.claimStatus | lowercase }}
+            <span [ngClass]="getStatusClass(insurance?.claimStatus)" class="inline-block px-3 py-1 rounded-full text-sm font-medium">
+              {{ insurance?.claimStatus | lowercase }}
             </span>
           </td>
           <td class="py-4 px-6 flex space-x-2">
             <button
-              *ngIf="insurance.id"
-              (click)="viewInsurance(insurance.id)"
+              *ngIf="insurance?.id"
+              (click)="viewInsurance(insurance.id!)"
               class="btn btn-info btn-sm p-2 rounded-full text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all duration-300"
               title="View"
             >
@@ -238,8 +245,8 @@
               <i class="fas fa-edit"></i>
             </button>
             <button
-              *ngIf="insurance.id"
-              (click)="deleteInsurance(insurance.id)"
+              *ngIf="insurance?.id"
+              (click)="deleteInsurance(insurance.id!)"
               class="btn btn-danger btn-sm p-2 rounded-full text-red-600 hover:bg-red-600 hover:text-white transition-all duration-300"
               title="Delete"
             >
@@ -252,7 +259,7 @@
   </div>
 
   <!-- Claim Submission Section -->
-  <div class="card mt-4 claim-section bg-white dark:bg-gray-800 rounded-2xl shadow-xl transform transition-all duration-500 hover:shadow-2xl" *ngIf="selectedInsuranceId">
+  <div class="card mt-4 claim-section bg-white dark:bg-gray-800 rounded-2xl shadow-xl transform transition-all duration-500 hover:shadow-2xl" *ngIf="selectedInsuranceId && !showKpis && !showNotifications">
     <div class="card-header bg-gradient-to-r from-indigo-600 to-indigo-800 text-white p-4 rounded-t-2xl">
       <h4 class="text-xl font-semibold flex items-center">
         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -284,8 +291,57 @@
     </div>
   </div>
 
+  <!-- Notifications Section -->
+  <div class="card mt-4 notification-section bg-white dark:bg-gray-800 rounded-2xl shadow-xl transform transition-all duration-500 hover:shadow-2xl animate-fade-in" *ngIf="showNotifications">
+    <div class="card-header bg-gradient-to-r from-indigo-600 to-indigo-800 text-white p-4 rounded-t-2xl">
+      <h4 class="text-xl font-semibold flex items-center">
+        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+        </svg>
+        Notifications
+      </h4>
+    </div>
+    <div class="card-body p-6">
+      <div *ngIf="pendingSubscriptions && pendingSubscriptions.length === 0" class="text-center text-gray-600 dark:text-gray-400">
+        No pending subscription requests.
+      </div>
+      <div class="space-y-4">
+        <div *ngFor="let subscription of pendingSubscriptions" class="notification bg-gray-50 dark:bg-gray-700 p-4 rounded-lg animate-slide-in flex flex-col md:flex-row justify-between items-start md:items-center">
+          <div>
+            <p class="font-semibold text-indigo-600 dark:text-indigo-400">New Subscription Request #{{ subscription?.id }}</p>
+            <p><strong>Name:</strong> {{ subscription?.name }}</p>
+            <p><strong>Email:</strong> {{ subscription?.email }}</p>
+            <p><strong>Policy Type:</strong> {{ formatPolicyType(subscription?.policyType ?? '') }}</p>
+          </div>
+          <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mt-2 md:mt-0">
+            <button
+              *ngIf="subscription?.id"
+              (click)="viewSubscription(subscription.id!)"
+              class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-all duration-300"
+            >
+              <i class="fas fa-eye mr-2"></i> View
+            </button>
+            <button
+              (click)="createFromSubscription(subscription)"
+              class="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-all duration-300"
+            >
+              <i class="fas fa-plus mr-2"></i> Create
+            </button>
+            <button
+              *ngIf="subscription?.id"
+              (click)="rejectSubscription(subscription.id!)"
+              class="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-all duration-300"
+            >
+              <i class="fas fa-times mr-2"></i> Reject
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- KPIs Section -->
-  <div class="card mt-4 kpi-section bg-white dark:bg-gray-800 rounded-2xl shadow-xl transform transition-all duration-500 hover:shadow-2xl">
+  <div class="card mt-4 kpi-section bg-white dark:bg-gray-800 rounded-2xl shadow-xl transform transition-all duration-500 hover:shadow-2xl animate-fade-in" *ngIf="showKpis">
     <div class="card-header bg-gradient-to-r from-indigo-600 to-indigo-800 text-white p-4 rounded-t-2xl">
       <h4 class="text-xl font-semibold flex items-center">
         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -301,9 +357,9 @@
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
       </div>
-      <div *ngIf="!isLoadingKpis" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div *ngIf="!isLoadingKpis" class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-slide-in">
         <!-- Bar Chart -->
-        <div class="animate-fade-in">
+        <div>
           <h5 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Financial Ratios</h5>
           <canvas baseChart
             [data]="barChartData"
@@ -313,7 +369,7 @@
           </canvas>
         </div>
         <!-- Pie Chart -->
-        <div class="animate-fade-in">
+        <div>
           <h5 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Claim Settlement Speed</h5>
           <canvas baseChart
             [data]="pieChartData"
@@ -326,7 +382,7 @@
       <button
         (click)="downloadReport()"
         class="mt-4 w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700
-          transform transition-all duration-500 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+          transform transition-all duration-500 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-300 animate-fade-in"
       >
         <i class="fas fa-download mr-2"></i> Download KPI Report
       </button>

@@ -1,19 +1,32 @@
-<div class="min-h-screen bg-gradient-to-br from-indigo-100 via-gray-50 to-indigo-100 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 flex items-center justify-center py-10">
-    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl max-w-lg w-full transform transition-all duration-500 hover:shadow-2xl">
+<div class="container">
+    <!-- Header with Navbar -->
+    <header>
+      <div class="logo-header-container">
+        <img src="assets/img/LOGOAMENA.png" alt="Logo" id="logo" [routerLink]="['/user']"/>
+      </div>
+      <nav>
+        <ul>
+          <li><a [routerLink]="['/insurance-manager']"><i class="fas fa-shield-alt mr-2"></i> Insurance</a></li>
+        </ul>
+      </nav>
+    </header>
+  
+    <!-- Card Content -->
+    <div class="card">
       <!-- Header with Icon -->
       <div class="flex items-center justify-center mb-6">
-        <svg class="w-8 h-8 text-indigo-600 dark:text-indigo-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <svg class="w-8 h-8 text-indigo-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 012-2h2a2 2 0 012 2v12a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
         </svg>
-        <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200">Claim Prediction</h2>
+        <h2 class="animate-fade-in">Claim Prediction</h2>
       </div>
   
       <!-- Damage Category Selection -->
       <div class="mb-6">
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Damage Category</label>
+        <label>Select Damage Category</label>
         <select
           (change)="onCategorySelected($event)"
-          class="form-select w-full p-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all duration-500 dark:bg-gray-700 dark:text-white"
+          class="form-select"
           title="Select a damage category"
         >
           <option value="" disabled selected>Select a category</option>
@@ -22,17 +35,17 @@
       </div>
   
       <!-- Loading Spinner -->
-      <div *ngIf="isLoading" class="flex justify-center mb-4">
-        <svg class="animate-spin h-8 w-8 text-indigo-600 dark:text-indigo-400 animate-pulse" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <div *ngIf="isLoading" class="spinner">
+        <svg class="animate-spin h-8 w-8 text-indigo-600 animate-pulse" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
       </div>
   
       <!-- Error Message -->
-      <div *ngIf="isDomReady && errorMessage" @slideIn class="mb-4 text-red-600 dark:text-red-300 text-sm bg-red-50 dark:bg-red-900 p-3 rounded-lg">
+      <div *ngIf="isDomReady && errorMessage" class="error animate-slide-in">
         <div class="flex items-center">
-          <svg class="w-5 h-5 text-red-600 dark:text-red-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <svg class="w-5 h-5 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
           {{ errorMessage }}
@@ -40,14 +53,14 @@
       </div>
   
       <!-- Prediction Result -->
-      <div *ngIf="isDomReady && predictionResult" @fadeIn class="mb-6">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 flex items-center">
-          <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <div *ngIf="isDomReady && predictionResult" class="result animate-fade-in">
+        <h3 class="flex items-center">
+          <svg class="w-5 h-5 text-indigo-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
           </svg>
           Prediction Result:
         </h3>
-        <div class="mt-2 bg-indigo-50 dark:bg-indigo-900 p-3 rounded-lg text-left font-medium text-indigo-800 dark:text-indigo-200">
+        <div>
           <p><strong>Damage Category:</strong> {{ predictionResult.damageCategory }}</p>
           <p><strong>Claim Type:</strong> {{ predictionResult.claimType }}</p>
           <p><strong>Estimated Price:</strong> {{ predictionResult.price | currency }}</p>
@@ -59,15 +72,13 @@
         <button
           (click)="predictClaim()"
           [disabled]="!selectedCategory || isLoading"
-          class="flex-1 bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 disabled:bg-gray-400
-            transform transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+          class="predict-btn flex-1"
         >
           Predict Claim
         </button>
         <button
           (click)="clearForm()"
-          class="flex-1 bg-gray-500 text-white py-3 px-4 rounded-lg hover:bg-gray-600
-            transform transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-300"
+          class="clear-btn flex-1"
         >
           Clear
         </button>

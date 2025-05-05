@@ -13,6 +13,7 @@ import { InsuranceManagerComponent } from './insurance-manager/insurance-manager
 import { ClassificationComponent } from './classification/classification.component';
 import { PredictClaimComponent } from './predict-claim/predict-claim.component';
 import { NgChartsModule } from 'ng2-charts';
+import { SubscribeInsuranceComponent } from './subscribe-insurance/subscribe-insurance.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { NgChartsModule } from 'ng2-charts';
     FooterComponent,
     InsuranceManagerComponent,
     ClassificationComponent,
-    PredictClaimComponent
+    PredictClaimComponent,
+    SubscribeInsuranceComponent
   ],
   imports: [
     BrowserModule,

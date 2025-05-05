@@ -7,13 +7,34 @@ import { ServiceService } from '../Service/service.service';
   styleUrls: ['./classification.component.css']
 })
 export class ClassificationComponent {
-  selectedFile: File | null = null;
-  imagePreview: string | null = null; // Added for image preview
-  classificationResult: string | null = null;
-  errorMessage: string | null = null;
+  isDarkMode: boolean = false;
   isLoading: boolean = false;
+  errorMessage: string | null = null;
+  classificationResult: string | null = null;
+  imagePreview: string | null = null;
+  selectedFile: File | null = null;
 
   constructor(private insuranceService: ServiceService) {}
+  loadDarkMode(): void {
+    const darkModePref = localStorage.getItem('darkMode');
+    this.isDarkMode = darkModePref === 'true';
+    if (this.isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }
+
+  toggleDarkMode(): void {
+    this.isDarkMode = !this.isDarkMode;
+    if (this.isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('darkMode', 'true');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('darkMode', 'false');
+    }
+  }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;

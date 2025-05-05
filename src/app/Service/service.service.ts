@@ -5,8 +5,6 @@ import { Insurance } from '../models/insurance.model';
 import { ClaimStatus } from '../models/claim-status.enum';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -51,12 +49,39 @@ export class ServiceService {
     );
   }
 
+  // Soumettre une souscription
+  submitSubscription(insurance: Insurance): Observable<Insurance> {
+    return this.http.post<Insurance>(`${this.apiUrl}/subscribe`, insurance).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // Rejeter une souscription
+  rejectSubscription(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/subscriptions/reject/${id}`, {
+        observe: 'response', // Observe the full HTTP response
+        responseType: 'text' as 'json' // Treat the response as text to avoid JSON parsing
+    }).pipe(
+        map(response => {
+            // Since we expect a 204 or 200 status with no body, return void
+            return;
+        }),
+        catchError(this.handleError)
+    );
+}
+  // Obtenir toutes les souscriptions en attente
+  getPendingSubscriptions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/subscriptions/pending`).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
+
   // Soumettre une réclamation
   claimInsurance(id: number, claimAmount: number): Observable<Insurance> {
     const params = new HttpParams().set('claimAmount', claimAmount.toString());
     return this.http.post<Insurance>(`${this.apiUrl}/${id}/claim`, null, { params }).pipe(
       catchError((error) => {
-        // Personnaliser les messages d'erreur basés sur les exceptions du backend
         if (error.status === 400) {
           return throwError(() => new Error(error.error || 'Invalid claim request'));
         } else if (error.status === 404) {
@@ -131,12 +156,19 @@ export class ServiceService {
   // Prédire une réclamation basée sur la catégorie de dommage
   predictClaim(damageCategory: string): Observable<any> {
     const params = new HttpParams().set('damageCategory', damageCategory);
-    return this.http.get<any>(this.apiUrl, { params }).pipe(
+    return this.http.get<any>(`${this.apiUrl}/predict-claim`, { params }).pipe(
+      tap(response => {
+        console.log('API Response:', response);
+      }),
       map(response => {
         if (response.error) {
           throw new Error(response.error);
         }
         return response;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('API Error:', error);
+        return throwError(() => new Error(error.message || 'API request failed'));
       })
     );
   }
@@ -144,7 +176,7 @@ export class ServiceService {
   // Prédire la fraude
   predictFraud(text: string): Observable<string> {
     return this.http.post<string>(`${this.apiUrl}/predict`, text, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     }).pipe(
       catchError(this.handleError)
     );
@@ -156,20 +188,18 @@ export class ServiceService {
     formData.append('file', file);
     return this.http.post<{ label: string }>(`${this.apiUrl}/classify`, formData).pipe(
       map(response => {
-        console.log('Raw API Response:', response); // Debug log
         if (response && response.label) {
-          return response.label; // Extract the 'label' field
+          return response.label;
         }
         throw new Error('Label field not found in response');
       }),
       catchError(this.handleError)
     );
   }
-  
+
   // Gérer les erreurs HTTP
   private handleError(error: any): Observable<never> {
     console.error('An error occurred:', error);
     return throwError(() => new Error(error.message || 'Something went wrong; please try again later.'));
   }
-  
 }

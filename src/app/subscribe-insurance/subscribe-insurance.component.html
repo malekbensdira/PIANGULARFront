@@ -1,0 +1,246 @@
+<div class="container mt-5 min-h-screen bg-gradient-to-br from-indigo-100 via-gray-50 to-indigo-100 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800">
+  <!-- Header -->
+  <header class="relative">
+    <div class="logo-header-container">
+      <img src="assets/img/LOGOAMENA.png" alt="Logo" id="logo" />
+    </div>
+    <nav>
+      <ul>
+        <li><a [routerLink]="['/user']"><i class="fas fa-user mr-2"></i> User</a></li>
+        <li><a [routerLink]="['/subscribe']"><i class="fas fa-file-signature mr-2"></i> Subscribe</a></li>
+        <li><a [routerLink]="['/predict-claim']"><i class="fas fa-hand-holding-heart mr-2"></i> Predict Claim</a></li>
+        <li><a [routerLink]="['/classification']"><i class="fas fa-image mr-2"></i> Classification</a></li>
+        <!-- Dark Mode Toggle -->
+        <li>
+          <button (click)="toggleDarkMode()" class="ml-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700" title="Toggle Dark Mode">
+            <svg *ngIf="!isDarkMode" class="w-5 h-5 text-gray-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+            <svg *ngIf="isDarkMode" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Title with Icon -->
+  <h2 class="animate-fade-in flex items-center">
+    
+    Subscribe to Insurance
+  </h2>
+
+  <!-- Error Message with Animation -->
+  <div *ngIf="errorMessage" class="error alert alert-danger bg-red-50 dark:bg-red-900 p-4 rounded-lg mb-4 text-red-600 dark:text-red-300 animate-slide-in flex items-center">
+    <svg class="w-5 h-5 text-red-600 dark:text-red-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    {{ errorMessage }}
+  </div>
+
+  <!-- Subscribe to Insurance Form -->
+  <div class="card mb-4 form-section bg-white dark:bg-gray-800 rounded-2xl shadow-xl transform transition-all duration-500 hover:shadow-2xl">
+    <div class="card-header bg-gradient-to-r from-indigo-600 to-indigo-800 text-white p-4 rounded-t-2xl">
+      <h4 class="text-xl font-semibold flex items-center">
+        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        Subscription Details
+      </h4>
+    </div>
+    <div class="card-body p-6">
+      <form #subscribeForm="ngForm" (ngSubmit)="onSubscribe()">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="mb-3">
+            <label class="form-label text-gray-700 dark:text-gray-300 font-medium">Name</label>
+            <input
+              type="text"
+              class="form-control w-full p-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all duration-500 dark:bg-gray-700 dark:text-white"
+              [(ngModel)]="subscriptionData.name"
+              name="name"
+              required
+              placeholder="Enter your name"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-gray-700 dark:text-gray-300 font-medium">Email</label>
+            <input
+              type="email"
+              class="form-control w-full p-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all duration-500 dark:bg-gray-700 dark:text-white"
+              [(ngModel)]="subscriptionData.email"
+              name="email"
+              required
+              placeholder="Enter your email"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-gray-700 dark:text-gray-300 font-medium">Policy Type</label>
+            <select
+              class="form-select w-full p-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all duration-500 dark:bg-gray-700 dark:text-white"
+              [(ngModel)]="subscriptionData.policyType"
+              name="policyType"
+              required
+              (change)="onPolicyTypeChange()"
+              title="Select Policy Type"
+            >
+              <option *ngFor="let type of policyTypes | keyvalue" [value]="type.key">
+                {{ type.value | titlecase }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Conditional Fields Based on Policy Type -->
+        <div *ngIf="subscriptionData.policyType === 'AUTO_INSURANCE'" class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="mb-3">
+            <label class="form-label text-gray-700 dark:text-gray-300 font-medium">Car Series</label>
+            <input
+              type="text"
+              class="form-control w-full p-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all duration-500 dark:bg-gray-700 dark:text-white"
+              [(ngModel)]="subscriptionData.carSeries"
+              name="carSeries"
+              placeholder="e.g., Toyota Camry"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-gray-700 dark:text-gray-300 font-medium">Miles Driven</label>
+            <input
+              type="number"
+              class="form-control w-full p-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all duration-500 dark:bg-gray-700 dark:text-white"
+              [(ngModel)]="subscriptionData.milesDriven"
+              name="milesDriven"
+              placeholder="e.g., 50000"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-gray-700 dark:text-gray-300 font-medium">Vehicle Age (Years)</label>
+            <input
+              type="number"
+              class="form-control w-full p-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all duration-500 dark:bg-gray-700 dark:text-white"
+              [(ngModel)]="subscriptionData.vehicleAge"
+              name="vehicleAge"
+              placeholder="e.g., 5"
+            />
+          </div>
+        </div>
+
+        <div *ngIf="subscriptionData.policyType === 'HEALTH_INSURANCE'" class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="mb-3">
+            <label class="form-label text-gray-700 dark:text-gray-300 font-medium">Medical History</label>
+            <input
+              type="text"
+              class="form-control w-full p-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all duration-500 dark:bg-gray-700 dark:text-white"
+              [(ngModel)]="subscriptionData.medicalHistory"
+              name="medicalHistory"
+              placeholder="e.g., No chronic conditions"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-gray-700 dark:text-gray-300 font-medium">Age</label>
+            <input
+              type="number"
+              class="form-control w-full p-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all duration-500 dark:bg-gray-700 dark:text-white"
+              [(ngModel)]="subscriptionData.age"
+              name="age"
+              placeholder="e.g., 30"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-gray-700 dark:text-gray-300 font-medium">Coverage Level</label>
+            <select
+              class="form-select w-full p-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all duration-500 dark:bg-gray-700 dark:text-white"
+              [(ngModel)]="subscriptionData.coverageLevel"
+              name="coverageLevel"
+              title="Select Coverage Level"
+            >
+              <option value="">Select Level</option>
+              <option value="basic">Basic</option>
+              <option value="standard">Standard</option>
+              <option value="premium">Premium</option>
+            </select>
+          </div>
+        </div>
+
+        <div *ngIf="subscriptionData.policyType === 'HOME_INSURANCE'" class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="mb-3">
+            <label class="form-label text-gray-700 dark:text-gray-300 font-medium">Property Value</label>
+            <input
+              type="number"
+              class="form-control w-full p-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all duration-500 dark:bg-gray-700 dark:text-white"
+              [(ngModel)]="subscriptionData.propertyValue"
+              name="propertyValue"
+              placeholder="e.g., 250000"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-gray-700 dark:text-gray-300 font-medium">Location Risk</label>
+            <select
+              class="form-select w-full p-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all duration-500 dark:bg-gray-700 dark:text-white"
+              [(ngModel)]="subscriptionData.locationRisk"
+              name="locationRisk"
+              title="Select Location Risk"
+            >
+              <option value="">Select Risk</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-gray-700 dark:text-gray-300 font-medium">Year Built</label>
+            <input
+              type="number"
+              class="form-control w-full p-3 border dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all duration-500 dark:bg-gray-700 dark:text-white"
+              [(ngModel)]="subscriptionData.yearBuilt"
+              name="yearBuilt"
+              placeholder="e.g., 2010"
+            />
+          </div>
+        </div>
+
+        <div class="flex space-x-3 mt-4">
+          <button
+            type="submit"
+            class="flex-1 bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 disabled:bg-gray-400
+              transform transition-all duration-500 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+            [disabled]="subscribeForm.invalid"
+          >
+            <i class="fas fa-save mr-2"></i> Subscribe
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer mt-10">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3 class="text-xl font-semibold">Contact Us</h3>
+        <p><i class="fas fa-envelope mr-2"></i> contact.com</p>
+        <p><i class="fas fa-phone-alt mr-2"></i> +216 70 000 000</p>
+        <p><i class="fas fa-map-marker-alt mr-2"></i> Avenue de la Liberté, Tunis</p>
+      </div>
+      <div class="footer-section">
+        <h3 class="text-xl font-semibold">Quick Links</h3>
+        <ul>
+          <li><a href="#">Insurance</a></li>
+          <li><a href="#">Credit</a></li>
+          <li><a href="#">Real Estate</a></li>
+          <li><a href="#">Donations</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3 class="text-xl font-semibold">Follow Us</h3>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook fa-2x"></i></a>
+          <a href="#"><i class="fab fa-instagram fa-2x"></i></a>
+          <a href="#"><i class="fab fa-twitter fa-2x"></i></a>
+          <a href="#"><i class="fab fa-linkedin fa-2x"></i></a>
+        </div>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2025 Amena Bank. All rights reserved.</p>
+  </footer>
+</div>
